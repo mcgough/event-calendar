@@ -1,0 +1,15 @@
+{
+  "name": "vue-calendar-backend",
+  "version": "1.0.0",
+  "description": "Express server",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "init": "node server.js"
+  },
+  "author": "Dan McGough",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
