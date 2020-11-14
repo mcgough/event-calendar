@@ -1,11 +1,15 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
-const port = 3000
+const port = 3030
+const events = require('./events/event_calendar_data')
+
+app.use(cors({ origin: '*' }))
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send(events)
 })
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+  console.log(`Server running at ${port}`)
 })

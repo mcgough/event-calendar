@@ -1,0 +1,16 @@
+{
+  "name": "events-calendar",
+  "version": "1.0.0",
+  "description": "Build and run scripts",
+  "main": "index.js",
+  "scripts": {
+    "build-backend": "cd backend && npm install",
+    "build-frontend": "cd frontend && npm install",
+    "frontend": "cd frontend && npm run serve",
+    "backend": "cd backend && node server",
+    "build": "npm run build-backend & npm run build-frontend",
+    "serve": "npm run backend & npm run frontend"
+  },
+  "author": "Dan McGough",
+  "license": "ISC"
+}
