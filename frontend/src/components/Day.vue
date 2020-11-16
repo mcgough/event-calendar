@@ -14,8 +14,8 @@
         <ul class="event-list">
           <li v-for="event in details.events" :key="event.id" class="event">
             <div>
-              {{ event.when.start_time | formatted }} -
-              {{ event.when.end_time | formatted }}
+              {{ event.when.start_time | format('p') }} -
+              {{ event.when.end_time | format('p') }}
             </div>
             <div>{{ event.title }}</div>
           </li>
@@ -30,11 +30,7 @@ import { format } from 'date-fns'
 
 export default {
   props: ['details'],
-  filters: {
-    formatted(val) {
-      return format(val, 'p')
-    },
-  },
+  filters: { format },
   computed: {
     isSplitDay() {
       return Array.isArray(this.details)
