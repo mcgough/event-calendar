@@ -103,7 +103,6 @@ export default {
     },
     async setCalendar() {
       this.calendar = await this.calendarAPI.getMonth(this.year, this.month)
-      console.log(this.calendar)
       this.loading = ''
     },
   },
