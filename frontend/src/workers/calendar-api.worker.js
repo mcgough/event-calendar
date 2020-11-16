@@ -27,14 +27,16 @@ class Day {
   }
 }
 
-class Month {
+export class Month {
   constructor(year, month) {
     this.populateDays = this.populateDays.bind(this)
 
+    this.year = year
     this.name = MONTHS[month]
     this.firstDayOfMonth = getDay(startOfMonth(new Date(year, month)))
     this.daysInMonth = getDaysInMonth(new Date(year, month))
     this.splitDays = (35 - this.daysInMonth - this.firstDayOfMonth) * -1 // Number of days that require splt
+
     this._weeks = this.scaffoldMonth()
   }
 
@@ -114,14 +116,14 @@ class Year {
   }
 }
 
-class CalendarAPI {
+export class CalendarAPI {
   constructor() {
     this.setDayEvent = this.setDayEvent.bind(this)
 
     this._years = new Map()
   }
 
-  async init() {
+  async loadAllEvents() {
     try {
       const response = await fetch(BASE_URL)
       const { data } = await response.json()
@@ -129,7 +131,7 @@ class CalendarAPI {
         data.forEach(this.setDayEvent)
       }
     } catch (e) {
-      // TODO: Error handling
+      console.error(`endpoint error - ${e}`)
     }
   }
 
@@ -150,7 +152,11 @@ class CalendarAPI {
       this._years.set(year, new Year(year, month))
     }
     const monthInstance = this._years.get(year).getMonth(month)
-    return { year, month: monthInstance.name, weeks: monthInstance.weeks }
+    return {
+      year: monthInstance.year,
+      name: monthInstance.name,
+      weeks: monthInstance.weeks,
+    }
   }
 
   parseEventDate({ when }) {
