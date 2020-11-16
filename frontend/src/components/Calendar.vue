@@ -6,40 +6,15 @@
         <div class="year">{{ month.year }}</div>
         <div class="month">{{ month.name }}</div>
         <div>
-          <router-link
-            :to="{
-              name: 'Calendar',
-              params: prev,
-            }"
-          >
+          <router-link :to="prev">
             Previous
           </router-link>
-          <router-link
-            :to="{
-              name: 'Calendar',
-              params: next,
-            }"
-          >
+          <router-link :to="next">
             Next
           </router-link>
         </div>
       </div>
-      <div :class="['calendar']">
-        <div class="row days-of-week">
-          <div
-            v-for="dayName in daysOfWeek"
-            :key="dayName"
-            class="cell day-of-week"
-          >
-            <div>{{ dayName }}</div>
-          </div>
-        </div>
-        <div class="rows">
-          <div v-for="(week, index) in month.weeks" :key="index" class="row">
-            <Day :details="day" v-for="(day, index) in week" :key="index" />
-          </div>
-        </div>
-      </div>
+      <Month :weeks="month.weeks" />
     </template>
   </div>
 </template>
@@ -47,17 +22,15 @@
 <script>
 import * as Comlink from 'comlink'
 import Worker from '@/workers/calendar-api.worker.js'
-import Day from '@/components/Day'
-import { DAYS_OF_WEEK } from '@/constants'
+import Month from '@/components/Month'
 
 export default {
   name: 'Calendar',
-  components: { Day },
+  components: { Month },
   data: () => ({
-    daysOfWeek: DAYS_OF_WEEK,
-    month: {},
-    loading: 'loading',
     calendarAPI: undefined,
+    loading: 'loading',
+    month: {},
   }),
   // TODO: Move API initialization out of created
   async created() {
@@ -80,8 +53,11 @@ export default {
       const month = isLastMonth ? 1 : this.params.month + 2
       const year = isLastMonth ? this.params.year + 1 : this.params.year
       return {
-        year,
-        month,
+        name: 'Calendar',
+        params: {
+          year,
+          month,
+        },
       }
     },
     prev() {
@@ -89,8 +65,8 @@ export default {
       const month = isFirstMonth ? 12 : this.params.month
       const year = isFirstMonth ? this.params.year - 1 : this.params.year
       return {
-        year,
-        month,
+        name: 'Calendar',
+        params: { year, month },
       }
     },
   },
@@ -134,47 +110,16 @@ a {
   height: 12vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   padding: 0.5rem;
-}
-.calendar {
-  height: 80vh;
-}
-.rows {
-  border: 1px solid;
-  border-top: 0;
-  border-bottom: 0;
-}
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  &:last-of-type {
-    border-bottom: 1px solid;
-  }
-}
-.cell {
   position: relative;
-  width: calc(100% / 7);
-  height: 5vh;
-  border: 1px solid;
-  border-bottom: 0;
-  border-left: 0;
-  &.day-of-week {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    &:last-of-type {
-      border-right: 1px solid;
-    }
-    &:first-of-type {
-      border-left: 1px solid;
-    }
+  .year {
+    font-size: 3rem;
+    position: absolute;
+    left: 0;
   }
-  &:last-of-type {
-    border-right: 0;
+  .month {
+    font-size: 1.8rem;
   }
 }
 </style>
