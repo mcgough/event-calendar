@@ -7,7 +7,7 @@ const isInvalidYear = (year) =>
   isNaN(parseInt(year)) ||
   year.length < 4 ||
   year.length > 4 ||
-  parseInt(year) < 1
+  parseInt(year) < 1000
 
 const isInvalidMonth = (month) =>
   isNaN(parseInt(month)) ||
