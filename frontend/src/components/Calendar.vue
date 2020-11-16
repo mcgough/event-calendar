@@ -3,13 +3,13 @@
     <div :class="[loading, 'loading-overlay']">Events Calendar</div>
     <template v-if="!loading">
       <div class="nav">
-        <div class="year">{{ calendar.year }}</div>
-        <div class="month">{{ calendar.month }}</div>
+        <div class="year">{{ month.year }}</div>
+        <div class="month">{{ month.name }}</div>
         <div>
           <router-link
             :to="{
               name: 'Calendar',
-              params: prevParams,
+              params: prev,
             }"
           >
             Previous
@@ -17,7 +17,7 @@
           <router-link
             :to="{
               name: 'Calendar',
-              params: nextParams,
+              params: next,
             }"
           >
             Next
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="rows">
-          <div v-for="(week, index) in calendar.weeks" :key="index" class="row">
+          <div v-for="(week, index) in month.weeks" :key="index" class="row">
             <Day :details="day" v-for="(day, index) in week" :key="index" />
           </div>
         </div>
@@ -45,9 +45,9 @@
 </template>
 
 <script>
-import Day from '@/components/Day'
 import * as Comlink from 'comlink'
 import Worker from '@/workers/calendar-api.worker.js'
+import Day from '@/components/Day'
 import { DAYS_OF_WEEK } from '@/constants'
 
 export default {
@@ -55,39 +55,39 @@ export default {
   components: { Day },
   data: () => ({
     daysOfWeek: DAYS_OF_WEEK,
-    calendar: {},
+    month: {},
     loading: 'loading',
     calendarAPI: undefined,
   }),
-  // TODO: Move init out of created
+  // TODO: Move API initialization out of created
   async created() {
-    await this.initAPICalendar()
+    await this.initCalendarAPI()
   },
   watch: {
-    month() {
-      this.setCalendar()
+    monthIndex() {
+      this.setMonth()
     },
   },
   computed: {
-    year() {
-      return parseInt(this.$route.params.year)
-    },
-    month() {
+    monthIndex() {
       return this.$route.params.month - 1
     },
-    nextParams() {
-      const isLastMonth = this.month === 11
-      const month = isLastMonth ? 1 : this.month + 2
-      const year = isLastMonth ? parseInt(this.year) + 1 : this.year
+    params() {
+      return { year: parseInt(this.$route.params.year), month: this.monthIndex }
+    },
+    next() {
+      const isLastMonth = this.params.month === 11
+      const month = isLastMonth ? 1 : this.params.month + 2
+      const year = isLastMonth ? this.params.year + 1 : this.params.year
       return {
         year,
         month,
       }
     },
-    prevParams() {
-      const isFirstMonth = this.month === 0
-      const month = isFirstMonth ? 12 : this.month
-      const year = isFirstMonth ? parseInt(this.year) - 1 : this.year
+    prev() {
+      const isFirstMonth = this.params.month === 0
+      const month = isFirstMonth ? 12 : this.params.month
+      const year = isFirstMonth ? this.params.year - 1 : this.params.year
       return {
         year,
         month,
@@ -95,14 +95,17 @@ export default {
     },
   },
   methods: {
-    async initAPICalendar() {
+    async initCalendarAPI() {
       const CalendarAPI = new Comlink.wrap(new Worker())
       this.calendarAPI = await new CalendarAPI()
-      await this.calendarAPI.init()
-      await this.setCalendar()
+      await this.calendarAPI.loadAllEvents()
+      await this.setMonth()
     },
-    async setCalendar() {
-      this.calendar = await this.calendarAPI.getMonth(this.year, this.month)
+    async setMonth() {
+      this.month = await this.calendarAPI.getMonth(
+        this.params.year,
+        this.params.month
+      )
       this.loading = ''
     },
   },
