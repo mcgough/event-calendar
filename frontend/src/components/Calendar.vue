@@ -74,7 +74,7 @@ export default {
     async initCalendarAPI() {
       const CalendarAPI = new Comlink.wrap(new Worker())
       this.calendarAPI = await new CalendarAPI()
-      await this.calendarAPI.loadAllEvents()
+      await this.calendarAPI.loadAllEvents(this.$route.query.count)
       await this.setMonth()
     },
     async setMonth() {
