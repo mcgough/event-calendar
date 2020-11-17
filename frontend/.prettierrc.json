@@ -1,5 +1,6 @@
 {
   "files": [".js", "*.vue"],
   "singleQuote": true,
-  "semi": false
+  "semi": false,
+  "trailingComma": "es5"
 }
