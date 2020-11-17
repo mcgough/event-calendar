@@ -16,6 +16,9 @@ A simple calendar app. The Node server is running with the help of Express and t
 `npm run serve`
 [https://localhost:8080]([https://localhost:8080])
 
+**Random Events**
+`?count={numberOfEvents}`
+
 ## Design Decisions
 
 - Calendar month/weeks data structured as matrix
