@@ -48,25 +48,19 @@ export class Month {
   }
 
   getDay({ week, day }) {
-    if (this.isOverflowDay(day)) {
-      return this.getOverflowday(day)
+    if (week === 5 || week === 6) {
+      if (this.overflowDays > 2) {
+        return this.getOverflowday(day)
+      }
+      return this._weeks[4][day]
     }
-    return this._weeks[week][day]
+    return this._weeks[week === 0 ? week : week - 1][day]
   }
 
   getOverflowday(day) {
+    const week = 0
     const nextMonth = this._parent.getMonth(this._index + 1)
-    const nextMonthWeek = 0
-    let nextMonthDayIndex = 0
-    if (this.overflowDays === 2) {
-      if (day === 6) {
-        nextMonthDayIndex = 1
-      }
-    }
-    return nextMonth.getDay({
-      week: nextMonthWeek,
-      day: nextMonthDayIndex,
-    })
+    return nextMonth.getDay({ day, week })
   }
 
   scaffoldMonth() {
@@ -122,15 +116,6 @@ export class Month {
     }
     nextSunday.setDayOfMonth(this.daysInMonth === 31 ? 31 : 30)
   }
-
-  isOverflowDay(day) {
-    if (this.overflowDays > 0) {
-      if (day >= 5) {
-        return this.overflowDays === 2 || day === 6
-      }
-    }
-    return false
-  }
 }
 
 export class Year {
@@ -156,14 +141,10 @@ export class CalendarAPI {
   }
 
   async loadAllEvents() {
-    try {
-      const response = await fetch(BASE_URL)
-      const { data } = await response.json()
-      if (data) {
-        data.forEach(this.setDayEvent)
-      }
-    } catch (e) {
-      console.error(`endpoint error - ${e}`)
+    const response = await fetch(BASE_URL)
+    const { data } = await response.json()
+    if (data) {
+      data.forEach(this.setDayEvent)
     }
   }
 
@@ -195,10 +176,12 @@ export class CalendarAPI {
     return {
       year: getYear(when.start_time),
       month: getMonth(when.start_time),
-      week: getWeekOfMonth(when.start_time),
+      week: getWeekOfMonth(when.start_time, {
+        weekStartsOn: 0,
+      }),
       day: getDay(when.start_time),
     }
   }
 }
 
-Comlink.expose(CalendarAPI)
+Comlink.expose(CalendarAPI, self)

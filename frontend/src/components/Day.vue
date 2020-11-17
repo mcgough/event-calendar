@@ -1,27 +1,27 @@
 <template>
   <div :class="['cell', 'day-of-month', isActive, hasEvents]">
-    <template v-if="isSplitDay">
-      <div v-for="(day, index) in details" :key="index" class="split-day">
-        <div class="day">{{ day.dayOfMonth }}</div>
-      </div>
-    </template>
-    <template v-else>
-      <div class="day">{{ details.dayOfMonth }}</div>
-      <div v-if="eventCount">
-        <div class="event-count">{{ eventCount }} events</div>
-      </div>
-      <div class="events-wrapper">
-        <ul class="event-list">
-          <li v-for="event in details.events" :key="event.id" class="event">
-            <div>
-              {{ event.when.start_time | format('p') }} -
-              {{ event.when.end_time | format('p') }}
-            </div>
-            <div>{{ event.title }}</div>
-          </li>
-        </ul>
-      </div>
-    </template>
+    <div class="day">{{ details.dayOfMonth }}</div>
+    <div v-if="eventCount">
+      <div class="event-count">{{ eventCount }} events</div>
+    </div>
+    <div class="events-wrapper">
+      <ul class="event-list">
+        <li
+          v-for="(event, index) in details.events"
+          :key="event.id"
+          class="event"
+        >
+          <div v-if="index === 0">
+            {{ new Date(details.events[0].when.start_time) | format('PP') }}
+          </div>
+          <div>
+            {{ event.when.start_time | format('p') }} -
+            {{ event.when.end_time | format('p') }}
+          </div>
+          <div>{{ event.title }}</div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -32,12 +32,8 @@ export default {
   props: ['details'],
   filters: { format },
   computed: {
-    isSplitDay() {
-      return Array.isArray(this.details)
-    },
     isActive() {
-      const isDay = this.details.dayOfMonth
-      return this.isSplitDay || isDay ? 'active' : 'inactive'
+      return this.details.dayOfMonth ? 'active' : 'inactive'
     },
     eventCount() {
       return this.details.events ? this.details.events.length : 0
