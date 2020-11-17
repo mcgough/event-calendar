@@ -1,4 +1,4 @@
-import { CalendarAPI, Month } from '../../../src/workers/calendar-api.worker'
+import { CalendarAPI, Year } from '../../../src/workers/calendar-api.worker'
 
 describe('CalendarAPI', () => {
   const api = new CalendarAPI()
@@ -13,12 +13,13 @@ describe('CalendarAPI', () => {
     expect(month.name).toEqual(expectedName)
     expect(month.year).toEqual(expectedYear)
     expect(month.weeks.length).toEqual(5)
-    month.weeks.forEach((week) => expect(week.length).toEqual(7))
+    month.weeks.forEach(week => expect(week.length).toEqual(7))
   })
 })
 
-describe('Month - No Split Days', () => {
-  const month = new Month(2020, 10)
+describe('Month - No overflow days', () => {
+  const year = new Year(2020, 10)
+  const month = year.getMonth(10)
   it('creates new instance', () => {
     expect(month).toBeTruthy()
   })
@@ -30,18 +31,19 @@ describe('Month - No Split Days', () => {
     const emptyDay = month.getDay({ week: 4, day: 6 })
     expect(emptyDay.dayOfMonth).toBe(undefined)
   })
-  it('sets splitDays correctly', () => {
-    expect(month.splitDays).toBeLessThanOrEqual(0)
+  it('sets overflowDays correctly', () => {
+    expect(month.overflowDays).toBeLessThanOrEqual(0)
   })
 })
 
-describe('Month - Split Days', () => {
-  const month = new Month(2021, 0)
-  it('returns correct day', () => {
-    const day = month.getDay({ week: 1, day: 4 })
-    expect(day.dayOfMonth).toEqual(7)
+describe('Month - Overflow days', () => {
+  const year = new Year(1972, 6)
+  const month = year.getMonth(6)
+  it('sets overflowDays correctly', () => {
+    expect(month.overflowDays).toEqual(2)
   })
-  it('sets splitDays correctly', () => {
-    expect(month.splitDays).toEqual(1)
+  it('returns correct day', () => {
+    const day = month.getDay({ week: 4, day: 6 })
+    expect(day.dayOfMonth).toEqual(31)
   })
 })

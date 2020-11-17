@@ -28,15 +28,18 @@ class Day {
 }
 
 export class Month {
-  constructor(year, month) {
+  constructor(parent, month) {
+    const yearMonthDate = new Date(parent.year, month)
+
     this.populateDays = this.populateDays.bind(this)
-
-    this.year = year
+    this.year = parent.year
     this.name = MONTHS[month]
-    this.firstDayOfMonth = getDay(startOfMonth(new Date(year, month)))
-    this.daysInMonth = getDaysInMonth(new Date(year, month))
-    this.splitDays = (35 - this.daysInMonth - this.firstDayOfMonth) * -1 // Number of days that require splt
+    this.firstDayOfMonth = getDay(startOfMonth(yearMonthDate))
+    this.daysInMonth = getDaysInMonth(yearMonthDate)
+    this.overflowDays = (35 - this.daysInMonth - this.firstDayOfMonth) * -1 // Number of days that require splt
 
+    this._index = month
+    this._parent = parent
     this._weeks = this.scaffoldMonth()
   }
 
@@ -45,13 +48,25 @@ export class Month {
   }
 
   getDay({ week, day }) {
-    if (this.splitDays > 0 && week === 4) {
-      if (Array.isArray(this._weeks[week][day])) {
-        // TODO: Return correct day here. Currently returning first nested to avoid error.
-        return this._weeks[week][day][0]
-      }
+    if (this.isOverflowDay(day)) {
+      return this.getOverflowday(day)
     }
     return this._weeks[week][day]
+  }
+
+  getOverflowday(day) {
+    const nextMonth = this._parent.getMonth(this._index + 1)
+    const nextMonthWeek = 0
+    let nextMonthDayIndex = 0
+    if (this.overflowDays === 2) {
+      if (day === 6) {
+        nextMonthDayIndex = 1
+      }
+    }
+    return nextMonth.getDay({
+      week: nextMonthWeek,
+      day: nextMonthDayIndex,
+    })
   }
 
   scaffoldMonth() {
@@ -64,13 +79,6 @@ export class Month {
           .fill()
           .map(() => new Day())
       )
-    // TODO: Clean up scaffolding of split days
-    if (this.splitDays > 0) {
-      if (this.splitDays === 2) {
-        scaffold[4][5] = [new Day(), new Day()]
-      }
-      scaffold[4][6] = [new Day(), new Day()]
-    }
     scaffold.forEach(this.populateDays)
     return scaffold
   }
@@ -88,29 +96,53 @@ export class Month {
         daysPopulated++
       }
       if (weekIndex > 0 && daysPopulated <= this.daysInMonth) {
-        if (Array.isArray(day)) {
-          day[0].setDayOfMonth(daysPopulated)
-          daysPopulated++
-          day[1].setDayOfMonth(daysPopulated)
-        } else {
-          day.setDayOfMonth(daysPopulated)
-        }
+        day.setDayOfMonth(daysPopulated)
         daysPopulated++
       }
     })
+    if (weekIndex === 4 && this.overflowDays > 0) {
+      this.populateOverflowDays()
+    }
+  }
+
+  populateOverflowDays() {
+    const nextMonth = this._parent.getMonth(this._index + 1)
+    const nextSunday = nextMonth.getDay({ week: 0, day: 0 })
+    const nextMonday = nextMonth.getDay({ week: 0, day: 1 })
+    if (this.overflowDays === 2) {
+      if (this.daysInMonth === 31) {
+        nextSunday.setDayOfMonth(30)
+        nextMonday.setDayOfMonth(31)
+      }
+      if (this.daysInMonth === 30) {
+        nextSunday.setDayOfMonth(29)
+        nextMonday.setDayOfMonth(30)
+      }
+      return
+    }
+    nextSunday.setDayOfMonth(this.daysInMonth === 31 ? 31 : 30)
+  }
+
+  isOverflowDay(day) {
+    if (this.overflowDays > 0) {
+      if (day >= 5) {
+        return this.overflowDays === 2 || day === 6
+      }
+    }
+    return false
   }
 }
 
-class Year {
+export class Year {
   constructor(year, month) {
     this.year = parseInt(year)
     this._year = new Map()
-    this._year.set(month, new Month(this.year, month))
+    this._year.set(month, new Month(this, month))
   }
 
   getMonth(month) {
     if (!this._year.has(month)) {
-      this._year.set(month, new Month(this.year, month))
+      this._year.set(month, new Month(this, month))
     }
     return this._year.get(month)
   }
