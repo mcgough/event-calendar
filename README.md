@@ -28,10 +28,6 @@ A simple calendar app. The Node server is running with the help of Express and t
 
 ## TODO
 
-- `Month.getDay` should return correct day when split
-- Split days event visualization
-- `Day.vue` cleanup
-- Unit testing
-- Decouple Calendar component
+- More unit testing on `class Month`
 - Day's events detail view
 - Endpoints to preload next and previous months events
