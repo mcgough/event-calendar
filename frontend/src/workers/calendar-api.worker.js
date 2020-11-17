@@ -140,8 +140,12 @@ export class CalendarAPI {
     this._years = new Map()
   }
 
-  async loadAllEvents() {
-    const response = await fetch(BASE_URL)
+  async loadAllEvents(count) {
+    let url = BASE_URL
+    if (count) {
+      url += `/random?count=${count}`
+    }
+    const response = await fetch(url)
     const { data } = await response.json()
     if (data) {
       data.forEach(this.setDayEvent)
