@@ -6,15 +6,11 @@
     </div>
     <div class="events-wrapper">
       <ul class="event-list">
-        <li
-          v-for="(event, index) in details.events"
-          :key="event.id"
-          class="event"
-        >
-          <div v-if="index === 0">
-            {{ new Date(details.events[0].when.start_time) | format('PP') }}
-          </div>
+        <li v-for="event in details.events" :key="event.id" class="event">
           <div>
+            <div class="month-day-year">
+              {{ new Date(event.when.start_time) | format('PP') }}
+            </div>
             {{ event.when.start_time | format('p') }} -
             {{ event.when.end_time | format('p') }}
           </div>
@@ -85,6 +81,9 @@ export default {
         margin-left: -1rem;
         margin-top: 0.5rem;
         text-align: left;
+        .month-day-year {
+          font-size: 0.25rem;
+        }
       }
     }
     &:hover {

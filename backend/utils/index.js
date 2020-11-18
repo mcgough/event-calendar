@@ -9,8 +9,8 @@ module.exports = {
   generateRandomEvents(count) {
     const random = []
     for (let i = 0; i < count; i++) {
-      const start_time = Date.now() + i * 1000000000
-      const end_time = start_time + 100000000
+      const start_time = Date.now() + i * 15555555
+      const end_time = start_time + 100000
       const event = {
         title: `Event ${i}`,
         when: {

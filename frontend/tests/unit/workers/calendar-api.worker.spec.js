@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { CalendarAPI, Year } from '../../../src/workers/calendar-api.worker'
 
 describe('CalendarAPI', () => {
@@ -18,17 +19,17 @@ describe('CalendarAPI', () => {
 })
 
 describe('Month - No overflow days', () => {
-  const year = new Year(2020, 10)
-  const month = year.getMonth(10)
+  const year = new Year(2021, 1)
+  const month = year.getMonth(1)
   it('creates new instance', () => {
     expect(month).toBeTruthy()
   })
   it('returns correct day', () => {
     const day = month.getDay({ week: 3, day: 0 })
-    expect(day.dayOfMonth).toEqual(22)
+    expect(day.dayOfMonth).toEqual(14)
   })
   it('returns correct unpopulated day', () => {
-    const emptyDay = month.getDay({ week: 4, day: 6 })
+    const emptyDay = month.getDay({ week: 5, day: 1 })
     expect(emptyDay.dayOfMonth).toBe(undefined)
   })
   it('sets overflowDays correctly', () => {
@@ -36,14 +37,30 @@ describe('Month - No overflow days', () => {
   })
 })
 
-describe('Month - Overflow days', () => {
-  const year = new Year(1972, 6)
-  const month = year.getMonth(6)
+describe('Month - Overflow days - 1', () => {
+  const year = new Year(2021, 0)
+  const month = year.getMonth(0)
+  it('sets overflowDays correctly', () => {
+    expect(month.overflowDays).toEqual(1)
+  })
+  it('returns correct day', () => {
+    const day = month.getDay({ week: 6, day: 0 })
+    expect(day.dayOfMonth).toEqual(31)
+  })
+})
+
+describe('Month - Overflow days - 2', () => {
+  const year = new Year(2021, 4)
+  const month = year.getMonth(4)
   it('sets overflowDays correctly', () => {
     expect(month.overflowDays).toEqual(2)
   })
   it('returns correct day', () => {
-    const day = month.getDay({ week: 4, day: 6 })
-    expect(day.dayOfMonth).toEqual(31)
+    const overflowDay1 = month.getDay({ week: 6, day: 0 })
+    expect(overflowDay1.dayOfMonth).toEqual(30)
+    const overflowDay2 = month.getDay({ week: 6, day: 1 })
+    expect(overflowDay2.dayOfMonth).toEqual(31)
+    const lastDay = month.getDay({ week: 5, day: 6 })
+    expect(lastDay.dayOfMonth).toEqual(29)
   })
 })
