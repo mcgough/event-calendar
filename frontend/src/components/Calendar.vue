@@ -1,6 +1,11 @@
 <template>
   <div class="calendar-wrapper">
-    <div :class="[loading, 'loading-overlay']">Events Calendar</div>
+    <div :class="[loading, 'loading-overlay']">
+      <div>
+        Events Calendar
+      </div>
+      <div class="fade-in-out"><span class="small">loading...</span></div>
+    </div>
     <template v-if="!loading">
       <div class="nav">
         <div class="year">{{ month.year }}</div>
@@ -98,9 +103,13 @@ export default {
   height: 100vh;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   font-size: 2.1rem;
   &.loading {
     display: flex;
+  }
+  .small {
+    font-size: 1rem;
   }
 }
 a {
@@ -120,6 +129,20 @@ a {
   }
   .month {
     font-size: 1.8rem;
+  }
+}
+.fade-in-out {
+  animation: fadeInOut 1.25s infinite;
+}
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 </style>
