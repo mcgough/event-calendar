@@ -64,7 +64,6 @@ export default {
   &.events {
     cursor: pointer;
     background: rgb(132, 87, 254);
-    border-top: 1px solid rgb(132, 87, 254);
     color: #fff;
     .events-wrapper {
       display: none;
