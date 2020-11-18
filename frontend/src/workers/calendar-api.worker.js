@@ -6,6 +6,7 @@ import {
   getDay,
   getDaysInMonth,
   startOfMonth,
+  getWeeksInMonth,
 } from 'date-fns'
 import { MONTHS } from '../constants'
 const BASE_URL = 'http://localhost:3030'
@@ -41,6 +42,7 @@ export class Month {
     this._index = month
     this._parent = parent
     this._weeks = this.scaffoldMonth()
+    this._weeksInMonth = getWeeksInMonth(this._parent.year, month)
   }
 
   get weeks() {
@@ -48,10 +50,10 @@ export class Month {
   }
 
   getDay({ week, day }) {
+    if (week - this._weeksInMonth > 0) {
+      return this.getOverflowday(day)
+    }
     if (week === 5 || week === 6) {
-      if (this.overflowDays > 2) {
-        return this.getOverflowday(day)
-      }
       return this._weeks[4][day]
     }
     return this._weeks[week === 0 ? week : week - 1][day]
@@ -180,9 +182,7 @@ export class CalendarAPI {
     return {
       year: getYear(when.start_time),
       month: getMonth(when.start_time),
-      week: getWeekOfMonth(when.start_time, {
-        weekStartsOn: 0,
-      }),
+      week: getWeekOfMonth(when.start_time),
       day: getDay(when.start_time),
     }
   }
