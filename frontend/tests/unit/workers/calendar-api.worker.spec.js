@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import { CalendarAPI, Year } from '../../../src/workers/calendar-api.worker'
 
 describe('CalendarAPI', () => {

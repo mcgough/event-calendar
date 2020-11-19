@@ -2,28 +2,28 @@ import {
   validateParams,
   isInvalidMonth,
   isInvalidYear,
-} from '../../../src/router'
+} from '../../../../src/router/guards'
 import { getMonth, getYear } from 'date-fns'
 
 describe('isInvalidMonth', () => {
   it('returns true correctly', () => {
     const invalidMonths = ['adfasd', 'ds', 'a3', '13', '-1', '4c', '030']
-    invalidMonths.forEach((arg) => expect(isInvalidMonth(arg)).toBe(true))
+    invalidMonths.forEach(arg => expect(isInvalidMonth(arg)).toBe(true))
   })
   it('returns false correctly', () => {
     const validMonths = ['1', '12', '5', '05']
-    validMonths.forEach((arg) => expect(isInvalidMonth(arg)).toBe(false))
+    validMonths.forEach(arg => expect(isInvalidMonth(arg)).toBe(false))
   })
 })
 
 describe('isInvalidYear', () => {
   it('returns true correctly', () => {
     const invalidYears = ['1qs2', '1', '12', '123', '13324', 'abcd', '1999a']
-    invalidYears.forEach((arg) => expect(isInvalidYear(arg)).toBe(true))
+    invalidYears.forEach(arg => expect(isInvalidYear(arg)).toBe(true))
   })
   it('returns false correctly', () => {
     const validYears = ['1999', '2020', '1500', '2030']
-    validYears.forEach((arg) => expect(isInvalidYear(arg)).toBe(false))
+    validYears.forEach(arg => expect(isInvalidYear(arg)).toBe(false))
   })
 })
 

@@ -7,7 +7,12 @@
     </div>
     <div class="rows">
       <div v-for="(week, index) in weeks" :key="index" class="row">
-        <Day :details="day" v-for="(day, index) in week" :key="index" />
+        <Day
+          :dayOfMonth="day.dayOfMonth"
+          :events="day.events"
+          v-for="(day, index) in week"
+          :key="index"
+        />
       </div>
     </div>
   </div>
@@ -20,8 +25,10 @@ import { DAYS_OF_WEEK } from '@/constants'
 export default {
   name: 'Month',
   components: { Day },
-  props: ['weeks'],
-  data: () => ({ DAYS_OF_WEEK }),
+  props: { weeks: Array },
+  setup() {
+    return { DAYS_OF_WEEK }
+  },
 }
 </script>
 
