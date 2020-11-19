@@ -35,3 +35,4 @@ A simple calendar app. The Node server is running with the help of Express and t
 - Day's events detail view
 - Endpoints to preload next and previous months events
 - Days with events color scheme (straining after awhile)
+- TypeScript integration
