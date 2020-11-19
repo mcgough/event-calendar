@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import * as Comlink from 'comlink'
-import Worker from '@/workers/calendar-api.worker.js'
+import { CalendarAPI } from '../workers/calendar-api.worker.js'
 import Month from '@/components/Month'
 
 export default {
@@ -77,7 +76,6 @@ export default {
   },
   methods: {
     async initCalendarAPI() {
-      const CalendarAPI = new Comlink.wrap(new Worker())
       this.calendarAPI = await new CalendarAPI()
       await this.calendarAPI.loadAllEvents(this.$route.query.count)
       await this.setMonth()

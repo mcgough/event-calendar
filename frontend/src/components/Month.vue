@@ -1,7 +1,7 @@
 <template>
   <div :class="['calendar']">
     <div class="row days-of-week">
-      <div v-for="label in daysOfWeek" :key="label" class="cell day-of-week">
+      <div v-for="label in DAYS_OF_WEEK" :key="label" class="cell day-of-week">
         <div>{{ label }}</div>
       </div>
     </div>
@@ -21,11 +21,7 @@ export default {
   name: 'Month',
   components: { Day },
   props: ['weeks'],
-  computed: {
-    daysOfWeek() {
-      return DAYS_OF_WEEK
-    },
-  },
+  data: () => ({ DAYS_OF_WEEK }),
 }
 </script>
 

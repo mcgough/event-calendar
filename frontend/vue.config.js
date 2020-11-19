@@ -1,23 +1,22 @@
 const TITLE = 'Events Calendar'
 
 module.exports = {
-  chainWebpack: (config) => {
-    // Page Title
-    config.plugin('html').tap((args) => {
+  chainWebpack: config => {
+    config.plugin('html').tap(args => {
       args[0].title = TITLE
       return args
     })
 
-    // Worker Loader
-    config.module.rule('js').exclude.add(/\.worker\.js$/)
+    config.module.rule('js').exclude.add(/\.worker\.js$/i)
     config.module
-      .rule('worker')
-      .test(/\.worker\.js$/)
-      .use('worker-loader')
-      .loader('worker-loader')
-      .tap((options) => ({
-        inline: 'fallback',
+      .rule('comlink-loader')
+      .test(/\.worker\.js$/i)
+      .use('comlink-loader')
+      .loader('comlink-loader')
+      .tap(() => ({
+        singleton: true,
       }))
+      .end()
   },
   devServer: { https: true, host: 'localhost' },
 }
