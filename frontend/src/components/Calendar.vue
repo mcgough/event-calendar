@@ -25,10 +25,15 @@
 </template>
 
 <script>
+import Month from '@/components/Month'
 import { ref, computed, watch, reactive, onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
-import { CalendarAPI } from '../workers/calendar-api.worker.js'
-import Month from '@/components/Month'
+import {
+  initCalendarAPI,
+  setNextMonth,
+  setPrevMonth,
+  setParams,
+} from '@/helpers'
 
 const CALENDAR = 'Calendar'
 const LOADING = 'loading'
@@ -43,25 +48,16 @@ export default {
     const loading = ref(LOADING)
     const month = reactive({})
 
-    const params = computed(() => ({
-      year: parseInt(route.params.year),
-      month: route.params.month - 1,
-    }))
-    const isFirstMonth = computed(() => params.value.month === 0)
-    const isLastMonth = computed(() => params.value.month === 11)
+    const params = computed(() => setParams(route.params))
+
     const nextMonth = computed(() => ({
       name: CALENDAR,
-      params: {
-        year: isLastMonth.value ? params.value.year + 1 : params.value.year,
-        month: isLastMonth.value ? 1 : params.value.month + 2,
-      },
+      params: setNextMonth(params.value),
     }))
+
     const prevMonth = computed(() => ({
       name: CALENDAR,
-      params: {
-        year: isFirstMonth.value ? params.value.year - 1 : params.value.year,
-        month: isFirstMonth.value ? 12 : params.value.month,
-      },
+      params: setPrevMonth(params.value),
     }))
 
     watch(params, async val =>
@@ -80,12 +76,6 @@ export default {
       month.weeks = weeks
       month.name = name
       loading.value = ''
-    }
-
-    async function initCalendarAPI(randomCount) {
-      const api = await new CalendarAPI()
-      await api.loadAllEvents(randomCount)
-      return api
     }
 
     return { loading, month, nextMonth, prevMonth }
