@@ -11,10 +11,10 @@
         <div class="year">{{ month.year }}</div>
         <div class="month">{{ month.name }}</div>
         <div>
-          <router-link :to="prev">
+          <router-link :to="prevMonth">
             Previous
           </router-link>
-          <router-link :to="next">
+          <router-link :to="nextMonth">
             Next
           </router-link>
         </div>
@@ -25,68 +25,70 @@
 </template>
 
 <script>
+import { ref, computed, watch, reactive, onBeforeMount } from 'vue'
+import { useRoute } from 'vue-router'
 import { CalendarAPI } from '../workers/calendar-api.worker.js'
 import Month from '@/components/Month'
 
+const CALENDAR = 'Calendar'
+const LOADING = 'loading'
+
 export default {
-  name: 'Calendar',
+  name: CALENDAR,
   components: { Month },
-  data: () => ({
-    calendarAPI: undefined,
-    loading: 'loading',
-    month: {},
-  }),
-  // TODO: Move API initialization out of created
-  async created() {
-    await this.initCalendarAPI()
-  },
-  watch: {
-    monthIndex() {
-      this.setMonth()
-    },
-  },
-  computed: {
-    monthIndex() {
-      return this.$route.params.month - 1
-    },
-    params() {
-      return { year: parseInt(this.$route.params.year), month: this.monthIndex }
-    },
-    next() {
-      const isLastMonth = this.params.month === 11
-      const month = isLastMonth ? 1 : this.params.month + 2
-      const year = isLastMonth ? this.params.year + 1 : this.params.year
-      return {
-        name: 'Calendar',
-        params: {
-          year,
-          month,
-        },
-      }
-    },
-    prev() {
-      const isFirstMonth = this.params.month === 0
-      const month = isFirstMonth ? 12 : this.params.month
-      const year = isFirstMonth ? this.params.year - 1 : this.params.year
-      return {
-        name: 'Calendar',
-        params: { year, month },
-      }
-    },
-  },
-  methods: {
-    async initCalendarAPI() {
-      this.calendarAPI = await new CalendarAPI()
-      await this.calendarAPI.loadAllEvents(this.$route.query.count)
-      await this.setMonth()
-    },
-    async setMonth() {
-      this.month = await this.calendarAPI.getMonth(
-        this.params.year,
-        this.params.month
+  setup() {
+    let calendarApi
+
+    const route = useRoute()
+    const loading = ref(LOADING)
+    const month = reactive({})
+
+    const params = computed(() => ({
+      year: parseInt(route.params.year),
+      month: route.params.month - 1,
+    }))
+    const isFirstMonth = computed(() => params.value.month === 0)
+    const isLastMonth = computed(() => params.value.month === 11)
+    const nextMonth = computed(() => ({
+      name: CALENDAR,
+      params: {
+        year: isLastMonth.value ? params.value.year + 1 : params.value.year,
+        month: isLastMonth.value ? 1 : params.value.month + 2,
+      },
+    }))
+    const prevMonth = computed(() => ({
+      name: CALENDAR,
+      params: {
+        year: isFirstMonth.value ? params.value.year - 1 : params.value.year,
+        month: isFirstMonth.value ? 12 : params.value.month,
+      },
+    }))
+
+    watch(params, async val =>
+      setMonth(await calendarApi.getMonth(val.year, val.month))
+    )
+
+    onBeforeMount(async () => {
+      calendarApi = await initCalendarAPI(route.query.count)
+      setMonth(
+        await calendarApi.getMonth(params.value.year, params.value.month)
       )
-      this.loading = ''
-    },
+    })
+
+    function setMonth({ year, weeks, name }) {
+      month.year = year
+      month.weeks = weeks
+      month.name = name
+      loading.value = ''
+    }
+
+    async function initCalendarAPI(randomCount) {
+      const api = await new CalendarAPI()
+      await api.loadAllEvents(randomCount)
+      return api
+    }
+
+    return { loading, month, nextMonth, prevMonth }
   },
 }
 </script>

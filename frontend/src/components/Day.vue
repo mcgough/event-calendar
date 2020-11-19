@@ -1,12 +1,12 @@
 <template>
   <div :class="['cell', 'day-of-month', isActive, hasEvents]">
-    <div class="day">{{ details.dayOfMonth }}</div>
+    <div class="day">{{ dayOfMonth }}</div>
     <div v-if="eventCount">
       <div class="event-count">{{ eventCount }} events</div>
     </div>
     <div class="events-wrapper">
       <ul class="event-list">
-        <li v-for="event in details.events" :key="event.id" class="event">
+        <li v-for="event in events" :key="event.id" class="event">
           <div>
             <div class="month-day-year">
               {{ format(event.when.start_time, 'PP') }}
@@ -23,22 +23,19 @@
 
 <script>
 import { format } from 'date-fns'
+import { computed } from 'vue'
+
+const ACTIVE = 'active'
+const INACTIVE = 'inactive'
+const EVENTS = 'events'
 
 export default {
-  props: ['details'],
-  methods: {
-    format,
-  },
-  computed: {
-    isActive() {
-      return this.details.dayOfMonth ? 'active' : 'inactive'
-    },
-    eventCount() {
-      return this.details.events ? this.details.events.length : 0
-    },
-    hasEvents() {
-      return this.eventCount ? 'events' : ''
-    },
+  props: { dayOfMonth: Number, events: Array },
+  setup(props) {
+    const isActive = computed(() => (props.dayOfMonth ? ACTIVE : INACTIVE))
+    const eventCount = computed(() => (props.events ? props.events.length : 0))
+    const hasEvents = computed(() => (eventCount.value ? EVENTS : ''))
+    return { format, isActive, eventCount, hasEvents }
   },
 }
 </script>
