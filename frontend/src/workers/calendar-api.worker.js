@@ -1,4 +1,3 @@
-import * as Comlink from 'comlink'
 import {
   getMonth,
   getYear,
@@ -138,7 +137,6 @@ export class Year {
 export class CalendarAPI {
   constructor() {
     this.setDayEvent = this.setDayEvent.bind(this)
-
     this._years = new Map()
   }
 
@@ -187,5 +185,3 @@ export class CalendarAPI {
     }
   }
 }
-
-Comlink.expose(CalendarAPI, self)

@@ -9,10 +9,10 @@
         <li v-for="event in details.events" :key="event.id" class="event">
           <div>
             <div class="month-day-year">
-              {{ new Date(event.when.start_time) | format('PP') }}
+              {{ format(event.when.start_time, 'PP') }}
             </div>
-            {{ event.when.start_time | format('p') }} -
-            {{ event.when.end_time | format('p') }}
+            {{ format(event.when.start_time, 'p') }} -
+            {{ format(event.when.end_time, 'p') }}
           </div>
           <div>{{ event.title }}</div>
         </li>
@@ -26,7 +26,9 @@ import { format } from 'date-fns'
 
 export default {
   props: ['details'],
-  filters: { format },
+  methods: {
+    format,
+  },
   computed: {
     isActive() {
       return this.details.dayOfMonth ? 'active' : 'inactive'
