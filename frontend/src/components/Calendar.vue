@@ -33,6 +33,7 @@ import {
   setNextMonth,
   setPrevMonth,
   setParams,
+  buildRoute,
 } from '@/helpers'
 import { CALENDAR, LOADING } from '@/constants'
 
@@ -43,20 +44,18 @@ export default {
     let calendarApi
 
     const route = useRoute()
-    const loading = ref(LOADING)
     const month = reactive({})
+    const loading = ref(LOADING)
 
     const params = computed(() => setParams(route.params))
 
-    const nextMonth = computed(() => ({
-      name: CALENDAR,
-      params: setNextMonth(params.value),
-    }))
+    const nextMonth = computed(() =>
+      buildRoute(CALENDAR, setNextMonth(params.value))
+    )
 
-    const prevMonth = computed(() => ({
-      name: CALENDAR,
-      params: setPrevMonth(params.value),
-    }))
+    const prevMonth = computed(() =>
+      buildRoute(CALENDAR, setPrevMonth(params.value))
+    )
 
     watch(params, async val =>
       setMonth(await calendarApi.getMonth(val.year, val.month))
@@ -71,9 +70,9 @@ export default {
     })
 
     function setMonth({ year, daysInMonth, name, weeks }) {
+      month.daysInMonth = daysInMonth
       month.year = year
       month.name = name
-      month.daysInMonth = daysInMonth
       month.weeks = weeks
     }
 

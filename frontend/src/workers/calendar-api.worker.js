@@ -56,7 +56,7 @@ export class Month {
   get details() {
     return {
       year: this.year,
-      daysInmonth: this.daysInMonth,
+      daysInMonth: this.daysInMonth,
       name: this.name,
       weeks: this._weeks,
     }

@@ -13,6 +13,7 @@ describe('CalendarAPI', () => {
     expect(month.name).toEqual(expectedName)
     expect(month.year).toEqual(expectedYear)
     expect(month.weeks.length).toEqual(5)
+    expect(month.daysInMonth).toEqual(30)
     month.weeks.forEach(week => expect(week.length).toEqual(7))
   })
   it('returns correct day', () => {
