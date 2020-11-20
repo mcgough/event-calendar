@@ -30,7 +30,7 @@ describe('setParams', () => {
   it('returns year and month as numbers and correctly', () => {
     const monthYear = { month: 2, year: 2020 }
     const { month, year } = setParams(monthYear)
-    expect(month).toEqual(1)
-    expect(year).toEqual(2020)
+    expect(month).toStrictEqual(1)
+    expect(year).toStrictEqual(2020)
   })
 })

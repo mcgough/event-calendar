@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Calendar from '../components/Calendar.vue'
 import { validateParams } from './guards'
+import { CALENDAR } from '@/constants'
 
 const routes = [
   {
     path: '/:year?/:month?',
-    name: 'Calendar',
+    name: CALENDAR,
     component: Calendar,
   },
 ]

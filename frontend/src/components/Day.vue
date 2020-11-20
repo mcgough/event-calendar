@@ -30,11 +30,12 @@ const INACTIVE = 'inactive'
 const EVENTS = 'events'
 
 export default {
-  props: { dayOfMonth: Number, events: Array },
+  props: { dayOfMonth: Number, events: Array, dateStamp: Date },
   setup(props) {
     const isActive = computed(() => (props.dayOfMonth ? ACTIVE : INACTIVE))
     const eventCount = computed(() => (props.events ? props.events.length : 0))
     const hasEvents = computed(() => (eventCount.value ? EVENTS : ''))
+
     return { format, isActive, eventCount, hasEvents }
   },
 }

@@ -8,9 +8,10 @@
     <div class="rows">
       <div v-for="(week, index) in weeks" :key="index" class="row">
         <Day
+          v-for="(day, index) in week"
+          :dateStamp="day.dateStamp"
           :dayOfMonth="day.dayOfMonth"
           :events="day.events"
-          v-for="(day, index) in week"
           :key="index"
         />
       </div>

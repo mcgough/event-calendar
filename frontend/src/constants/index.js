@@ -22,3 +22,7 @@ export const MONTHS = {
   10: 'November',
   11: 'December',
 }
+
+export const CALENDAR = 'Calendar'
+
+export const LOADING = 'loading'

@@ -11,13 +11,18 @@ import { MONTHS } from '../constants'
 const BASE_URL = 'http://localhost:3030'
 
 class Day {
-  constructor() {
+  constructor(year, month, location) {
+    this.year = year
+    this.month = month
     this.events = []
     this.dayOfMonth = undefined
+    this.dateStamp = undefined
+    this.location = location
   }
 
   setDayOfMonth(day) {
     this.dayOfMonth = day
+    this.dateStamp = new Date(this.year, this.month, day)
   }
 
   setEvent(event) {
@@ -48,6 +53,15 @@ export class Month {
     return this._weeks
   }
 
+  get details() {
+    return {
+      year: this.year,
+      daysInmonth: this.daysInMonth,
+      name: this.name,
+      weeks: this._weeks,
+    }
+  }
+
   getDay({ week, day }) {
     if (week - this._weeksInMonth > 0) {
       return this.getOverflowday(day)
@@ -69,10 +83,12 @@ export class Month {
     const ROWS = 5
     const scaffold = Array(ROWS)
       .fill()
-      .map(() =>
+      .map((row, rowIdx) =>
         Array(COLUMNS)
           .fill()
-          .map(() => new Day())
+          .map(
+            (col, colIdx) => new Day(this.year, this._index, [rowIdx, colIdx])
+          )
       )
     scaffold.forEach(this.populateDays)
     return scaffold
@@ -153,35 +169,37 @@ export class CalendarAPI {
   }
 
   setDayEvent(event) {
-    const { year, month, week, day } = this.parseEventDate(event)
-    if (!this._years.has(year)) {
-      this._years.set(year, new Year(year, month))
-    }
-    this._years
-      .get(year)
+    const { year, month, week, day } = this.parseDate(event.when.start_time)
+    this.getYear(year)
       .getMonth(month)
       .getDay({ week, day })
       .setEvent(event)
   }
 
-  getMonth(year, month) {
+  getYear(year) {
     if (!this._years.has(year)) {
-      this._years.set(year, new Year(year, month))
+      this._years.set(year, new Year(year, 0))
     }
-    const monthInstance = this._years.get(year).getMonth(month)
-    return {
-      year: monthInstance.year,
-      name: monthInstance.name,
-      weeks: monthInstance.weeks,
-    }
+    return this._years.get(year)
   }
 
-  parseEventDate({ when }) {
+  getMonth(year, month) {
+    return this.getYear(year).getMonth(month).details
+  }
+
+  getDay(date) {
+    const { year, month, week, day } = this.parseDate(date)
+    return this.getYear(year)
+      .getMonth(month)
+      .getDay({ week, day })
+  }
+
+  parseDate(date) {
     return {
-      year: getYear(when.start_time),
-      month: getMonth(when.start_time),
-      week: getWeekOfMonth(when.start_time),
-      day: getDay(when.start_time),
+      year: getYear(date),
+      month: getMonth(date),
+      week: getWeekOfMonth(date),
+      day: getDay(date),
     }
   }
 }
