@@ -20,9 +20,17 @@ export async function initCalendarAPI(randomCount) {
   return api
 }
 
-export function setParams({ year, month }) {
+export function setParams({ year, month, day }) {
   return {
     year: parseInt(year),
-    month: month - 1,
+    month: parseInt(month) - 1,
+    day: parseInt(day),
+  }
+}
+
+export function buildRoute(name, params) {
+  return {
+    name,
+    params,
   }
 }

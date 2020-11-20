@@ -5,7 +5,7 @@ import { CALENDAR } from '@/constants'
 
 const routes = [
   {
-    path: '/:year?/:month?',
+    path: '/:year?/:month?/:day?',
     name: CALENDAR,
     component: Calendar,
   },
