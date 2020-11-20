@@ -15,6 +15,14 @@ describe('CalendarAPI', () => {
     expect(month.weeks.length).toEqual(5)
     month.weeks.forEach(week => expect(week.length).toEqual(7))
   })
+  it('returns correct day', () => {
+    const today = new Date('2020-11-19T08:00:00.000Z')
+    const day = api.getDay(today)
+    expect(day.year).toEqual(2020)
+    expect(day.dayOfMonth).toEqual(19)
+    expect(day.location).toEqual([2, 4])
+    expect(day.month).toEqual(10)
+  })
 })
 
 describe('Month - No overflow days', () => {

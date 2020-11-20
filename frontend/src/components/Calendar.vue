@@ -34,9 +34,7 @@ import {
   setPrevMonth,
   setParams,
 } from '@/helpers'
-
-const CALENDAR = 'Calendar'
-const LOADING = 'loading'
+import { CALENDAR, LOADING } from '@/constants'
 
 export default {
   name: CALENDAR,
@@ -69,13 +67,14 @@ export default {
       setMonth(
         await calendarApi.getMonth(params.value.year, params.value.month)
       )
+      loading.value = ''
     })
 
-    function setMonth({ year, weeks, name }) {
+    function setMonth({ year, daysInMonth, name, weeks }) {
       month.year = year
-      month.weeks = weeks
       month.name = name
-      loading.value = ''
+      month.daysInMonth = daysInMonth
+      month.weeks = weeks
     }
 
     return { loading, month, nextMonth, prevMonth }
