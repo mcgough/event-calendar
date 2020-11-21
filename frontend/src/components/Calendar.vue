@@ -1,15 +1,7 @@
 <template>
-  <div class="calendar-wrapper">
-    <div :class="[loading, 'loading-overlay']">
-      <div>
-        Events Calendar
-      </div>
-      <div class="fade-in-out"><span class="small">loading...</span></div>
-    </div>
-    <template v-if="!loading">
-      <div class="nav">
-        <div class="year">{{ month.year }}</div>
-        <div class="month">{{ month.name }}</div>
+  <Suspense>
+    <template #default>
+      <Month>
         <div>
           <router-link :to="prevMonth">
             Previous
@@ -18,65 +10,29 @@
             Next
           </router-link>
         </div>
-      </div>
-      <Month :weeks="month.weeks" />
+      </Month>
     </template>
-  </div>
+    <template #fallback>
+      <div class="loading loading-overlay">
+        <div>
+          Events Calendar
+        </div>
+        <div class="fade-in-out"><span class="small">loading...</span></div>
+      </div>
+    </template>
+  </Suspense>
 </template>
 
 <script>
 import Month from '@/components/Month'
-import { ref, computed, watch, reactive, onBeforeMount } from 'vue'
-import { useRoute } from 'vue-router'
-import {
-  initCalendarAPI,
-  setNextMonth,
-  setPrevMonth,
-  setParams,
-  buildRoute,
-} from '@/helpers'
-import { CALENDAR, LOADING } from '@/constants'
+import { useParams } from '@/hooks'
+import { CALENDAR } from '@/constants'
 
 export default {
   name: CALENDAR,
   components: { Month },
   setup() {
-    let calendarApi
-
-    const route = useRoute()
-    const month = reactive({})
-    const loading = ref(LOADING)
-
-    const params = computed(() => setParams(route.params))
-
-    const nextMonth = computed(() =>
-      buildRoute(CALENDAR, setNextMonth(params.value))
-    )
-
-    const prevMonth = computed(() =>
-      buildRoute(CALENDAR, setPrevMonth(params.value))
-    )
-
-    watch(params, async val =>
-      setMonth(await calendarApi.getMonth(val.year, val.month))
-    )
-
-    onBeforeMount(async () => {
-      calendarApi = await initCalendarAPI(route.query.count)
-      setMonth(
-        await calendarApi.getMonth(params.value.year, params.value.month)
-      )
-      loading.value = ''
-    })
-
-    function setMonth({ year, daysInMonth, name, weeks }) {
-      month.daysInMonth = daysInMonth
-      month.year = year
-      month.name = name
-      month.weeks = weeks
-    }
-
-    return { loading, month, nextMonth, prevMonth }
+    return useParams()
   },
 }
 </script>

@@ -1,4 +1,8 @@
-import { setNextMonth, setPrevMonth, setParams } from '../../../src/helpers'
+import {
+  setNextMonth,
+  setPrevMonth,
+  setParams,
+} from '../../../src/hooks/useParams'
 
 describe('setNextMonth', () => {
   it('returns first month and next year', () => {

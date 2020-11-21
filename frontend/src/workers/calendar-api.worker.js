@@ -83,12 +83,10 @@ export class Month {
     const ROWS = 5
     const scaffold = Array(ROWS)
       .fill()
-      .map((row, rowIdx) =>
+      .map((_, rowIdx) =>
         Array(COLUMNS)
           .fill()
-          .map(
-            (col, colIdx) => new Day(this.year, this._index, [rowIdx, colIdx])
-          )
+          .map((_, colIdx) => new Day(this.year, this._index, [rowIdx, colIdx]))
       )
     scaffold.forEach(this.populateDays)
     return scaffold

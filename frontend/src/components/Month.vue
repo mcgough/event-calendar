@@ -1,19 +1,30 @@
 <template>
-  <div :class="['calendar']">
-    <div class="row days-of-week">
-      <div v-for="label in DAYS_OF_WEEK" :key="label" class="cell day-of-week">
-        <div>{{ label }}</div>
-      </div>
+  <div>
+    <div class="nav">
+      <div class="year">{{ month.year }}</div>
+      <div class="month">{{ month.name }}</div>
+      <slot></slot>
     </div>
-    <div class="rows">
-      <div v-for="(week, index) in weeks" :key="index" class="row">
-        <Day
-          v-for="(day, index) in week"
-          :dateStamp="day.dateStamp"
-          :dayOfMonth="day.dayOfMonth"
-          :events="day.events"
-          :key="index"
-        />
+    <div :class="['calendar']">
+      <div class="row days-of-week">
+        <div
+          v-for="label in DAYS_OF_WEEK"
+          :key="label"
+          class="cell day-of-week"
+        >
+          <div>{{ label }}</div>
+        </div>
+      </div>
+      <div class="rows">
+        <div v-for="(week, index) in month.weeks" :key="index" class="row">
+          <Day
+            v-for="(day, index) in week"
+            :dateStamp="day.dateStamp"
+            :dayOfMonth="day.dayOfMonth"
+            :events="day.events"
+            :key="index"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -21,14 +32,28 @@
 
 <script>
 import Day from '@/components/Day'
+import { watch } from 'vue'
 import { DAYS_OF_WEEK } from '@/constants'
+import { useParams, useMonth, useCalendarApi } from '@/hooks'
 
 export default {
   name: 'Month',
   components: { Day },
-  props: { weeks: Array },
-  setup() {
-    return { DAYS_OF_WEEK }
+  async setup() {
+    let api
+
+    const { params, query } = useParams()
+    const [month, setMonth] = useMonth()
+
+    watch(params, async val =>
+      setMonth(await api.getMonth(val.year, val.month))
+    )
+
+    api = await useCalendarApi(query.count)
+
+    setMonth(await api.getMonth(params.value.year, params.value.month))
+
+    return { DAYS_OF_WEEK, month }
   },
 }
 </script>
