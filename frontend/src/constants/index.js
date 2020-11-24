@@ -24,5 +24,5 @@ export const MONTHS = {
 }
 
 export const CALENDAR = 'Calendar'
-
 export const LOADING = 'loading'
+export const NO_EVENTS_SCHEDULED = 'No events scheduled.'

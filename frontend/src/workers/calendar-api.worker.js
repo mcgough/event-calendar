@@ -20,9 +20,12 @@ class Day {
     this.location = location
   }
 
-  setDayOfMonth(day) {
+  setDayOfMonth(day, month) {
     this.dayOfMonth = day
-    this.dateStamp = new Date(this.year, this.month, day)
+    this.dateStamp = new Date(this.year, month || this.month, day)
+    if (month) {
+      this.month = month
+    }
   }
 
   setEvent(event) {
@@ -120,16 +123,16 @@ export class Month {
     const nextMonday = nextMonth.getDay({ week: 0, day: 1 })
     if (this.overflowDays === 2) {
       if (this.daysInMonth === 31) {
-        nextSunday.setDayOfMonth(30)
-        nextMonday.setDayOfMonth(31)
+        nextSunday.setDayOfMonth(30, this._index)
+        nextMonday.setDayOfMonth(31, this._index)
       }
       if (this.daysInMonth === 30) {
-        nextSunday.setDayOfMonth(29)
-        nextMonday.setDayOfMonth(30)
+        nextSunday.setDayOfMonth(29, this._index)
+        nextMonday.setDayOfMonth(30, this._index)
       }
       return
     }
-    nextSunday.setDayOfMonth(this.daysInMonth === 31 ? 31 : 30)
+    nextSunday.setDayOfMonth(this.daysInMonth === 31 ? 31 : 30, this._index)
   }
 }
 

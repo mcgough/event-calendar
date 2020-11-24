@@ -18,11 +18,12 @@
       <div class="rows">
         <div v-for="(week, index) in month.weeks" :key="index" class="row">
           <Day
-            v-for="(day, index) in week"
+            v-for="day in week"
             :dateStamp="day.dateStamp"
             :dayOfMonth="day.dayOfMonth"
             :events="day.events"
-            :key="index"
+            :key="day.dayOfMonth"
+            @click="onDayClick(day)"
           />
         </div>
       </div>
@@ -34,7 +35,7 @@
 import Day from '@/components/Day'
 import { watch } from 'vue'
 import { DAYS_OF_WEEK } from '@/constants'
-import { useParams, useMonth, useCalendarApi } from '@/hooks'
+import { useCalendarRouter, useMonth, useCalendarApi } from '@/hooks'
 
 export default {
   name: 'Month',
@@ -42,7 +43,7 @@ export default {
   async setup() {
     let api
 
-    const { params, query } = useParams()
+    const { params, query, router } = useCalendarRouter()
     const [month, setMonth] = useMonth()
 
     watch(params, async val =>
@@ -53,7 +54,15 @@ export default {
 
     setMonth(await api.getMonth(params.value.year, params.value.month))
 
-    return { DAYS_OF_WEEK, month }
+    function onDayClick({ dayOfMonth, year, month }) {
+      if (dayOfMonth) {
+        router.push({
+          path: `/${year}/${month + 1}/${dayOfMonth}`,
+        })
+      }
+    }
+
+    return { DAYS_OF_WEEK, month, onDayClick }
   },
 }
 </script>

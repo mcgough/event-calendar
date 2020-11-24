@@ -31,4 +31,9 @@ export default {
     }
   }
 }
+
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
 </style>

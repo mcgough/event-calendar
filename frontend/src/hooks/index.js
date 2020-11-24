@@ -1,5 +1,5 @@
 import { useMonth, useDay } from './useMonth'
-import { useParams } from './useParams'
+import { useCalendarRouter } from './useCalendarRouter'
 import { useCalendarApi } from './useCalendarApi'
 
-export { useMonth, useDay, useParams, useCalendarApi }
+export { useMonth, useDay, useCalendarRouter, useCalendarApi }

@@ -2,14 +2,7 @@
   <Suspense>
     <template #default>
       <Month>
-        <div>
-          <router-link :to="prevMonth">
-            Previous
-          </router-link>
-          <router-link :to="nextMonth">
-            Next
-          </router-link>
-        </div>
+        <Nav :next="nextMonth" :prev="prevMonth" />
       </Month>
     </template>
     <template #fallback>
@@ -25,14 +18,15 @@
 
 <script>
 import Month from '@/components/Month'
-import { useParams } from '@/hooks'
+import Nav from '@/components/Nav'
+import { useCalendarRouter } from '@/hooks'
 import { CALENDAR } from '@/constants'
 
 export default {
   name: CALENDAR,
-  components: { Month },
+  components: { Month, Nav },
   setup() {
-    return useParams()
+    return useCalendarRouter()
   },
 }
 </script>

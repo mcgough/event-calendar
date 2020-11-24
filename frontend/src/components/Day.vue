@@ -1,5 +1,8 @@
 <template>
-  <div :class="['cell', 'day-of-month', isActive, hasEvents, today]">
+  <div
+    :class="['cell', 'day-of-month', isActive, hasEvents, today]"
+    @click="showDetails"
+  >
     <div class="day">{{ dayOfMonth }}</div>
     <div v-if="eventCount">
       <div class="event-count">{{ eventCount }} events</div>
@@ -8,9 +11,6 @@
       <ul class="event-list">
         <li v-for="event in events" :key="event.id" class="event">
           <div>
-            <div class="month-day-year">
-              {{ format(event.when.start_time, 'PP') }}
-            </div>
             {{ format(event.when.start_time, 'p') }} -
             {{ format(event.when.end_time, 'p') }}
           </div>
@@ -24,6 +24,7 @@
 <script>
 import { format, isToday } from 'date-fns'
 import { computed } from 'vue'
+import { useCalendarApi, useDay } from '@/hooks'
 
 const ACTIVE = 'active'
 const INACTIVE = 'inactive'
@@ -37,13 +38,25 @@ export default {
     dateStamp: Date,
   },
   setup(props) {
+    let api
+
+    const [_, setDay] = useDay()
+
     const eventCount = computed(() => (props.events ? props.events.length : 0))
 
     const isActive = computed(() => (props.dayOfMonth ? ACTIVE : INACTIVE))
     const hasEvents = computed(() => (eventCount.value ? EVENTS : ''))
     const today = computed(() => (isToday(props.dateStamp) ? IS_TODAY : ''))
 
-    return { format, isActive, eventCount, hasEvents, today }
+    async function showDetails() {
+      if (!api) api = await useCalendarApi()
+
+      if (props.dateStamp) {
+        setDay(await api.getDay(new Date(props.dateStamp)))
+      }
+    }
+
+    return { format, isActive, eventCount, hasEvents, showDetails, today }
   },
 }
 </script>

@@ -58,17 +58,23 @@ describe('Month - Overflow days - 1', () => {
 })
 
 describe('Month - Overflow days - 2', () => {
-  const year = new Year(2021, 4)
-  const month = year.getMonth(4)
+  const expectedMonth = 4
+  const year = new Year(2021, expectedMonth)
+  const month = year.getMonth(expectedMonth)
   it('sets overflowDays correctly', () => {
     expect(month.overflowDays).toEqual(2)
   })
   it('returns correct day', () => {
     const overflowDay1 = month.getDay({ week: 6, day: 0 })
     expect(overflowDay1.dayOfMonth).toEqual(30)
+    expect(overflowDay1.month).toEqual(expectedMonth)
+
     const overflowDay2 = month.getDay({ week: 6, day: 1 })
     expect(overflowDay2.dayOfMonth).toEqual(31)
+    expect(overflowDay2.month).toEqual(expectedMonth)
+
     const lastDay = month.getDay({ week: 5, day: 6 })
     expect(lastDay.dayOfMonth).toEqual(29)
+    expect(lastDay.month).toEqual(expectedMonth)
   })
 })
