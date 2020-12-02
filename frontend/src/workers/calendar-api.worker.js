@@ -30,6 +30,10 @@ class Day {
       a.when.start_time < b.when.start_time ? -1 : 1
     )
   }
+
+  removeEvent(id) {
+    this.events = this.events.filter(event => event.id !== id)
+  }
 }
 
 export class Month {
@@ -172,6 +176,14 @@ export class CalendarAPI {
       .getMonth(month)
       .getDay({ week, day })
       .setEvent(event)
+  }
+
+  removeDayEvent(event) {
+    const { year, month, week, day } = this.parseDate(event.when.start_time)
+    this.getYear(year)
+      .getMonth(month)
+      .getDay({ week, day })
+      .removeEvent(event.id)
   }
 
   getYear(year) {

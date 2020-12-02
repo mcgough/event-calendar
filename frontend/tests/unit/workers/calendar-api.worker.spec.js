@@ -1,4 +1,5 @@
 import { CalendarAPI, Year } from '../../../src/workers/calendar-api.worker'
+import events from '../data/events'
 
 describe('CalendarAPI', () => {
   const api = new CalendarAPI()
@@ -70,5 +71,22 @@ describe('Month - Overflow days - 2', () => {
     expect(overflowDay2.dayOfMonth).toEqual(31)
     const lastDay = month.getDay({ week: 5, day: 6 })
     expect(lastDay.dayOfMonth).toEqual(29)
+  })
+})
+
+describe('Day', () => {
+  const api = new CalendarAPI()
+  const day = api.getDay(new Date(1970, 0, 19))
+  events.data.forEach(event => api.setDayEvent(event))
+  describe('setEvent', () => {
+    it('sets event correctly', () => {
+      expect(day.events.length).toEqual(events.data.length)
+    })
+  })
+  describe('removeEvent', () => {
+    it('removes event correctly', () => {
+      api.removeDayEvent(events.data[0])
+      expect(day.events.length).toEqual(events.data.length - 1)
+    })
   })
 })
