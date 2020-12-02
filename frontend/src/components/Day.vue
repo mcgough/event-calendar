@@ -1,5 +1,5 @@
 <template>
-  <div :class="['cell', 'day-of-month', isActive, hasEvents]">
+  <div :class="['cell', 'day-of-month', isActive, hasEvents, today]">
     <div class="day">{{ dayOfMonth }}</div>
     <div v-if="eventCount">
       <div class="event-count">{{ eventCount }} events</div>
@@ -22,21 +22,28 @@
 </template>
 
 <script>
-import { format } from 'date-fns'
+import { format, isToday } from 'date-fns'
 import { computed } from 'vue'
 
 const ACTIVE = 'active'
 const INACTIVE = 'inactive'
 const EVENTS = 'events'
+const IS_TODAY = 'is-today'
 
 export default {
-  props: { dayOfMonth: Number, events: Array, dateStamp: Date },
+  props: {
+    dayOfMonth: Number,
+    events: Array,
+    dateStamp: Date,
+  },
   setup(props) {
-    const isActive = computed(() => (props.dayOfMonth ? ACTIVE : INACTIVE))
     const eventCount = computed(() => (props.events ? props.events.length : 0))
-    const hasEvents = computed(() => (eventCount.value ? EVENTS : ''))
 
-    return { format, isActive, eventCount, hasEvents }
+    const isActive = computed(() => (props.dayOfMonth ? ACTIVE : INACTIVE))
+    const hasEvents = computed(() => (eventCount.value ? EVENTS : ''))
+    const today = computed(() => (isToday(props.dateStamp) ? IS_TODAY : ''))
+
+    return { format, isActive, eventCount, hasEvents, today }
   },
 }
 </script>
@@ -60,6 +67,9 @@ export default {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
+  }
+  &.is-today {
+    background: rgba(132, 87, 254, 0.25);
   }
   &.events {
     cursor: pointer;
