@@ -4,20 +4,6 @@
     <div v-if="eventCount">
       <div class="event-count">{{ eventCount }} events</div>
     </div>
-    <div class="events-wrapper">
-      <ul class="event-list">
-        <li v-for="event in events" :key="event.id" class="event">
-          <div>
-            <div class="month-day-year">
-              {{ format(event.when.start_time, 'PP') }}
-            </div>
-            {{ format(event.when.start_time, 'p') }} -
-            {{ format(event.when.end_time, 'p') }}
-          </div>
-          <div>{{ event.title }}</div>
-        </li>
-      </ul>
-    </div>
   </div>
 </template>
 
@@ -30,13 +16,13 @@ const INACTIVE = 'inactive'
 const EVENTS = 'events'
 
 export default {
-  props: { dayOfMonth: Number, events: Array, dateStamp: Date },
+  props: { dayOfMonth: Number, eventCount: Number, dateStamp: Date },
   setup(props) {
     const isActive = computed(() => (props.dayOfMonth ? ACTIVE : INACTIVE))
-    const eventCount = computed(() => (props.events ? props.events.length : 0))
-    const hasEvents = computed(() => (eventCount.value ? EVENTS : ''))
 
-    return { format, isActive, eventCount, hasEvents }
+    const hasEvents = computed(() => (props.eventCount ? EVENTS : ''))
+
+    return { format, isActive, hasEvents }
   },
 }
 </script>

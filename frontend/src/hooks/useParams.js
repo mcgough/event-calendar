@@ -1,6 +1,7 @@
+import compose from 'lodash.compose'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { CALENDAR } from '@/constants'
+import { ROUTE_NAME_CALENDAR } from '@/constants'
 
 export function setNextMonth({ month, year }) {
   return {
@@ -17,14 +18,17 @@ export function setPrevMonth({ month, year }) {
 }
 
 export function setParams({ year, month, day }) {
+  const parsedYear = parseInt(year)
+  const parsedMonth = parseInt(month) - 1
   return {
-    year: parseInt(year),
-    month: parseInt(month) - 1,
+    year: parsedYear,
+    month: parsedMonth,
     day: parseInt(day),
+    timestamp: new Date(parsedYear, parsedMonth),
   }
 }
 
-export function buildRoute(name, params) {
+export function formatRoute(name, params) {
   return {
     name,
     params,
@@ -41,11 +45,11 @@ export function useParams() {
   const params = computed(() => setParams(route.params))
 
   const nextMonth = computed(() =>
-    buildRoute(CALENDAR, setNextMonth(params.value))
+    formatRoute(ROUTE_NAME_CALENDAR, setNextMonth(params.value))
   )
 
   const prevMonth = computed(() =>
-    buildRoute(CALENDAR, setPrevMonth(params.value))
+    formatRoute(ROUTE_NAME_CALENDAR, setPrevMonth(params.value))
   )
 
   return {

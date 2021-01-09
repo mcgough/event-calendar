@@ -1,13 +1,11 @@
-import { CalendarAPI } from '../workers/calendar-api.worker.js'
+import { calendarApi } from '@/workers/calendar-api/index'
 
 let api
 
 export async function useCalendarApi(randomCount) {
   if (api) return api
 
-  api = await new CalendarAPI()
-
-  await api.loadAllEvents(randomCount)
+  api = await calendarApi(randomCount)
 
   return api
 }

@@ -26,10 +26,10 @@
 <script>
 import Month from '@/components/Month'
 import { useParams } from '@/hooks'
-import { CALENDAR } from '@/constants'
+import { ROUTE_NAME_CALENDAR } from '@/constants'
 
 export default {
-  name: CALENDAR,
+  name: ROUTE_NAME_CALENDAR,
   components: { Month },
   setup() {
     return useParams()

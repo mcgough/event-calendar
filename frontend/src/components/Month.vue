@@ -8,23 +8,20 @@
     <div :class="['calendar']">
       <div class="row days-of-week">
         <div
+          class="cell day-of-week flex justify-center items-center"
           v-for="label in DAYS_OF_WEEK"
           :key="label"
-          class="cell day-of-week"
         >
           <div>{{ label }}</div>
         </div>
       </div>
-      <div class="rows">
-        <div v-for="(week, index) in month.weeks" :key="index" class="row">
-          <Day
-            v-for="(day, index) in week"
-            :dateStamp="day.dateStamp"
-            :dayOfMonth="day.dayOfMonth"
-            :events="day.events"
-            :key="index"
-          />
-        </div>
+      <div class="row flex-wrap">
+        <Day
+          v-for="(day, i) in month.days"
+          :dayOfMonth="day?.dayOfMonth"
+          :eventCount="day?.eventCount()"
+          :key="i"
+        />
       </div>
     </div>
   </div>
@@ -34,7 +31,7 @@
 import Day from '@/components/Day'
 import { watch } from 'vue'
 import { DAYS_OF_WEEK } from '@/constants'
-import { useParams, useMonth, useCalendarApi } from '@/hooks'
+import { useParams, useState, useCalendarApi } from '@/hooks'
 
 export default {
   name: 'Month',
@@ -43,15 +40,15 @@ export default {
     let api
 
     const { params, query } = useParams()
-    const [month, setMonth] = useMonth()
+    const [month, setMonth] = useState({})
 
-    watch(params, async val =>
-      setMonth(await api.getMonth(val.year, val.month))
-    )
+    watch(params, async val => setMonth(await api.findMonth(val.timestamp)))
 
-    api = await useCalendarApi(query.count)
+    api = await useCalendarApi()
 
-    setMonth(await api.getMonth(params.value.year, params.value.month))
+    setMonth(await api.findMonth(params.value.timestamp))
+
+    await api.fetchSetEvents()
 
     return { DAYS_OF_WEEK, month }
   },
@@ -84,9 +81,6 @@ export default {
   border-bottom: 0;
   border-left: 0;
   &.day-of-week {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
     &:last-of-type {
       border-right: 1px solid;
