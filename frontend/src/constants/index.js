@@ -23,6 +23,6 @@ export const MONTHS = {
   11: 'December',
 }
 
-export const CALENDAR = 'Calendar'
+export const ROUTE_NAME_CALENDAR = 'Calendar'
 
 export const LOADING = 'loading'

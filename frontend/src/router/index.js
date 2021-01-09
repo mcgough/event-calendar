@@ -1,19 +1,20 @@
-import { createRouter, createWebHistory } from 'vue-router'
 import Calendar from '../components/Calendar.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import { validateParams } from './guards'
-import { CALENDAR } from '@/constants'
+
+import { ROUTE_NAME_CALENDAR } from '@/constants'
 
 const routes = [
   {
     path: '/:year?/:month?/:day?',
-    name: CALENDAR,
+    name: ROUTE_NAME_CALENDAR,
     component: Calendar,
   },
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
   routes,
+  history: createWebHistory(),
 })
 
 router.beforeEach(validateParams)

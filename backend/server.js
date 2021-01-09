@@ -5,6 +5,13 @@ const port = 3030
 const events = require('./events/event_calendar_data')
 const utils = require('./utils')
 
+events.data.map((e) => {
+  return Object.assign(e.when, {
+    start_time: e.when.start_time * 1000,
+    end_time: e.when.end_time * 1000,
+  })
+})
+
 app.use(cors({ origin: '*' }))
 
 app.get('/', (req, res) => {
