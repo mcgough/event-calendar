@@ -9,7 +9,7 @@ import { format } from 'date-fns'
 import { computed } from 'vue'
 
 export default {
-  props: { dayOfMonth: Number, eventCount: Number, dateStamp: Date },
+  props: { dayOfMonth: Number, eventCount: Number, timestamp: Date },
   setup(props) {
     const isActive = computed(() =>
       props.dayOfMonth ? dayActive : dayInActive

@@ -1,5 +1,5 @@
 import { MONTHS } from '@/constants'
-import { useCalendarDays } from './hooks/useCalendarDays'
+import { useCalendarDays } from './composables/useCalendarDays'
 
 export function pluckMonth({ value, data }) {
   return { data, value: value.findMonth(data).value }

@@ -1,6 +1,6 @@
 import compose from 'lodash.compose'
 import { Month } from './month'
-import { useCalendarMap } from './hooks/useCalendarMap'
+import { useCalendarMap } from './composables/useCalendarMap'
 
 export function Year({ y, ...data }) {
   const [getMonth, setMonth] = useCalendarMap(new Map(), 'm', Month)
