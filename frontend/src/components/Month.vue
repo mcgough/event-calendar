@@ -1,28 +1,26 @@
 <template>
-  <div>
-    <div class="nav">
-      <div class="year">{{ month.year }}</div>
-      <div class="month">{{ month.name }}</div>
+  <div class="w-full max-w-sm m-auto">
+    <div class="flex justify-between items-center my-3">
+      <div class="font-semibold">
+        <span class="month">{{ month.name }} {{ month.year }}</span>
+      </div>
       <slot></slot>
     </div>
-    <div :class="['calendar']">
-      <div class="row days-of-week">
-        <div
-          class="cell day-of-week flex justify-center items-center"
-          v-for="label in DAYS_OF_WEEK"
-          :key="label"
-        >
-          <div>{{ label }}</div>
-        </div>
+
+    <div class="grid grid-cols-7">
+      <div
+        v-for="(DAY, i) in DAYS_OF_WEEK_SHORT"
+        :key="i"
+        class="flex justify-center items-center h-8 w-12 text-gray-400"
+      >
+        <div>{{ DAY }}</div>
       </div>
-      <div class="row flex-wrap">
-        <Day
-          v-for="(day, i) in month.days"
-          :dayOfMonth="day?.dayOfMonth"
-          :eventCount="day?.eventCount()"
-          :key="i"
-        />
-      </div>
+      <day
+        v-for="(day, i) in month.days"
+        :dayOfMonth="day?.dayOfMonth"
+        :eventCount="day?.eventCount()"
+        :key="i"
+      />
     </div>
   </div>
 </template>
@@ -30,7 +28,7 @@
 <script>
 import Day from '@/components/Day'
 import { watch } from 'vue'
-import { DAYS_OF_WEEK } from '@/constants'
+import { DAYS_OF_WEEK_SHORT } from '@/constants'
 import { useParams, useState, useCalendarApi } from '@/hooks'
 
 export default {
@@ -39,7 +37,7 @@ export default {
   async setup() {
     let api
 
-    const { params, query } = useParams()
+    const { params } = useParams()
     const [month, setMonth] = useState({})
 
     watch(params, async val => setMonth(await api.findMonth(val.timestamp)))
@@ -50,47 +48,7 @@ export default {
 
     await api.fetchSetEvents()
 
-    return { DAYS_OF_WEEK, month }
+    return { DAYS_OF_WEEK_SHORT, month }
   },
 }
 </script>
-
-<style lang="scss">
-.calendar {
-  height: 80vh;
-}
-.rows {
-  border: 1px solid;
-  border-top: 0;
-  border-bottom: 0;
-}
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  &:last-of-type {
-    border-bottom: 1px solid;
-  }
-}
-.cell {
-  position: relative;
-  width: calc(100% / 7);
-  height: 5vh;
-  border: 1px solid;
-  border-bottom: 0;
-  border-left: 0;
-  &.day-of-week {
-    overflow: hidden;
-    &:last-of-type {
-      border-right: 1px solid;
-    }
-    &:first-of-type {
-      border-left: 1px solid;
-    }
-  }
-  &:last-of-type {
-    border-right: 0;
-  }
-}
-</style>
