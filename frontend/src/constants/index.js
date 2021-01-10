@@ -8,6 +8,8 @@ export const DAYS_OF_WEEK = [
   'Saturday',
 ]
 
+export const DAYS_OF_WEEK_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+
 export const MONTHS = {
   0: 'January',
   1: 'February',
