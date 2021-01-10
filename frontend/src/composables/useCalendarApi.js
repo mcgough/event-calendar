@@ -1,4 +1,4 @@
-import { calendarApi } from '@/workers/calendar-api/index'
+import { calendarApi } from '@/workers/calendar-api'
 
 export async function useCalendarApi(randomCount) {
   let api

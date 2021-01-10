@@ -4,14 +4,23 @@ function setEvents(event, events) {
   )
 }
 
+export function addEvent(find) {
+  return function(event) {
+    const day = find(event.when.start_time)
+    if (day) {
+      day.setEvent(event)
+    }
+  }
+}
+
 export function pluckDay({ data, value }) {
   return { data, value: value.findDay(data) }
 }
 
-export function Day({ y, m, count }) {
+export function Day({ y, m, dayOfMonth }) {
   const year = y
   const month = m
-  const dayOfMonth = count
+  const timestamp = new Date(y, m)
 
   let events = []
 
@@ -25,6 +34,7 @@ export function Day({ y, m, count }) {
     year,
     month,
     dayOfMonth,
+    timestamp,
     eventCount,
     getEvents,
     setEvent,

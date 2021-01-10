@@ -19,6 +19,7 @@
         v-for="(day, i) in month.days"
         :dayOfMonth="day?.dayOfMonth"
         :eventCount="day?.eventCount()"
+        :timestamp="day?.timestamp"
         :key="i"
       />
     </div>
@@ -29,7 +30,7 @@
 import Day from '@/components/Day'
 import { watch } from 'vue'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
-import { useParams, useState, useCalendarApi } from '@/hooks'
+import { useParams, useState, useCalendarApi } from '@/composables'
 
 export default {
   name: 'Month',

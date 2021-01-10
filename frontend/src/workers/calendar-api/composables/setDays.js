@@ -1,9 +1,8 @@
-import compose from 'lodash.compose'
 import { Day } from '../day'
 
 const NUMBER_OF_DAYS_IN_WEEK = 7
 
-function initializeDays({ startOfMonth, ...data }) {
+export function initializeDays({ startOfMonth, ...data }) {
   const days = []
 
   while (days.length < startOfMonth) {
@@ -13,17 +12,17 @@ function initializeDays({ startOfMonth, ...data }) {
   return { ...data, days, startOfMonth }
 }
 
-function setActiveDays({ daysInMonth, days, ...data }) {
-  let count = 0
+export function setActiveDays({ daysInMonth, days, ...data }) {
+  let dayOfMonth = 0
 
-  while (count++ < daysInMonth) {
-    days.push(Day({ count, ...data }))
+  while (dayOfMonth++ < daysInMonth) {
+    days.push(Day({ dayOfMonth, ...data }))
   }
 
   return days
 }
 
-function setRemainingEmptyDays(days) {
+export function setRemainingEmptyDays(days) {
   if (days.length % NUMBER_OF_DAYS_IN_WEEK === 0) return days
 
   while (days.length % NUMBER_OF_DAYS_IN_WEEK !== 0) {
@@ -32,9 +31,3 @@ function setRemainingEmptyDays(days) {
 
   return days
 }
-
-export const setDays = compose(
-  setRemainingEmptyDays,
-  setActiveDays,
-  initializeDays
-)

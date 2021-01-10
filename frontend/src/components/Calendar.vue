@@ -21,7 +21,7 @@
 <script>
 import Month from '@/components/Month'
 import Splash from '@/components/Splash'
-import { useParams } from '@/hooks'
+import { useParams } from '@/composables'
 import { ROUTE_NAME_CALENDAR } from '@/constants'
 
 export default {
