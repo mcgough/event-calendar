@@ -36,18 +36,17 @@ export default {
   name: 'Month',
   components: { Day },
   async setup() {
-    let api
-
+    const calendar = useCalendarApi()
     const { params } = useParams()
     const [month, setMonth] = useState({})
 
-    watch(params, async val => setMonth(await api.findMonth(val.timestamp)))
+    watch(params, async val =>
+      setMonth(await calendar.findMonth(val.timestamp))
+    )
 
-    api = await useCalendarApi()
+    setMonth(await calendar.findMonth(params.value.timestamp))
 
-    setMonth(await api.findMonth(params.value.timestamp))
-
-    await api.fetchSetEvents()
+    await calendar.fetchSetEvents()
 
     return { DAYS_OF_WEEK_SHORT, month }
   },
