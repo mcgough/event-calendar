@@ -1,4 +1,3 @@
-import compose from 'lodash.compose'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ROUTE_NAME_CALENDAR } from '@/constants'
