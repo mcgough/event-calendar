@@ -1,5 +1,5 @@
 {
-  "name": "events-calendar",
+  "name": "event-calendar",
   "version": "1.0.0",
   "description": "Build and run scripts",
   "main": "index.js",
