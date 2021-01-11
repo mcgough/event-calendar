@@ -1,15 +1,19 @@
 import compose from 'lodash.compose'
-import { initializeDays, setActiveDays, setRemainingEmptyDays } from './setDays'
+import {
+  setPrevMonthDays,
+  setCurrentMonthDays,
+  setNextMonthDays,
+} from './setDays'
 
 export function useCalendarDays(data) {
   const days = compose(
-    setRemainingEmptyDays,
-    setActiveDays,
-    initializeDays
+    setNextMonthDays,
+    setCurrentMonthDays,
+    setPrevMonthDays
   )(data)
 
-  function findDay({ dayOfMonth, startOfMonth }) {
-    const day = days[dayOfMonth + startOfMonth - 1]
+  function findDay({ d, startOfMonth }) {
+    const day = days[d + startOfMonth - 1]
     return day
   }
 

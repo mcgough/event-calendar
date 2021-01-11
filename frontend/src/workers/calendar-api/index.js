@@ -28,10 +28,10 @@ export function calendarApi() {
   const fetchSetEvents = () => fetchEvents().then(loop(setEvent))
 
   return {
-    setYear,
-    findYear,
-    findMonth,
-    findDay,
     fetchSetEvents,
+    findDay,
+    findMonth,
+    findYear,
+    setYear,
   }
 }
