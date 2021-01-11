@@ -5,6 +5,7 @@ const port = 3030
 const events = require('./events/event_calendar_data')
 const utils = require('./utils')
 
+// TODO: cleanup
 events.data.map((e) => {
   return Object.assign(e.when, {
     start_time: e.when.start_time * 1000,
