@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 function setEvents(event, events) {
   return [...events, event].sort((a, b) =>
     a.when.start_time < b.when.start_time ? -1 : 1
@@ -10,6 +12,7 @@ export function addEvent(find) {
     if (day) {
       day.setEvent(event)
     }
+    return day.getEvents()
   }
 }
 
@@ -17,10 +20,10 @@ export function pluckDay({ data, value }) {
   return { data, value: value.findDay(data) }
 }
 
-export function Day({ y, m, dayOfMonth }) {
+export function Day({ y, m, dayOfMonth, isInCurrentMonth }) {
   const year = y
   const month = m
-  const timestamp = new Date(y, m)
+  const timestamp = parseInt(format(new Date(y, m, dayOfMonth), 'T'), 10)
 
   let events = []
 
@@ -34,9 +37,10 @@ export function Day({ y, m, dayOfMonth }) {
     year,
     month,
     dayOfMonth,
-    timestamp,
     eventCount,
     getEvents,
+    isInCurrentMonth,
     setEvent,
+    timestamp,
   }
 }
