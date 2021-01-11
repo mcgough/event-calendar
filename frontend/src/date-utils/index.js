@@ -13,12 +13,10 @@ export function parseDate(date) {
   return {
     y: getYear(date),
     m: getMonth(date),
-    d: getDay(date),
-    dayOfWeek: getDate(date),
+    d: getDate(date),
     daysInMonth: getDaysInMonth(date),
     startOfMonth: getDay(startOfMonth(date)),
     weeksInMonth: getWeeksInMonth(date),
     weekOfMonth: getWeekOfMonth(date),
-    timestamp: date,
   }
 }

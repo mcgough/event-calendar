@@ -1,6 +1,7 @@
 import { useState } from './useState'
-import { useParams } from './useParams'
+import { useCalendarRoutes } from './useCalendarRoutes'
 import { useCalendarApi } from './useCalendarApi'
+import { useDayInView } from './useDayInView'
 
 function loop(cb) {
   return function(list) {
@@ -12,4 +13,11 @@ function pluckValue({ value }) {
   return value
 }
 
-export { useState, useParams, useCalendarApi, loop, pluckValue }
+export {
+  loop,
+  pluckValue,
+  useCalendarApi,
+  useCalendarRoutes,
+  useDayInView,
+  useState,
+}

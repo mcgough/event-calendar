@@ -1,23 +1,39 @@
 <template>
-  <div :class="[...dayBase, ...isActive, ...hasEvents]">
-    <div>{{ dayOfMonth }}</div>
-  </div>
+  <router-link :to="thisDayRoute">
+    <div :class="[...dayBase, ...dayInCurrentMonth, ...hasEvents]">
+      <div>{{ dayOfMonth }}</div>
+    </div>
+  </router-link>
 </template>
 
 <script>
-import { format } from 'date-fns'
 import { computed } from 'vue'
+import { useCalendarRoutes } from '@/composables'
 
 export default {
-  props: { dayOfMonth: Number, eventCount: Number, timestamp: Date },
+  props: {
+    dayOfMonth: Number,
+    eventCount: Number,
+    timestamp: Number,
+    isInCurrentMonth: Boolean,
+  },
   setup(props) {
-    const isActive = computed(() =>
-      props.dayOfMonth ? dayActive : dayInActive
-    )
+    const { constructDayRoute } = useCalendarRoutes()
 
-    const hasEvents = computed(() => (props.eventCount ? dayHasEvents : []))
+    const thisDayRoute = constructDayRoute(props.timestamp)
 
-    return { format, isActive, hasEvents, dayBase }
+    const dayInCurrentMonth = props.isInCurrentMonth
+      ? dayInMonth
+      : dayOutsideMonth
+
+    const hasEvents = props.eventCount ? hasEvents : []
+
+    return {
+      dayInCurrentMonth,
+      hasEvents,
+      dayBase,
+      thisDayRoute,
+    }
   },
 }
 
@@ -30,7 +46,7 @@ const dayBase = [
   'justify-center',
   'items-center',
 ]
-const dayActive = ['cursor-pointer', 'hover:bg-gray-100']
-const dayInActive = ['bg-gray-200']
+const dayInMonth = ['cursor-pointer', 'hover:bg-gray-100']
+const dayOutsideMonth = ['text-gray-400']
 const dayHasEvents = ['bg-green-200', 'hover:bg-green-300']
 </script>
