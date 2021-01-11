@@ -19,20 +19,14 @@ A simple calendar app. The Node server is running with the help of Express and t
 **Random Events**
 `?count={numberOfEvents}`
 
-## Design Decisions
-
-- Calendar month/weeks data structured as matrix
-- Business logic offloaded to web worker
-
 ## Notable NPM Dependencies
 
+- compose
 - date-fns
 - Comlink
 
 ## TODO
 
-- More unit testing on `class Month`
 - Day's events detail view
 - Endpoints to preload next and previous months events
-- Days with events color scheme (straining after awhile)
 - TypeScript integration
