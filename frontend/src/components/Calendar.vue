@@ -1,16 +1,14 @@
 <template>
   <Suspense>
     <template #default>
-      <month>
-        <div>
-          <router-link :to="prevMonth">
-            Previous
-          </router-link>
-          <router-link :to="nextMonth">
-            Next
-          </router-link>
+      <div class="flex justify-space-between flex-nowrap">
+        <div class="w-1/3 min-w-max">
+          <month />
         </div>
-      </month>
+        <div class="w-full">
+          {{ dayInView }}
+        </div>
+      </div>
     </template>
     <template #fallback>
       <splash />
@@ -21,14 +19,27 @@
 <script>
 import Month from '@/components/Month'
 import Splash from '@/components/Splash'
-import { useParams } from '@/composables'
+import { watch, toRefs } from 'vue'
+import { useDayInView, useCalendarRoutes, useCalendarApi } from '@/composables'
 import { ROUTE_NAME_CALENDAR } from '@/constants'
 
 export default {
   name: ROUTE_NAME_CALENDAR,
   components: { Month, Splash },
   setup() {
-    return useParams()
+    const calendar = useCalendarApi()
+
+    const [dayInView, setDayInView] = useDayInView()
+
+    const { params } = useCalendarRoutes()
+
+    watch(params, ({ day, timestamp }) => {
+      if (day && timestamp) {
+        setDayInView(calendar.findDay(timestamp))
+      }
+    })
+
+    return { dayInView }
   },
 }
 </script>
