@@ -24,6 +24,7 @@ export function Day({ y, m, dayOfMonth, isInCurrentMonth }) {
   const year = y
   const month = m
   const timestamp = parseInt(format(new Date(y, m, dayOfMonth), 'T'), 10)
+  const label = format(timestamp, 'PPPP')
 
   let events = []
 
@@ -40,6 +41,7 @@ export function Day({ y, m, dayOfMonth, isInCurrentMonth }) {
     eventCount,
     getEvents,
     isInCurrentMonth,
+    label,
     setEvent,
     timestamp,
   }
