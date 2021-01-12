@@ -1,7 +1,6 @@
 import compose from 'lodash.compose'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { ROUTE_NAME_CALENDAR } from '@/constants'
 import { parseDate } from '../date-utils'
 
 function setParams({ year, month, day }) {
@@ -46,9 +45,10 @@ function getPrevMonth({ month, year }) {
   }
 }
 
-const formatCalendarRoute = formatRoute.bind(null, ROUTE_NAME_CALENDAR)
-
-const constructDayRoute = compose(formatCalendarRoute, getDayRoute)
+const constructDayRoute = compose(
+  formatRoute.bind(null, 'Sub-Day'),
+  getDayRoute
+)
 
 let route, router, initialized
 
@@ -56,16 +56,26 @@ export function useCalendarRoutes() {
   if (!initialized) {
     route = useRoute()
     router = useRouter()
+    initialized = true
   }
 
   const params = computed(() => setParams(route.params))
 
   const nextMonth = computed(() =>
-    compose(formatCalendarRoute, getNextMonth)(params.value)
+    compose(formatRoute, getNextMonth)(params.value)
   )
 
   const prevMonth = computed(() =>
-    compose(formatCalendarRoute, getPrevMonth)(params.value)
+    compose(formatRoute, getPrevMonth)(params.value)
+  )
+
+  const dayViewPath = computed(
+    () =>
+      `/d/${params.value.year}/${params.value.month + 1}/${params.value.day}`
+  )
+  const monthViewPath = computed(
+    () =>
+      `/m/${params.value.year}/${params.value.month + 1}/${params.value.day}`
   )
 
   return {
@@ -75,5 +85,7 @@ export function useCalendarRoutes() {
     nextMonth,
     constructDayRoute,
     prevMonth,
+    dayViewPath,
+    monthViewPath,
   }
 }

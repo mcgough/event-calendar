@@ -1,14 +1,21 @@
-import Calendar from '../components/Calendar.vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import { validateParams } from './guards'
+import Calendar from '@/views/Calendar.vue'
 
-import { ROUTE_NAME_CALENDAR } from '@/constants'
+import Month from '@/views/sub-views/Month.vue'
+import Day from '@/views/sub-views/Day.vue'
+
+import { createRouter, createWebHistory } from 'vue-router'
+
+import { validateParams } from './guards'
 
 const routes = [
   {
-    path: '/:year?/:month?/:day?',
-    name: ROUTE_NAME_CALENDAR,
+    path: '',
+    name: 'Calendar',
     component: Calendar,
+    children: [
+      { path: '/d/:year/:month/:day', name: 'Sub-Day', component: Day },
+      { path: '/m/:year/:month/:day?', name: 'Sub-Month', component: Month },
+    ],
   },
 ]
 
