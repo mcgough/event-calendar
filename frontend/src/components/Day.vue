@@ -22,11 +22,11 @@ export default {
 
     const thisDayRoute = constructDayRoute(props.timestamp)
 
-    const dayInCurrentMonth = props.isInCurrentMonth
-      ? dayInMonth
-      : dayOutsideMonth
+    const dayInCurrentMonth = computed(() =>
+      props.isInCurrentMonth ? dayInMonth : dayOutsideMonth
+    )
 
-    const hasEvents = props.eventCount ? hasEvents : []
+    const hasEvents = computed(() => (props.eventCount ? hasEvents : []))
 
     return {
       dayInCurrentMonth,
