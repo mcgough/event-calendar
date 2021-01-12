@@ -6,7 +6,9 @@
           <month />
         </div>
         <div class="w-full">
-          {{ dayInView }}
+          <div class="mt-4">
+            <h1>{{ dayInView?.label }}</h1>
+          </div>
         </div>
       </div>
     </template>
@@ -34,9 +36,7 @@ export default {
     const { params } = useCalendarRoutes()
 
     watch(params, ({ day, timestamp }) => {
-      if (day && timestamp) {
-        setDayInView(calendar.findDay(timestamp))
-      }
+      if (day && timestamp) setDayInView(calendar.findDay(timestamp))
     })
 
     return { dayInView }

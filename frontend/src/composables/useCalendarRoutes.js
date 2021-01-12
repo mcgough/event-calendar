@@ -1,5 +1,5 @@
 import compose from 'lodash.compose'
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ROUTE_NAME_CALENDAR } from '@/constants'
 import { parseDate } from '../date-utils'

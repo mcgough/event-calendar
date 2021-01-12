@@ -23,6 +23,7 @@
       </div>
       <day
         v-for="day in month.days"
+        :dayIsInView="dayInView?.timestamp === day?.timestamp"
         :dayOfMonth="day?.dayOfMonth"
         :eventCount="day?.eventCount()"
         :isInCurrentMonth="day?.isInCurrentMonth"
@@ -54,7 +55,7 @@ export default {
 
     const [month, setMonth] = useState({})
 
-    const [dayInView, setDayInView] = useDayInView()
+    const [dayInView] = useDayInView()
 
     watch(params, async val => setMonth(calendar.findMonth(val.timestamp)))
 
@@ -62,6 +63,7 @@ export default {
 
     return {
       DAYS_OF_WEEK_SHORT,
+      dayInView,
       month,
       nextMonth,
       prevMonth,
