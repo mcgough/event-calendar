@@ -1,6 +1,6 @@
-# Event Calendar
+# Google Calendar Clone
 
-A simple calendar app. The Node server is running with the help of Express and the frontend was scaffolded and built using Vue. Most frontend calendar business logic can be found in `/workers/calendar-api.worker.js`.
+A simple clone of google's calendar web app. The Node server is running with the help of Express and the frontend was scaffolded and built using Vue. Most frontend calendar business logic can be found in `/workers/calendar-api/`.
 
 ## Build & Serve
 
@@ -23,10 +23,11 @@ A simple calendar app. The Node server is running with the help of Express and t
 
 - compose
 - date-fns
-- Comlink
+- tailwind
 
 ## TODO
 
-- Day's events detail view
+- Day sub view
+- Month sub view
 - Endpoints to preload next and previous months events
 - TypeScript integration
