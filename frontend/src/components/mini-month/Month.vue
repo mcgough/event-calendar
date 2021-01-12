@@ -2,20 +2,20 @@
   <div class="w-full max-w-sm m-auto">
     <div class="flex justify-between items-center my-3">
       <div class="font-semibold">
-        <span class="month">{{ month.name }} {{ month.year }}</span>
+        <span>{{ month.name }} {{ month.year }}</span>
       </div>
-      <div>
-        <router-link :to="prevMonth">
-          Previous
-        </router-link>
-        <router-link :to="nextMonth">
+      <div class="flex">
+        <button @click="getPrevMonth">
+          Prev
+        </button>
+        <button @click="getNextMonth">
           Next
-        </router-link>
+        </button>
       </div>
     </div>
     <div class="grid grid-cols-7">
       <div
-        class="flex justify-center items-center h-8 w-12 text-gray-400"
+        class="flex justify-center items-center h-8 w-8 text-xs text-gray-400"
         v-for="(DAY, i) in DAYS_OF_WEEK_SHORT"
         :key="i"
       >
@@ -25,7 +25,6 @@
         v-for="day in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
         :dayOfMonth="day?.dayOfMonth"
-        :eventCount="day?.eventCount()"
         :isInCurrentMonth="day?.isInCurrentMonth"
         :timestamp="day?.timestamp"
         :key="day?.timestamp"
@@ -35,38 +34,45 @@
 </template>
 
 <script>
-import Day from '@/components/Day'
-import { watch } from 'vue'
+import Day from '@/components/mini-month/Day'
+import { computed } from 'vue'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
-import {
-  useCalendarRoutes,
-  useState,
-  useCalendarApi,
-  useDayInView,
-} from '@/composables'
+import { useState, useCalendarApi, useDayInView } from '@/composables'
+import compose from 'lodash.compose'
+
+function parse(y, m) {
+  if (y && m) return new Date(y, m)
+  return Date.now()
+}
 
 export default {
   name: 'Month',
   components: { Day },
   setup() {
-    const calendar = useCalendarApi()
-
-    const { params, prevMonth, nextMonth } = useCalendarRoutes()
+    const { findMonth } = useCalendarApi()
 
     const [month, setMonth] = useState({})
 
     const [dayInView] = useDayInView()
 
-    watch(params, async val => setMonth(calendar.findMonth(val.timestamp)))
+    const findSetMonth = compose(setMonth, findMonth, parse)
 
-    setMonth(calendar.findMonth(params.value.timestamp))
+    const getNextMonth = computed(() => () =>
+      findSetMonth(month.year, month.month + 1)
+    )
+
+    const getPrevMonth = computed(() => () =>
+      findSetMonth(month.year, month.month - 1)
+    )
+
+    findSetMonth()
 
     return {
       DAYS_OF_WEEK_SHORT,
       dayInView,
       month,
-      nextMonth,
-      prevMonth,
+      getNextMonth,
+      getPrevMonth,
     }
   },
 }

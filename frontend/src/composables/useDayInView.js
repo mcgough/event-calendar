@@ -2,9 +2,12 @@ import { reactive, readonly } from 'vue'
 
 const dayInView = reactive({})
 
-export function useDayInView() {
-  function setDayInView(day) {
-    Object.assign(dayInView, day)
+function setDayInView(day) {
+  for (let prop in day) {
+    dayInView[prop] = day[prop]
   }
+}
+
+export function useDayInView() {
   return [readonly(dayInView), setDayInView]
 }

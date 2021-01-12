@@ -2,12 +2,16 @@
   <Suspense>
     <template #default>
       <div class="flex justify-space-between flex-nowrap">
-        <div class="w-1/3 min-w-max">
-          <month />
-        </div>
+        <side-panel>
+          <mini-month />
+          <div>
+            <router-link :to="dayViewPath">Day</router-link>
+            <router-link :to="monthViewPath">Month</router-link>
+          </div>
+        </side-panel>
         <div class="w-full">
           <div class="mt-4">
-            <h1>{{ dayInView?.label }}</h1>
+            <router-view></router-view>
           </div>
         </div>
       </div>
@@ -19,27 +23,32 @@
 </template>
 
 <script>
-import Month from '@/components/Month'
+import MiniMonth from '@/components/mini-month/Month'
 import Splash from '@/components/Splash'
+import SidePanel from '@/components/Side-Panel'
 import { watch, toRefs } from 'vue'
 import { useDayInView, useCalendarRoutes, useCalendarApi } from '@/composables'
 import { ROUTE_NAME_CALENDAR } from '@/constants'
 
+function setDay(handler) {
+  return function(data) {}
+}
+
 export default {
   name: ROUTE_NAME_CALENDAR,
-  components: { Month, Splash },
+  components: { MiniMonth, Splash, SidePanel },
   setup() {
     const calendar = useCalendarApi()
 
     const [dayInView, setDayInView] = useDayInView()
 
-    const { params } = useCalendarRoutes()
+    const { params, dayViewPath, monthViewPath } = useCalendarRoutes()
 
     watch(params, ({ day, timestamp }) => {
       if (day && timestamp) setDayInView(calendar.findDay(timestamp))
     })
 
-    return { dayInView }
+    return { dayViewPath, monthViewPath }
   },
 }
 </script>

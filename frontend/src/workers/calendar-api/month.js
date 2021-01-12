@@ -11,12 +11,14 @@ export function Month({ y, m, daysInMonth, ...data }) {
   const name = MONTHS[m]
 
   const year = y
+  const month = m
 
   return {
-    name,
-    year,
     days,
     daysInMonth,
     findDay,
+    month,
+    name,
+    year,
   }
 }
