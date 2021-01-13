@@ -1,9 +1,9 @@
 <template>
   <router-link
-    :to="thisDaySubViewRoute"
+    :to="subViewRoute"
     :class="[...base, ...inMonth, ...hasEvents, ...inView, ...focus]"
   >
-    <span>{{ dayOfMonth }}</span>
+    <span>{{ day.dayOfMonth }}</span>
   </router-link>
 </template>
 
@@ -14,31 +14,44 @@ import { useCalendarRoutes } from '@/composables'
 export default {
   props: {
     dayIsInView: Boolean,
-    dayOfMonth: Number,
-    eventCount: Number,
-    timestamp: Number,
-    isInCurrentMonth: Boolean,
+    day: Object,
   },
   setup(props) {
-    const { constructDayRoute } = useCalendarRoutes()
+    const {
+      constructDayViewPath,
+      constructMonthViewPath,
+      route,
+    } = useCalendarRoutes()
 
-    const thisDaySubViewRoute = constructDayRoute(props.timestamp)
+    const pathParams = computed(() => ({
+      year: props.day.year,
+      month: props.day.month,
+      day: props.day.dayOfMonth,
+    }))
+
+    const subViewRoute = computed(() =>
+      route.path.indexOf('d') > -1
+        ? constructDayViewPath(pathParams.value)
+        : constructMonthViewPath(pathParams.value)
+    )
 
     const inMonth = computed(() =>
-      props.isInCurrentMonth ? dayInMonth : dayOutsideMonth
+      props.day.isInCurrentMonth ? dayInMonth : dayOutsideMonth
     )
 
     const inView = computed(() => (props.dayIsInView ? dayInView : []))
 
-    const hasEvents = computed(() => (props.eventCount ? dayHasEvents : []))
+    const hasEvents = computed(() =>
+      props.day.eventCount() ? dayHasEvents : []
+    )
 
     return {
+      base,
+      focus,
+      hasEvents,
       inMonth,
       inView,
-      hasEvents,
-      base,
-      thisDaySubViewRoute,
-      focus,
+      subViewRoute,
     }
   },
 }

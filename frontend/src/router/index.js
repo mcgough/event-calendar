@@ -14,7 +14,7 @@ const routes = [
     component: Calendar,
     children: [
       { path: '/d/:year/:month/:day', name: 'Sub-Day', component: Day },
-      { path: '/m/:year/:month', name: 'Sub-Month', component: Month },
+      { path: '/m/:year/:month/:day?', name: 'Sub-Month', component: Month },
     ],
   },
 ]

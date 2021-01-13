@@ -20,3 +20,8 @@ export function parseDate(date) {
     weekOfMonth: getWeekOfMonth(date),
   }
 }
+
+export function convertToDate(...args) {
+  if (!args.length) return Date.now()
+  return new Date(...args)
+}

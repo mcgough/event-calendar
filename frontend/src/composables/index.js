@@ -2,6 +2,7 @@ import { useState } from './useState'
 import { useCalendarRoutes } from './useCalenarRoutes'
 import { useCalendarApi } from './useCalendarApi'
 import { useDayInView } from './useDayInView'
+import { useMonthInView } from './useMonthInView'
 
 function loop(cb) {
   return function(list) {
@@ -19,5 +20,6 @@ export {
   useCalendarApi,
   useCalendarRoutes,
   useDayInView,
+  useMonthInView,
   useState,
 }

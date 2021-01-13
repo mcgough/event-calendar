@@ -1,6 +1,6 @@
+import compose from 'lodash.compose'
 import { reactive, readonly } from 'vue'
-
-const dayInView = reactive({})
+import { convertToDate } from '@/date-utils'
 
 function setDayInView(day) {
   for (let prop in day) {
@@ -8,6 +8,10 @@ function setDayInView(day) {
   }
 }
 
+const findSetDay = (...fns) => compose(setDayInView, ...fns, convertToDate)
+
+const dayInView = reactive({})
+
 export function useDayInView() {
-  return [readonly(dayInView), setDayInView]
+  return [readonly(dayInView), setDayInView, findSetDay]
 }

@@ -6,8 +6,6 @@ import {
   checkMonth,
   formatParams,
   constructPath,
-  formatRoute,
-  getDayRoute,
   setKeyValue,
   setBasePath,
 } from './helpers'
@@ -22,25 +20,21 @@ const constructDayViewPath = compose(
 const constructMonthViewPath = compose(
   constructPath,
   setKeyValue('hooks')(checkMonth),
-  setKeyValue('keys')('year', 'month'),
+  setKeyValue('keys')('year', 'month', 'day'),
   setBasePath('m')
 )()
 
-const constructDayRoute = compose(formatRoute('Sub-Day'), getDayRoute)
-
-let route, router, initialized
+let route, router
 
 export function useCalendarRoutes() {
-  if (!initialized) {
+  if (!route || !router) {
     route = useRoute()
     router = useRouter()
-    initialized = true
   }
 
   const params = computed(() => formatParams(route.params))
 
   return {
-    constructDayRoute,
     constructDayViewPath,
     constructMonthViewPath,
     params,

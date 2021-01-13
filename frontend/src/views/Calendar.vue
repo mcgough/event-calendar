@@ -5,7 +5,7 @@
         <side-panel>
           <mini-month />
           <div class="mt-12">
-            <select @change="showSubView" class="border rounded-sm p-2">
+            <select @change="pushSubViewPath" class="border rounded-sm p-2">
               <option :value="dayViewPath">Day</option>
               <option :value="monthViewPath">Month</option>
             </select>
@@ -27,23 +27,15 @@
 <script>
 import MiniMonth from '@/components/mini-month/Month'
 import Splash from '@/components/Splash'
-import SidePanel from '@/components/Side-Panel'
-import { watch, computed } from 'vue'
-import { useDayInView, useCalendarRoutes, useCalendarApi } from '@/composables'
+import SidePanel from '@/components/SidePanel'
+import { computed } from 'vue'
+import { useCalendarRoutes } from '@/composables'
 import { ROUTE_NAME_CALENDAR } from '@/constants'
-
-function setDay(handler) {
-  return function(data) {}
-}
 
 export default {
   name: ROUTE_NAME_CALENDAR,
   components: { MiniMonth, Splash, SidePanel },
   setup() {
-    const calendar = useCalendarApi()
-
-    const [dayInView, setDayInView] = useDayInView()
-
     const {
       router,
       params,
@@ -55,16 +47,9 @@ export default {
 
     const monthViewPath = computed(() => constructMonthViewPath(params.value))
 
-    function showSubView(event) {
-      const path = event.target.value
-      router.push({ path })
-    }
+    const pushSubViewPath = event => router.push({ path: event.target.value })
 
-    watch(params, ({ day, timestamp }) => {
-      if (day && timestamp) setDayInView(calendar.findDay(timestamp))
-    })
-
-    return { dayViewPath, monthViewPath, showSubView }
+    return { dayViewPath, monthViewPath, pushSubViewPath }
   },
 }
 </script>
