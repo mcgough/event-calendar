@@ -43,11 +43,11 @@ export default {
       constructMonthViewPath,
     } = useCalendarRoutes()
 
+    const pushSubViewPath = event => router.push({ path: event.target.value })
+
     const dayViewPath = computed(() => constructDayViewPath(params.value))
 
     const monthViewPath = computed(() => constructMonthViewPath(params.value))
-
-    const pushSubViewPath = event => router.push({ path: event.target.value })
 
     return { dayViewPath, monthViewPath, pushSubViewPath }
   },
