@@ -13,21 +13,6 @@ export function formatParams({ year, month, day }) {
   }
 }
 
-export function formatRoute(name) {
-  return function(params) {
-    return { name, params }
-  }
-}
-
-export function getDayRoute(timestamp) {
-  const { y, m, d } = parseDate(timestamp)
-  return {
-    year: y,
-    month: m + 1,
-    day: d || 1,
-  }
-}
-
 export function setBasePath(basePath) {
   return function() {
     return { basePath: `/${basePath}` }

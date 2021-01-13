@@ -1,4 +1,4 @@
-export const DAYS_OF_WEEK = [
+export const DAYS_OF_WEEK_LONG = [
   'Sunday',
   'Monday',
   'Tuesday',
@@ -9,6 +9,16 @@ export const DAYS_OF_WEEK = [
 ]
 
 export const DAYS_OF_WEEK_SHORT = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+
+export const DAYS_OF_WEEK_MEDIUM = [
+  'SUN',
+  'MON',
+  'TUES',
+  'WED',
+  'THURS',
+  'FRI',
+  'SAT',
+]
 
 export const MONTHS = {
   0: 'January',

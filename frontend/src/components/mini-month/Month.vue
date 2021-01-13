@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-sm m-auto">
+  <div class="w-full max-w-sm m-auto" v-if="month.days?.length">
     <div class="flex justify-between items-center my-3">
       <div class="font-semibold">
         <span>{{ month.name }} {{ month.year }}</span>
@@ -24,9 +24,7 @@
       <day
         v-for="day in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
-        :dayOfMonth="day?.dayOfMonth"
-        :isInCurrentMonth="day?.isInCurrentMonth"
-        :timestamp="day?.timestamp"
+        :day="day"
         :key="day?.timestamp"
       />
     </div>
@@ -35,15 +33,11 @@
 
 <script>
 import Day from '@/components/mini-month/Day'
-import { computed } from 'vue'
+import compose from 'lodash.compose'
+import { computed, onMounted } from 'vue'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
 import { useState, useCalendarApi, useDayInView } from '@/composables'
-import compose from 'lodash.compose'
-
-function parse(y, m) {
-  if (y && m) return new Date(y, m)
-  return Date.now()
-}
+import { convertToDate } from '@/date-utils'
 
 export default {
   name: 'Month',
@@ -55,7 +49,7 @@ export default {
 
     const [dayInView] = useDayInView()
 
-    const findSetMonth = compose(setMonth, findMonth, parse)
+    const findSetMonth = compose(setMonth, findMonth, convertToDate)
 
     const getNextMonth = computed(() => () =>
       findSetMonth(month.year, month.month + 1)
@@ -65,7 +59,7 @@ export default {
       findSetMonth(month.year, month.month - 1)
     )
 
-    findSetMonth()
+    onMounted(findSetMonth)
 
     return {
       DAYS_OF_WEEK_SHORT,
