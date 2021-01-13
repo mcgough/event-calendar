@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { parseDate } from '../date-utils'
 
-function setParams({ year, month, day }) {
+function formatParams({ year, month, day }) {
   const parsedYear = parseInt(year)
   const parsedMonth = parseInt(month) - 1
   const timestamp = new Date(parsedYear, parsedMonth, day || 1)
@@ -27,26 +27,51 @@ function getDayRoute(timestamp) {
   return {
     year: y,
     month: m + 1,
-    day: d,
+    day: d || 1,
   }
 }
 
-function getNextMonth({ month, year }) {
-  return {
-    year: month === 11 ? year + 1 : year,
-    month: month === 11 ? 1 : month + 2,
+function setBasePath(basePath) {
+  return function() {
+    return { basePath: `/${basePath}` }
   }
 }
 
-function getPrevMonth({ month, year }) {
-  return {
-    year: month === 0 ? year - 1 : year,
-    month: month === 0 ? 12 : month,
+function setKeys() {
+  const keys = [...arguments]
+  return function(data) {
+    return { keys, ...data }
   }
 }
+
+function setGuard(guard) {
+  return function(data) {
+    return { guard, ...data }
+  }
+}
+
+function constructPath({ keys, basePath }) {
+  return function(params) {
+    return keys.reduce((path, key) => `${path}/${params[key]}`, basePath)
+  }
+}
+
+const constructDayViewPath = compose(
+  constructPath,
+  setGuard(),
+  setKeys('year', 'month', 'day'),
+  setBasePath('d')
+)()
+
+const constructMonthViewPath = compose(
+  constructPath,
+  setGuard(),
+  setKeys('year', 'month'),
+  setBasePath('m')
+)()
 
 const constructDayRoute = compose(
-  formatRoute.bind(null, 'Sub-Day'),
+  formatRoute.bind(undefined, 'Sub-Day'),
   getDayRoute
 )
 
@@ -59,33 +84,14 @@ export function useCalendarRoutes() {
     initialized = true
   }
 
-  const params = computed(() => setParams(route.params))
-
-  const nextMonth = computed(() =>
-    compose(formatRoute, getNextMonth)(params.value)
-  )
-
-  const prevMonth = computed(() =>
-    compose(formatRoute, getPrevMonth)(params.value)
-  )
-
-  const dayViewPath = computed(
-    () =>
-      `/d/${params.value.year}/${params.value.month + 1}/${params.value.day}`
-  )
-  const monthViewPath = computed(
-    () =>
-      `/m/${params.value.year}/${params.value.month + 1}/${params.value.day}`
-  )
+  const params = computed(() => formatParams(route.params))
 
   return {
     route,
     router,
     params,
-    nextMonth,
     constructDayRoute,
-    prevMonth,
-    dayViewPath,
-    monthViewPath,
+    constructDayViewPath,
+    constructMonthViewPath,
   }
 }
