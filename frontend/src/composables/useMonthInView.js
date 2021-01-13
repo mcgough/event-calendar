@@ -10,8 +10,9 @@ function setMonthInView(month) {
   }
 }
 
-const findSetMonth = (...fns) => compose(setMonthInView, ...fns, convertToDate)
+const findSetMonthInView = (...fns) =>
+  compose(setMonthInView, ...fns, convertToDate)
 
 export function useMonthInView() {
-  return [readonly(monthInView), setMonthInView, findSetMonth]
+  return [readonly(monthInView), setMonthInView, findSetMonthInView]
 }

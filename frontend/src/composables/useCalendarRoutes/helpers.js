@@ -1,5 +1,4 @@
 import compose from 'lodash.compose'
-import { parseDate } from '@/date-utils'
 
 export function formatParams({ year, month, day }) {
   const parsedYear = parseInt(year)

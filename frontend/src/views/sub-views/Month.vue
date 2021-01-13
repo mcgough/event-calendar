@@ -1,6 +1,5 @@
 <template>
   <div class="grid grid-cols-7 h-screen">
-    {{ month.name }} {{ month.year }}
     <div
       class="flex justify-center items-center h-8 w-8 text-xs text-gray-400"
       v-for="(DAY, i) in DAYS_OF_WEEK_MEDIUM"
