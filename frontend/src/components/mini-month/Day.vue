@@ -1,8 +1,9 @@
 <template>
-  <router-link :to="thisDayRoute" :class="[...focus]">
-    <div :class="[...base, ...inMonth, ...hasEvents, ...inView]">
-      <div>{{ dayOfMonth }}</div>
-    </div>
+  <router-link
+    :to="thisDaySubViewRoute"
+    :class="[...base, ...inMonth, ...hasEvents, ...inView, ...focus]"
+  >
+    <span>{{ dayOfMonth }}</span>
   </router-link>
 </template>
 
@@ -21,7 +22,7 @@ export default {
   setup(props) {
     const { constructDayRoute } = useCalendarRoutes()
 
-    const thisDayRoute = constructDayRoute(props.timestamp)
+    const thisDaySubViewRoute = constructDayRoute(props.timestamp)
 
     const inMonth = computed(() =>
       props.isInCurrentMonth ? dayInMonth : dayOutsideMonth
@@ -36,7 +37,7 @@ export default {
       inView,
       hasEvents,
       base,
-      thisDayRoute,
+      thisDaySubViewRoute,
       focus,
     }
   },

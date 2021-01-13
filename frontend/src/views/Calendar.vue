@@ -4,9 +4,11 @@
       <div class="flex justify-space-between flex-nowrap">
         <side-panel>
           <mini-month />
-          <div>
-            <router-link :to="dayViewPath">Day</router-link>
-            <router-link :to="monthViewPath">Month</router-link>
+          <div class="mt-12">
+            <select @change="showSubView" class="border rounded-sm p-2">
+              <option :value="dayViewPath">Day</option>
+              <option :value="monthViewPath">Month</option>
+            </select>
           </div>
         </side-panel>
         <div class="w-full">
@@ -43,6 +45,7 @@ export default {
     const [dayInView, setDayInView] = useDayInView()
 
     const {
+      router,
       params,
       constructDayViewPath,
       constructMonthViewPath,
@@ -52,11 +55,16 @@ export default {
 
     const monthViewPath = computed(() => constructMonthViewPath(params.value))
 
+    function showSubView(event) {
+      const path = event.target.value
+      router.push({ path })
+    }
+
     watch(params, ({ day, timestamp }) => {
       if (day && timestamp) setDayInView(calendar.findDay(timestamp))
     })
 
-    return { dayViewPath, monthViewPath }
+    return { dayViewPath, monthViewPath, showSubView }
   },
 }
 </script>
