@@ -1,5 +1,5 @@
 import { useState } from './useState'
-import { useCalendarRoutes } from './useCalendarRoutes'
+import { useCalendarRoutes } from './useCalenarRoutes'
 import { useCalendarApi } from './useCalendarApi'
 import { useDayInView } from './useDayInView'
 
