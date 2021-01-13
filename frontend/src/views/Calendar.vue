@@ -26,7 +26,7 @@
 import MiniMonth from '@/components/mini-month/Month'
 import Splash from '@/components/Splash'
 import SidePanel from '@/components/Side-Panel'
-import { watch, toRefs } from 'vue'
+import { watch, computed } from 'vue'
 import { useDayInView, useCalendarRoutes, useCalendarApi } from '@/composables'
 import { ROUTE_NAME_CALENDAR } from '@/constants'
 
@@ -42,7 +42,15 @@ export default {
 
     const [dayInView, setDayInView] = useDayInView()
 
-    const { params, dayViewPath, monthViewPath } = useCalendarRoutes()
+    const {
+      params,
+      constructDayViewPath,
+      constructMonthViewPath,
+    } = useCalendarRoutes()
+
+    const dayViewPath = computed(() => constructDayViewPath(params.value))
+
+    const monthViewPath = computed(() => constructMonthViewPath(params.value))
 
     watch(params, ({ day, timestamp }) => {
       if (day && timestamp) setDayInView(calendar.findDay(timestamp))
