@@ -1,23 +1,17 @@
 <template>
-  <div class="grid grid-cols-7 h-screen">
-    <div
-      class="flex justify-center items-center h-8 w-8 text-xs text-gray-400"
-      v-for="(DAY, i) in DAYS_OF_WEEK_MEDIUM"
-      :key="i"
-    >
-      <div>{{ DAY }}</div>
-    </div>
+  <div class="grid grid-cols-7 h-screen border-r border-t">
     <day
-      v-for="day in month.days"
+      v-for="(day, i) in month.days"
       :dayIsInView="dayInView?.timestamp === day?.timestamp"
       :day="day"
       :key="day?.timestamp"
+      :dayOfWeek="i <= 6 ? DAYS_OF_WEEK_MEDIUM[i] : false"
     />
   </div>
 </template>
 
 <script>
-import Day from '@/components/mini-month/Day'
+import Day from '@/components/Day'
 import { computed, onMounted, watch } from 'vue'
 import {
   useCalendarApi,
