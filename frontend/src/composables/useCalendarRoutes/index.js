@@ -9,19 +9,20 @@ import {
   setKeyValue,
   setBasePath,
 } from './helpers'
+import { MONTH_SLUG, DAY_SLUG } from '@/constants'
 
 const constructDayViewPath = compose(
   constructPath,
   setKeyValue('hooks')(checkDay, checkMonth),
   setKeyValue('keys')('year', 'month', 'day'),
-  setBasePath('d')
+  setBasePath(DAY_SLUG)
 )()
 
 const constructMonthViewPath = compose(
   constructPath,
   setKeyValue('hooks')(checkMonth),
   setKeyValue('keys')('year', 'month', 'day'),
-  setBasePath('m')
+  setBasePath(MONTH_SLUG)
 )()
 
 let route, router

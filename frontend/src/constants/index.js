@@ -38,3 +38,11 @@ export const MONTHS = {
 export const ROUTE_NAME_CALENDAR = 'Calendar'
 
 export const LOADING = 'loading'
+
+export const DAY = 'Day'
+
+export const MONTH = 'Month'
+
+export const MONTH_SLUG = 'm'
+
+export const DAY_SLUG = 'd'

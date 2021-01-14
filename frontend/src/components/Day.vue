@@ -22,7 +22,7 @@ import { useCalendarRoutes } from '@/composables'
 export default {
   props: {
     dayIsInView: Boolean,
-    dayOfWeek: () => String | Boolean,
+    dayOfWeek: String,
     day: Object,
   },
   setup(props) {
