@@ -775,6 +775,7 @@ module.exports = {
     backgroundPosition: ['responsive'],
     backgroundRepeat: ['responsive'],
     backgroundSize: ['responsive'],
+    border: ['first', 'last'],
     borderCollapse: ['responsive'],
     borderColor: [
       'responsive',
