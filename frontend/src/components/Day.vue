@@ -1,8 +1,8 @@
 <template>
   <div class="border-l border-b">
-    <div class="w-full mt-1 flex flex-col justify-center items-center ">
+    <div class="w-full mt-1 flex flex-col justify-center items-center">
       <div v-if="dayOfWeek">
-        <span class="text-xs text-gray-400">{{ dayOfWeek }}</span>
+        <span class="text-xs text-gray-400 select-none">{{ dayOfWeek }}</span>
       </div>
       <router-link
         :to="subViewRoute"

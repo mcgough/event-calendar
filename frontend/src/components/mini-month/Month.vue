@@ -11,7 +11,7 @@
     </div>
     <div class="grid grid-cols-7">
       <div
-        class="flex justify-center items-center h-7 w-7 text-xs text-gray-400"
+        class="flex justify-center items-center h-7 w-7 text-xs text-gray-400 select-none"
         v-for="(DAY, i) in DAYS_OF_WEEK_SHORT"
         :key="i"
       >
