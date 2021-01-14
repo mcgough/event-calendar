@@ -59,8 +59,8 @@ export default {
 const base = [
   'select-none',
   'rounded-full',
-  'w-8',
-  'h-8',
+  'w-7',
+  'h-7',
   'flex',
   'justify-center',
   'items-center',
