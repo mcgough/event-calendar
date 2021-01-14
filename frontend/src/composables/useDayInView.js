@@ -1,4 +1,4 @@
-import compose from 'lodash.compose'
+import compose from 'lodash.flowright'
 import { reactive, readonly } from 'vue'
 import { convertToDate } from '@/date-utils'
 

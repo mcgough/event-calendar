@@ -1,4 +1,4 @@
-import compose from 'lodash.compose'
+import compose from 'lodash.flowright'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {

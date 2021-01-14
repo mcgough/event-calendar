@@ -29,7 +29,7 @@
 
 <script>
 import Day from '@/components/mini-month/Day.vue'
-import compose from 'lodash.compose'
+import compose from 'lodash.flowright'
 import { computed, onMounted } from 'vue'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
 import { useState, useCalendarApi, useDayInView } from '@/composables'
