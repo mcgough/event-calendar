@@ -5,7 +5,7 @@
       :dayIsInView="dayInView?.timestamp === day?.timestamp"
       :day="day"
       :key="day?.timestamp"
-      :dayOfWeek="i <= 6 ? DAYS_OF_WEEK_MEDIUM[i] : false"
+      :dayOfWeek="i <= 6 ? DAYS_OF_WEEK_MEDIUM[i] : null"
     />
   </div>
 </template>

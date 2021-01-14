@@ -5,10 +5,7 @@
         <side-panel>
           <mini-month />
           <div class="mt-12">
-            <select @change="pushSubViewPath" class="border rounded-sm p-2">
-              <option :value="dayViewPath">Day</option>
-              <option :value="monthViewPath">Month</option>
-            </select>
+            <sub-view-anchor />
           </div>
         </side-panel>
         <div class="w-full">
@@ -28,28 +25,13 @@
 import MiniMonth from '@/components/mini-month/Month'
 import Splash from '@/components/Splash'
 import SidePanel from '@/components/SidePanel'
+import SubViewAnchor from '@/components/SubViewAnchor'
 import { computed } from 'vue'
 import { useCalendarRoutes } from '@/composables'
-import { ROUTE_NAME_CALENDAR } from '@/constants'
+import { ROUTE_NAME_CALENDAR, MONTH_SLUG, DAY, MONTH } from '@/constants'
 
 export default {
   name: ROUTE_NAME_CALENDAR,
-  components: { MiniMonth, Splash, SidePanel },
-  setup() {
-    const {
-      router,
-      params,
-      constructDayViewPath,
-      constructMonthViewPath,
-    } = useCalendarRoutes()
-
-    const pushSubViewPath = event => router.push({ path: event.target.value })
-
-    const dayViewPath = computed(() => constructDayViewPath(params.value))
-
-    const monthViewPath = computed(() => constructMonthViewPath(params.value))
-
-    return { dayViewPath, monthViewPath, pushSubViewPath }
-  },
+  components: { MiniMonth, Splash, SidePanel, SubViewAnchor },
 }
 </script>
