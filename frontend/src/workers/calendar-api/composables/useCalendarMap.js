@@ -1,4 +1,4 @@
-import compose from 'lodash.compose'
+import compose from 'lodash.flowright'
 import { parseDate } from '@/date-utils'
 
 function setKeyValue(map, key, value, data) {

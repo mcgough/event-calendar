@@ -1,4 +1,4 @@
-import compose from 'lodash.compose'
+import compose from 'lodash.flowright'
 import { Month } from './month'
 import { useCalendarMap } from './composables/useCalendarMap'
 

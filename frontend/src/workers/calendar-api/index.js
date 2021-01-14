@@ -1,4 +1,4 @@
-import compose from 'lodash.compose'
+import compose from 'lodash.flowright'
 import { loop, pluckValue } from '@/composables'
 import { parseDate } from '@/date-utils'
 import { useCalendarMap } from './composables/useCalendarMap'
