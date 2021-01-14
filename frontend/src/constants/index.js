@@ -46,3 +46,5 @@ export const MONTH = 'Month'
 export const MONTH_SLUG = 'm'
 
 export const DAY_SLUG = 'd'
+
+export const TODAY = 'Today'

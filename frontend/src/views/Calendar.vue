@@ -6,6 +6,8 @@
           <mini-month />
           <div class="mt-12">
             <sub-view-anchor />
+            <div></div>
+            <today-anchor />
           </div>
         </side-panel>
         <div class="w-full">
@@ -26,12 +28,13 @@ import MiniMonth from '@/components/mini-month/Month.vue'
 import Splash from '@/components/Splash.vue'
 import SidePanel from '@/components/SidePanel.vue'
 import SubViewAnchor from '@/components/SubViewAnchor.vue'
+import TodayAnchor from '@/components/TodayAnchor.vue'
 import { computed } from 'vue'
 import { useCalendarRoutes } from '@/composables'
 import { ROUTE_NAME_CALENDAR, MONTH_SLUG, DAY, MONTH } from '@/constants'
 
 export default {
   name: ROUTE_NAME_CALENDAR,
-  components: { MiniMonth, Splash, SidePanel, SubViewAnchor },
+  components: { MiniMonth, Splash, SidePanel, SubViewAnchor, TodayAnchor },
 }
 </script>
