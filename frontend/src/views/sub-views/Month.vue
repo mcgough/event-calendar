@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Day from '@/components/Day'
+import Day from '@/components/Day.vue'
 import { computed, onMounted, watch } from 'vue'
 import {
   useCalendarApi,

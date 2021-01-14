@@ -5,12 +5,8 @@
         <span>{{ month.name }} {{ month.year }}</span>
       </div>
       <div class="flex">
-        <button @click="getPrevMonth">
-          Prev
-        </button>
-        <button @click="getNextMonth">
-          Next
-        </button>
+        <button @click="getPrevMonth">Prev</button>
+        <button @click="getNextMonth">Next</button>
       </div>
     </div>
     <div class="grid grid-cols-7">
@@ -32,7 +28,7 @@
 </template>
 
 <script>
-import Day from '@/components/mini-month/Day'
+import Day from '@/components/mini-month/Day.vue'
 import compose from 'lodash.compose'
 import { computed, onMounted } from 'vue'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
