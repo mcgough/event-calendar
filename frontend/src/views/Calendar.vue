@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import MiniMonth from '@/components/mini-month/Month'
-import Splash from '@/components/Splash'
-import SidePanel from '@/components/SidePanel'
-import SubViewAnchor from '@/components/SubViewAnchor'
+import MiniMonth from '@/components/mini-month/Month.vue'
+import Splash from '@/components/Splash.vue'
+import SidePanel from '@/components/SidePanel.vue'
+import SubViewAnchor from '@/components/SubViewAnchor.vue'
 import { computed } from 'vue'
 import { useCalendarRoutes } from '@/composables'
 import { ROUTE_NAME_CALENDAR, MONTH_SLUG, DAY, MONTH } from '@/constants'
