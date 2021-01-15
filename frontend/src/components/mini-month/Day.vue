@@ -1,7 +1,7 @@
 <template>
   <router-link
-    :to="subViewRoute"
-    :class="[...base, ...inMonth, ...hasEvents, ...inView, ...focus]"
+    :to="subViewPath"
+    :class="[...base, ...inMonth, ...inView, ...focus]"
   >
     <span>{{ day.dayOfMonth }}</span>
   </router-link>
@@ -29,7 +29,7 @@ export default {
       day: props.day.dayOfMonth,
     }))
 
-    const subViewRoute = computed(() =>
+    const subViewPath = computed(() =>
       route.path.indexOf('d') > -1
         ? constructDayViewPath(pathParams.value)
         : constructMonthViewPath(pathParams.value)
@@ -41,17 +41,12 @@ export default {
 
     const inView = computed(() => (props.dayIsInView ? dayInView : []))
 
-    const hasEvents = computed(() =>
-      props.day.eventCount() ? dayHasEvents : []
-    )
-
     return {
       base,
       focus,
-      hasEvents,
       inMonth,
       inView,
-      subViewRoute,
+      subViewPath,
     }
   },
 }
