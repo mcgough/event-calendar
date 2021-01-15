@@ -2,10 +2,10 @@ import { calendarApi } from '@/workers/calendar-api'
 
 let api
 
-export function useCalendarApi(randomCount) {
+export function useCalendarApi() {
   if (api) return api
 
-  api = calendarApi(randomCount)
+  api = calendarApi()
 
   return api
 }
