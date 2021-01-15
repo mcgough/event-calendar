@@ -13,7 +13,7 @@ export function useCalendarDays(data) {
   )(data)
 
   function findDay({ d, startOfMonth }) {
-    const day = days[d + startOfMonth - 1]
+    const day = days[d + (startOfMonth - 1)]
     return day
   }
 
