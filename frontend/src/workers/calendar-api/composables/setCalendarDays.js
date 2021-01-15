@@ -1,3 +1,4 @@
+import compose from 'lodash.flowright'
 import { Day } from '../day'
 import { getDaysInMonth } from 'date-fns'
 
@@ -48,3 +49,9 @@ export function setNextMonthDays({ days, y, m }) {
 
   return days
 }
+
+export const setCalendarDays = compose(
+  setNextMonthDays,
+  setCurrentMonthDays,
+  setPrevMonthDays
+)
