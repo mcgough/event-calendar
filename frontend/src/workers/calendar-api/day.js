@@ -1,21 +1,23 @@
 import compose from 'lodash.flowright'
-import { format } from 'date-fns'
+import { format, getTime } from 'date-fns'
 
-const convertToMilli = (date) => new Date(date).getTime()
+const formatDateString = (string) => string.replace(/-/g, '/')
 
-const pluckStart = (event) => event.start
+const convertToMilli = (date) => getTime(new Date(date))
+
+const pluckDate = (event) => event.date
+
+const findEventDate = [convertToMilli, formatDateString, pluckDate]
 
 function setEvents(event, events) {
   return [...events, event].sort((a, b) => (a.start < b.start ? -1 : 1))
 }
 
-export function addEvent(find) {
+export function addEvent(findFn) {
   return function (event) {
-    const day = compose(find, convertToMilli, pluckStart)(event)
+    const day = compose(findFn, ...findEventDate)(event)
 
     if (day) day.setEvent(event)
-
-    return day.getEvents()
   }
 }
 
