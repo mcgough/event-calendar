@@ -50,8 +50,6 @@ export default {
 
     onMounted(setDayMonthInView)
 
-    // fetchSetEvents()
-
     return {
       month,
       dayInView,

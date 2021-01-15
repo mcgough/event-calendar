@@ -30,11 +30,16 @@ import SidePanel from '@/components/SidePanel.vue'
 import SubViewAnchor from '@/components/SubViewAnchor.vue'
 import TodayAnchor from '@/components/TodayAnchor.vue'
 import { computed } from 'vue'
-import { useCalendarRoutes } from '@/composables'
+import { useCalendarApi } from '@/composables'
 import { ROUTE_NAME_CALENDAR, MONTH_SLUG, DAY, MONTH } from '@/constants'
 
 export default {
   name: ROUTE_NAME_CALENDAR,
   components: { MiniMonth, Splash, SidePanel, SubViewAnchor, TodayAnchor },
+  setup() {
+    const calendar = useCalendarApi()
+
+    calendar.fetchSetEvents()
+  },
 }
 </script>
