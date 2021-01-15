@@ -4,12 +4,19 @@
       <div v-if="dayOfWeek">
         <span class="text-xs text-gray-400 select-none">{{ dayOfWeek }}</span>
       </div>
-      <router-link
-        :to="subViewRoute"
-        :class="[...base, ...inMonth, ...hasEvents, ...inView, ...focus]"
-      >
+      <router-link :to="subViewPath" :class="dayAnchorStyles">
         <span>{{ day.dayOfMonth }}</span>
       </router-link>
+      <div class="w-full">
+        <button
+          v-for="event in events"
+          :key="event.id"
+          @click="showEventDetails.call(null, event)"
+          class="rounded bg-green-300 mb-1 pl-1 pr-1 text-left overflow-clip pointer"
+        >
+          <span class="text-xs overflow-clip w-full">{{ event.name }}</span>
+        </button>
+      </div>
     </div>
     <div></div>
   </div>
@@ -28,31 +35,35 @@ export default {
   setup(props) {
     const { constructDayViewPath } = useCalendarRoutes()
 
+    const events = computed(props.day.getEvents)
+
     const pathParams = computed(() => ({
       year: props.day.year,
       month: props.day.month,
       day: props.day.dayOfMonth,
     }))
 
-    const subViewRoute = computed(() => constructDayViewPath(pathParams.value))
+    const subViewPath = computed(() => constructDayViewPath(pathParams.value))
 
     const inMonth = computed(() =>
       props.day.isInCurrentMonth ? dayInMonth : dayOutsideMonth
     )
 
-    const inView = computed(() => (props.dayIsInView ? dayInView : []))
+    const dayAnchorStyles = computed(() => [
+      ...base,
+      ...focus,
+      ...inMonth.value,
+    ])
 
-    const hasEvents = computed(() =>
-      props.day.eventCount() ? dayHasEvents : []
-    )
+    function showEventDetails(event) {
+      console.log(event)
+    }
 
     return {
-      base,
-      focus,
-      hasEvents,
-      inMonth,
-      inView,
-      subViewRoute,
+      dayAnchorStyles,
+      events,
+      showEventDetails,
+      subViewPath,
     }
   },
 }
