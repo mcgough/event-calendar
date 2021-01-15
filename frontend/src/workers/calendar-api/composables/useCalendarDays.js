@@ -1,20 +1,10 @@
-import compose from 'lodash.flowright'
-import {
-  setPrevMonthDays,
-  setCurrentMonthDays,
-  setNextMonthDays,
-} from './setDays'
+import { setCalendarDays } from './setCalendarDays'
 
 export function useCalendarDays(data) {
-  const days = compose(
-    setNextMonthDays,
-    setCurrentMonthDays,
-    setPrevMonthDays
-  )(data)
+  const days = setCalendarDays(data)
 
   function findDay({ d, startOfMonth }) {
-    const day = days[d + (startOfMonth - 1)]
-    return day
+    return days[d + (startOfMonth - 1)]
   }
 
   return [days, findDay]
