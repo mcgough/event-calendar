@@ -1,5 +1,5 @@
 import compose from 'lodash.flowright'
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   checkDay,
@@ -35,11 +35,23 @@ export function useCalendarRoutes() {
 
   const params = computed(() => formatParams(route.params))
 
+  const yearMonthDay = computed(() => [
+    params.value.year,
+    params.value.month,
+    params.value.day,
+  ])
+
+  function watchRouteParams(cb) {
+    watch(params, cb)
+  }
+
   return {
     constructDayViewPath,
     constructMonthViewPath,
     params,
     route,
     router,
+    watchRouteParams,
+    yearMonthDay,
   }
 }

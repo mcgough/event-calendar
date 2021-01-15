@@ -17,7 +17,7 @@
 
 <script>
 import Day from '@/components/Day.vue'
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted } from 'vue'
 import {
   useCalendarApi,
   useMonthInView,
@@ -33,20 +33,14 @@ export default {
     const { findMonth, findDay, fetchSetEvents } = useCalendarApi()
     const [month, _m, findSetMonth] = useMonthInView()
     const [dayInView, _d, findSetDay] = useDayInView()
-    const { params } = useCalendarRoutes()
-
-    const yearMonthDay = computed(() => [
-      params.value.year,
-      params.value.month,
-      params.value.day,
-    ])
+    const { yearMonthDay, watchRouteParams } = useCalendarRoutes()
 
     const setDayMonthInView = () => (
       findSetMonth(findMonth)(...yearMonthDay.value),
       findSetDay(findDay)(...yearMonthDay.value)
     )
 
-    watch(params, setDayMonthInView)
+    watchRouteParams(setDayMonthInView)
 
     onMounted(setDayMonthInView)
 

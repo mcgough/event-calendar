@@ -31,21 +31,16 @@ export default {
   setup() {
     const [dayInView, _, fetchSetDay] = useDayInView()
     const { findDay, fetchEvents } = useCalendarApi()
-    const { params } = useCalendarRoutes()
-    const events = ref([])
+    const { watchRouteParams, yearMonthDay } = useCalendarRoutes()
 
-    const yearMonthDay = computed(() => [
-      params.value.year,
-      params.value.month,
-      params.value.day,
-    ])
+    const events = ref([])
 
     const setDayAndEvents = () => (
       fetchSetDay(findDay)(...yearMonthDay.value),
       (events.value = dayInView.getEvents())
     )
 
-    watch(params, setDayAndEvents)
+    watchRouteParams(setDayAndEvents)
 
     onMounted(setDayAndEvents)
 
