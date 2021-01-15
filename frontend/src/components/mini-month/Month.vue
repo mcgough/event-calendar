@@ -38,11 +38,9 @@ import { convertToDate } from '@/date-utils'
 export default {
   name: 'Month',
   components: { Day },
-  setup() {
+  async setup() {
     const { findMonth } = useCalendarApi()
-
     const [month, setMonth] = useState({})
-
     const [dayInView] = useDayInView()
 
     const findSetMonth = compose(setMonth, findMonth, convertToDate)

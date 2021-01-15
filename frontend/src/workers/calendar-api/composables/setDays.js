@@ -8,12 +8,12 @@ export function setPrevMonthDays({ startOfMonth, daysInMonth, y, m, ...data }) {
 
   const isInCurrentMonth = false
 
-  let daysInPrevMonth = getDaysInMonth(new Date(y, m - 1)) - startOfMonth
+  let prevMonthDayOfMonth = getDaysInMonth(new Date(y, m - 1)) - startOfMonth
 
   while (days.length < startOfMonth) {
-    daysInPrevMonth++
+    prevMonthDayOfMonth++
     days.push(
-      Day({ dayOfMonth: daysInPrevMonth, y, m: m - 1, isInCurrentMonth })
+      Day({ y, isInCurrentMonth, m: m - 1, dayOfMonth: prevMonthDayOfMonth })
     )
   }
 

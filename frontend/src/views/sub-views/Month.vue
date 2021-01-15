@@ -1,12 +1,17 @@
 <template>
-  <div class="grid grid-cols-7 h-screen border-r border-t">
-    <day
-      v-for="(day, i) in month.days"
-      :dayIsInView="dayInView?.timestamp === day?.timestamp"
-      :day="day"
-      :key="day?.timestamp"
-      :dayOfWeek="i <= 6 ? DAYS_OF_WEEK_MEDIUM[i] : null"
-    />
+  <div>
+    <div class="text-left">
+      <span class="text-xl font-medium">{{ month.label }}</span>
+    </div>
+    <div class="grid grid-cols-7 h-screen border-r border-t">
+      <day
+        v-for="(day, i) in month.days"
+        :dayIsInView="dayInView?.timestamp === day?.timestamp"
+        :day="day"
+        :key="day?.timestamp"
+        :dayOfWeek="i <= 6 ? DAYS_OF_WEEK_MEDIUM[i] : null"
+      />
+    </div>
   </div>
 </template>
 
@@ -25,12 +30,9 @@ export default {
   name: 'Sub-Month',
   components: { Day },
   setup() {
-    const { findMonth, findDay } = useCalendarApi()
-
+    const { findMonth, findDay, fetchSetEvents } = useCalendarApi()
     const [month, _m, findSetMonth] = useMonthInView()
-
     const [dayInView, _d, findSetDay] = useDayInView()
-
     const { params } = useCalendarRoutes()
 
     const yearMonthDay = computed(() => [
@@ -44,9 +46,11 @@ export default {
       findSetDay(findDay)(...yearMonthDay.value)
     )
 
+    watch(params, setDayMonthInView)
+
     onMounted(setDayMonthInView)
 
-    watch(params, setDayMonthInView)
+    // fetchSetEvents()
 
     return {
       month,

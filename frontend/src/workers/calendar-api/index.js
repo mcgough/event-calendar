@@ -6,12 +6,12 @@ import { Year } from './year'
 import { pluckMonth } from './month'
 import { pluckDay, addEvent } from './day'
 
-const BASE_URL = 'http://localhost:3030'
+const BASE_URL = 'http://localhost:3030/events'
 
 async function fetchEvents() {
   const response = await fetch(BASE_URL)
-  const { data } = await response.json()
-  return data
+  const { holidays } = await response.json()
+  return holidays
 }
 
 export function calendarApi() {
@@ -20,12 +20,12 @@ export function calendarApi() {
   const pluckYear = [getYear, setYear, parseDate]
 
   const findYear = compose(pluckValue, ...pluckYear)
+
   const findMonth = compose(pluckValue, pluckMonth, ...pluckYear)
+
   const findDay = compose(pluckValue, pluckDay, pluckMonth, ...pluckYear)
 
-  const setEvent = addEvent(findDay)
-
-  const fetchSetEvents = () => fetchEvents().then(loop(setEvent))
+  const fetchSetEvents = () => fetchEvents().then(loop(addEvent(findDay)))
 
   return {
     fetchSetEvents,
