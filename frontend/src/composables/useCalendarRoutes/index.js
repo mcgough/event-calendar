@@ -42,7 +42,7 @@ export function useCalendarRoutes() {
   ])
 
   function watchRouteParams(cb) {
-    watch(params, cb)
+    return watch(params, cb)
   }
 
   return {

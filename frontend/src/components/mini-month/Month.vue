@@ -32,7 +32,12 @@ import Day from '@/components/mini-month/Day.vue'
 import compose from 'lodash.flowright'
 import { computed, onMounted } from 'vue'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
-import { useState, useCalendarApi, useDayInView } from '@/composables'
+import {
+  useState,
+  useCalendarApi,
+  useDayInView,
+  useCalendarRoutes,
+} from '@/composables'
 import { convertToDate } from '@/date-utils'
 
 export default {
@@ -42,6 +47,7 @@ export default {
     const { findMonth } = useCalendarApi()
     const [month, setMonth] = useState({})
     const [dayInView] = useDayInView()
+    const { watchRouteParams, params } = useCalendarRoutes()
 
     const findSetMonth = compose(setMonth, findMonth, convertToDate)
 
@@ -52,6 +58,8 @@ export default {
     const getPrevMonth = computed(() => () =>
       findSetMonth(month.year, month.month - 1)
     )
+
+    watchRouteParams(() => findSetMonth(params.value.year, params.value.month))
 
     onMounted(findSetMonth)
 
