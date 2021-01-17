@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="subView.path">
+  <router-link :to="subView.path" class="h-full w-full px-3 py-3">
     {{ subView.label }}
   </router-link>
 </template>

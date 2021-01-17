@@ -1,5 +1,5 @@
 import compose from 'lodash.flowright'
-import { format, getTime } from 'date-fns'
+import { format, getTime, isToday } from 'date-fns'
 
 const formatDateString = (string) => string.replace(/-/g, '/')
 
@@ -47,5 +47,6 @@ export function Day({ y, m, dayOfMonth, dayOfWeek, isInCurrentMonth }) {
     label,
     setEvent,
     timestamp,
+    isToday: isToday(timestamp),
   }
 }

@@ -4,10 +4,14 @@
       <div class="flex justify-space-between flex-nowrap">
         <side-panel>
           <mini-month />
-          <div class="mt-12">
-            <sub-view-anchor />
-            <div></div>
-            <today-anchor />
+          <div class="mt-16">
+            <v-button>
+              <sub-view-anchor />
+            </v-button>
+            <div class="mt-4 mb-4"></div>
+            <v-button>
+              <today-anchor />
+            </v-button>
           </div>
         </side-panel>
         <div class="w-full">
@@ -29,13 +33,21 @@ import Splash from '@/components/Splash.vue'
 import SidePanel from '@/components/SidePanel.vue'
 import SubViewAnchor from '@/components/SubViewAnchor.vue'
 import TodayAnchor from '@/components/TodayAnchor.vue'
+import VButton from '@/components/Button.vue'
 import { computed } from 'vue'
 import { useCalendarApi } from '@/composables'
 import { ROUTE_NAME_CALENDAR, MONTH_SLUG, DAY, MONTH } from '@/constants'
 
 export default {
   name: ROUTE_NAME_CALENDAR,
-  components: { MiniMonth, Splash, SidePanel, SubViewAnchor, TodayAnchor },
+  components: {
+    MiniMonth,
+    Splash,
+    SidePanel,
+    SubViewAnchor,
+    TodayAnchor,
+    VButton,
+  },
   setup() {
     const calendar = useCalendarApi()
 
