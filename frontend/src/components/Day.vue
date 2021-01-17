@@ -4,7 +4,7 @@
       <div v-if="dayOfWeek">
         <span class="text-xs text-gray-400 select-none">{{ dayOfWeek }}</span>
       </div>
-      <router-link :to="subViewPath" :class="dayAnchorStyles">
+      <router-link :to="subViewPath" :class="styles">
         <span>{{ day.dayOfMonth }}</span>
       </router-link>
       <div class="w-full">
@@ -12,9 +12,9 @@
           v-for="event in events"
           :key="event.id"
           @click="showEventDetails.call(null, event)"
-          class="rounded bg-green-300 mb-1 pl-1 pr-1 text-left overflow-clip pointer"
+          class="rounded bg-green-300 mb-1 pl-1 pr-1 text-left pointer h-4 overflow-hidden"
         >
-          <span class="text-xs overflow-clip w-full">{{ event.name }}</span>
+          <span class="text-xs w-full block">{{ event.name }}</span>
         </button>
       </div>
     </div>
@@ -24,7 +24,7 @@
 
 <script>
 import { computed } from 'vue'
-import { useCalendarRoutes } from '@/composables'
+import { useCalendarRoutes, useDayStyles } from '@/composables'
 
 export default {
   props: {
@@ -45,43 +45,20 @@ export default {
 
     const subViewPath = computed(() => constructDayViewPath(pathParams.value))
 
-    const inMonth = computed(() =>
-      props.day.isInCurrentMonth ? dayInMonth : dayOutsideMonth
+    const styles = computed(() =>
+      useDayStyles({
+        ...props.day,
+      })
     )
 
-    const dayAnchorStyles = computed(() => [
-      ...base,
-      ...focus,
-      ...inMonth.value,
-    ])
-
-    function showEventDetails(event) {
-      console.log(event)
-    }
+    function showEventDetails(event) {}
 
     return {
-      dayAnchorStyles,
       events,
       showEventDetails,
+      styles,
       subViewPath,
     }
   },
 }
-
-const base = [
-  'select-none',
-  'rounded-full',
-  'w-6',
-  'h-6',
-  'flex',
-  'justify-center',
-  'items-center',
-  'active:bg-blue-200',
-  'text-xs',
-]
-const dayInMonth = ['cursor-pointer', 'hover:bg-gray-100']
-const dayOutsideMonth = ['text-gray-400']
-const dayHasEvents = ['bg-green-200', 'hover:bg-green-300']
-const dayInView = ['bg-blue-200', 'hover:bg-blue-300', 'text-blue-700']
-const focus = ['focus:outline-none', 'focus:ring-1', 'rounded-full']
 </script>

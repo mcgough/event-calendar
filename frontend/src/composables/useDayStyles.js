@@ -4,8 +4,8 @@ export function useDayStyles(day) {
   return compose(
     returnStyles,
     setFocusStyles,
-    setDayInSubViewStyles,
     setIsTodayStyles,
+    setDayInSubViewStyles,
     setDayInMonthStyles,
     setBaseStyles
   )(day)
@@ -35,7 +35,10 @@ function setDayInMonthStyles({ day, ...data }) {
 }
 
 function setDayInSubViewStyles({ day, ...data }) {
-  const styles = [...data.styles, day.dayIsInView ? dayInSubViewStyles : []]
+  const styles = [
+    ...data.styles,
+    ...(day.dayIsInView ? dayInSubViewStyles : []),
+  ]
   return {
     day,
     styles,
@@ -43,7 +46,7 @@ function setDayInSubViewStyles({ day, ...data }) {
 }
 
 function setIsTodayStyles({ day, ...data }) {
-  const styles = [...data.styles, day.isToday ? todayStyles : []]
+  const styles = [...data.styles, ...(day.isToday ? todayStyles : [])]
   return {
     day,
     styles,
@@ -51,7 +54,7 @@ function setIsTodayStyles({ day, ...data }) {
 }
 
 function setFocusStyles({ day, ...data }) {
-  const styles = [...data.styles, focus]
+  const styles = [...data.styles, ...focus]
   return {
     day,
     styles,
@@ -73,4 +76,4 @@ const todayStyles = ['bg-blue-700', 'text-white']
 const dayInMonthStyles = ['cursor-pointer', 'hover:bg-gray-100']
 const dayOutsideMonthStyles = ['text-gray-400']
 const dayInSubViewStyles = ['bg-blue-200', 'hover:bg-blue-300', 'text-blue-700']
-const focus = ['focus:outline-none', 'focus:ring-1', 'rounded-full']
+const focus = ['focus:outline-none', 'focus:ring-1']
