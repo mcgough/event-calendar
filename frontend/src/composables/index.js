@@ -2,10 +2,11 @@ import { useState } from './useState'
 import { useCalendarRoutes } from './useCalendarRoutes/index'
 import { useCalendarApi } from './useCalendarApi'
 import { useDayInView } from './useDayInView'
+import { useDayStyles } from './useDayStyles'
 import { useMonthInView } from './useMonthInView'
 
 function loop(cb) {
-  return function(list) {
+  return function (list) {
     return list.forEach(cb)
   }
 }
@@ -20,6 +21,7 @@ export {
   useCalendarApi,
   useCalendarRoutes,
   useDayInView,
+  useDayStyles,
   useMonthInView,
   useState,
 }

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="today.path">
+  <router-link :to="today.path" class="h-full w-full px-3 py-3">
     {{ today.label }}
   </router-link>
 </template>
