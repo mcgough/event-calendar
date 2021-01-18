@@ -1,7 +1,13 @@
 <template>
   <div>
-    <div class="text-left">
-      <span class="text-xl font-medium">{{ month.label }}</span>
+    <div class="flex">
+      <div class="flex">
+        <router-link :to="prevNextMonthPaths.prev">Prev</router-link>
+        <router-link :to="prevNextMonthPaths.next">Next</router-link>
+      </div>
+      <div class="text-left">
+        <span class="text-xl font-medium">{{ month.label }}</span>
+      </div>
     </div>
     <div class="grid grid-cols-7 h-screen border-r border-t">
       <day
@@ -17,7 +23,7 @@
 
 <script>
 import Day from '@/components/Day.vue'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, toRef } from 'vue'
 import {
   useCalendarApi,
   useMonthInView,
@@ -33,11 +39,20 @@ export default {
     const { findMonth, findDay, fetchSetEvents } = useCalendarApi()
     const [month, _m, findSetMonth] = useMonthInView()
     const [dayInView, _d, findSetDay] = useDayInView()
-    const { yearMonthDay, watchRouteParams } = useCalendarRoutes()
+    const {
+      constructPrevNextMonthViewPaths,
+      params,
+      watchRouteParams,
+      yearMonthDay,
+    } = useCalendarRoutes()
 
     const setDayMonthInView = () => (
       findSetMonth(findMonth)(...yearMonthDay.value),
       findSetDay(findDay)(...yearMonthDay.value)
+    )
+
+    const prevNextMonthPaths = computed(() =>
+      constructPrevNextMonthViewPaths(params.value)
     )
 
     watchRouteParams(setDayMonthInView)
@@ -45,9 +60,10 @@ export default {
     onMounted(setDayMonthInView)
 
     return {
-      month,
       dayInView,
       DAYS_OF_WEEK_MEDIUM,
+      month,
+      prevNextMonthPaths,
     }
   },
 }

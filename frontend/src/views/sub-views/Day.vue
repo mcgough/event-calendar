@@ -1,5 +1,9 @@
 <template>
   <div class="ml-4">
+    <div class="flex">
+      <router-link :to="prevNextDayPaths.prev">Prev</router-link>
+      <router-link :to="prevNextDayPaths.next">Next</router-link>
+    </div>
     <div class="text-left">
       <span class="text-xl font-medium">{{ dayInView.label }}</span>
     </div>
@@ -31,13 +35,22 @@ export default {
   setup() {
     const [dayInView, _, fetchSetDay] = useDayInView()
     const { findDay, fetchEvents } = useCalendarApi()
-    const { watchRouteParams, yearMonthDay } = useCalendarRoutes()
+    const {
+      constructPrevNextDayViewPaths,
+      params,
+      watchRouteParams,
+      yearMonthDay,
+    } = useCalendarRoutes()
 
     const events = ref([])
 
     const setDayAndEvents = () => (
       fetchSetDay(findDay)(...yearMonthDay.value),
       (events.value = dayInView.getEvents())
+    )
+
+    const prevNextDayPaths = computed(() =>
+      constructPrevNextDayViewPaths(params.value)
     )
 
     watchRouteParams(setDayAndEvents)
@@ -48,6 +61,7 @@ export default {
       dayInView,
       DAYS_OF_WEEK_MEDIUM,
       events,
+      prevNextDayPaths,
     }
   },
 }
