@@ -10,40 +10,10 @@ import {
   setKeyValue,
   setNextDay,
   setPrevDay,
-  setNextMonthYear,
-  setPrevMonthYear,
+  setNextMonthYearDay,
+  setPrevMonthYearDay,
 } from './helpers'
 import { MONTH_SLUG, DAY_SLUG } from '@/constants'
-
-const constructDayPathBase = (...hooks) => [
-  constructPath,
-  setKeyValue('hooks')(...hooks),
-  setKeyValue('keys')('year', 'month', 'day'),
-  setBasePath(DAY_SLUG),
-]
-
-const constructMonthPathBase = (...hooks) => [
-  constructPath,
-  setKeyValue('hooks')(...hooks),
-  setKeyValue('keys')('year', 'month', 'day'),
-  setBasePath(MONTH_SLUG),
-]
-
-const constructDayViewPath = compose(
-  ...constructDayPathBase(checkDay, checkMonth)
-)()
-
-const constructMonthViewPath = compose(...constructMonthPathBase(checkMonth))()
-
-const constructPrevNextMonthViewPaths = (data) => ({
-  prev: compose(...constructMonthPathBase(setPrevMonthYear))()(data),
-  next: compose(...constructMonthPathBase(setNextMonthYear))()(data),
-})
-
-const constructPrevNextDayViewPaths = (data) => ({
-  prev: compose(...constructDayPathBase(setPrevDay))()(data),
-  next: compose(...constructDayPathBase(setNextDay))()(data),
-})
 
 let route, router
 
@@ -77,3 +47,33 @@ export function useCalendarRoutes() {
     yearMonthDay,
   }
 }
+
+const constructDayPathBase = (...hooks) => [
+  constructPath,
+  setKeyValue('hooks')(...hooks),
+  setKeyValue('keys')('year', 'month', 'day'),
+  setBasePath(DAY_SLUG),
+]
+
+const constructMonthPathBase = (...hooks) => [
+  constructPath,
+  setKeyValue('hooks')(...hooks),
+  setKeyValue('keys')('year', 'month', 'day'),
+  setBasePath(MONTH_SLUG),
+]
+
+const constructDayViewPath = compose(
+  ...constructDayPathBase(checkDay, checkMonth)
+)()
+
+const constructMonthViewPath = compose(...constructMonthPathBase(checkMonth))()
+
+const constructPrevNextMonthViewPaths = (data) => ({
+  prev: compose(...constructMonthPathBase(setPrevMonthYearDay))()(data),
+  next: compose(...constructMonthPathBase(setNextMonthYearDay))()(data),
+})
+
+const constructPrevNextDayViewPaths = (data) => ({
+  prev: compose(...constructDayPathBase(setPrevDay))()(data),
+  next: compose(...constructDayPathBase(setNextDay))()(data),
+})

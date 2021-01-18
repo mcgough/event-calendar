@@ -44,18 +44,18 @@ export function checkMonth({ month, ...data }) {
   return { month: month + 1, ...data }
 }
 
-export function setPrevMonthYear(data) {
+export function setPrevMonthYearDay(data) {
   const isJanuary = data.month < 1
   const month = isJanuary ? 12 : data.month - 1
   const year = isJanuary ? data.year - 1 : data.year
-  return { ...data, month, year }
+  return { ...data, month, year, day: 1 }
 }
 
-export function setNextMonthYear(data) {
+export function setNextMonthYearDay(data) {
   const isDecember = data.month > 12
   const month = isDecember + 1 === 13 ? 1 : data.month + 2
   const year = isDecember + 1 === 13 ? data.year + 1 : data.year
-  return { ...data, month, year }
+  return { ...data, month, year, day: 1 }
 }
 
 export function setPrevDay({ year, month, ...data }) {

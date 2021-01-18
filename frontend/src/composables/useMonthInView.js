@@ -4,6 +4,10 @@ import { convertToDate } from '@/date-utils'
 
 const monthInView = reactive({})
 
+export function useMonthInView() {
+  return [readonly(monthInView), setMonthInView, findSetMonthInView]
+}
+
 function setMonthInView(month) {
   for (let prop in month) {
     monthInView[prop] = month[prop]
@@ -12,7 +16,3 @@ function setMonthInView(month) {
 
 const findSetMonthInView = (...fns) =>
   compose(setMonthInView, ...fns, convertToDate)
-
-export function useMonthInView() {
-  return [readonly(monthInView), setMonthInView, findSetMonthInView]
-}
