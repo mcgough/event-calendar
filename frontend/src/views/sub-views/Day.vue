@@ -13,11 +13,12 @@
           DAYS_OF_WEEK_MEDIUM[dayInView.dayOfWeek]
         }}</span>
       </div>
-      <div
+      <button
+        v-focus
         class="w-12 h-12 rounded-full bg-blue-500 text-white flex justify-center items-center font-medium"
       >
         <span class="text-lg">{{ dayInView.dayOfMonth }}</span>
-      </div>
+      </button>
     </div>
     <div v-for="event in events" :key="event.id" class="text-left">
       {{ event.name }}
@@ -29,8 +30,10 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useDayInView, useCalendarApi, useCalendarRoutes } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
+import { Focus } from '@/directives'
 
 export default {
+  directives: { Focus },
   name: 'Sub-Day',
   setup() {
     const [dayInView, _, fetchSetDay] = useDayInView()

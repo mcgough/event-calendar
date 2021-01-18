@@ -8,12 +8,6 @@ import { pluckDay, addEvent } from './day'
 
 const BASE_URL = 'http://localhost:3030/events'
 
-async function fetchEvents() {
-  const response = await fetch(BASE_URL)
-  const { holidays } = await response.json()
-  return holidays
-}
-
 export function calendarApi() {
   const [getYear, setYear] = useCalendarMap(new Map(), 'y', Year)
 
@@ -34,4 +28,10 @@ export function calendarApi() {
     findYear,
     setYear,
   }
+}
+
+async function fetchEvents() {
+  const response = await fetch(BASE_URL)
+  const { holidays } = await response.json()
+  return holidays
 }
