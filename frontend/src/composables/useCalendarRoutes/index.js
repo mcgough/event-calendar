@@ -6,24 +6,44 @@ import {
   checkMonth,
   formatParams,
   constructPath,
-  setKeyValue,
   setBasePath,
+  setKeyValue,
+  setNextDay,
+  setPrevDay,
+  setNextMonthYear,
+  setPrevMonthYear,
 } from './helpers'
 import { MONTH_SLUG, DAY_SLUG } from '@/constants'
 
-const constructDayViewPath = compose(
+const constructDayPathBase = (...hooks) => [
   constructPath,
-  setKeyValue('hooks')(checkDay, checkMonth),
+  setKeyValue('hooks')(...hooks),
   setKeyValue('keys')('year', 'month', 'day'),
-  setBasePath(DAY_SLUG)
+  setBasePath(DAY_SLUG),
+]
+
+const constructMonthPathBase = (...hooks) => [
+  constructPath,
+  setKeyValue('hooks')(...hooks),
+  setKeyValue('keys')('year', 'month', 'day'),
+  setBasePath(MONTH_SLUG),
+]
+
+const constructDayViewPath = compose(
+  ...constructDayPathBase(checkDay, checkMonth)
 )()
 
-const constructMonthViewPath = compose(
-  constructPath,
-  setKeyValue('hooks')(checkMonth),
-  setKeyValue('keys')('year', 'month', 'day'),
-  setBasePath(MONTH_SLUG)
-)()
+const constructMonthViewPath = compose(...constructMonthPathBase(checkMonth))()
+
+const constructPrevNextMonthViewPaths = (data) => ({
+  prev: compose(...constructMonthPathBase(setPrevMonthYear))()(data),
+  next: compose(...constructMonthPathBase(setNextMonthYear))()(data),
+})
+
+const constructPrevNextDayViewPaths = (data) => ({
+  prev: compose(...constructDayPathBase(setPrevDay))()(data),
+  next: compose(...constructDayPathBase(setNextDay))()(data),
+})
 
 let route, router
 
@@ -48,6 +68,8 @@ export function useCalendarRoutes() {
   return {
     constructDayViewPath,
     constructMonthViewPath,
+    constructPrevNextMonthViewPaths,
+    constructPrevNextDayViewPaths,
     params,
     route,
     router,
