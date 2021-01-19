@@ -16,18 +16,18 @@ A simple clone of google's calendar web app. The Node server is running with the
 `npm run serve`
 [https://localhost:8080]([https://localhost:8080])
 
-**Random Events**
-`?count={numberOfEvents}`
-
 ## Notable NPM Dependencies
 
-- compose
+- lodash.flowright
 - date-fns
 - tailwind
+
+## APIs
+- Festivo (holidays)
 
 ## TODO
 
 - Day sub view
 - Month sub view
+- Transitions between views
 - Endpoints to preload next and previous months events
-- TypeScript integration
