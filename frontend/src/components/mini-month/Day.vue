@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="subViewPath" :class="styles">
+  <router-link :to="subViewPath" :class="styles" :tabindex="focusable">
     <span>{{ day.dayOfMonth }}</span>
   </router-link>
 </template>
@@ -10,6 +10,7 @@ import { useCalendarRoutes } from '@/composables'
 import { useDayStyles } from '@/composables'
 
 export default {
+  name: 'Mini-Day',
   props: {
     dayIsInView: Boolean,
     day: Object,
@@ -20,6 +21,8 @@ export default {
       constructMonthViewPath,
       route,
     } = useCalendarRoutes()
+
+    const focusable = computed(() => (props.dayIsInView ? 0 : -1))
 
     const styles = computed(() =>
       useDayStyles({
@@ -41,6 +44,7 @@ export default {
     )
 
     return {
+      focusable,
       styles,
       subViewPath,
     }

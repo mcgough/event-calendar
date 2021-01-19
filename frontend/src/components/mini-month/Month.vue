@@ -9,7 +9,7 @@
         <button @click="getNextMonth">Next</button>
       </div>
     </div>
-    <div class="grid grid-cols-7">
+    <div class="grid grid-cols-7" v-month-keyboard-nav>
       <div
         class="flex justify-center items-center h-7 w-7 text-xs text-gray-400 select-none"
         v-for="(DAY, i) in DAYS_OF_WEEK_SHORT"
@@ -18,10 +18,11 @@
         <div>{{ DAY }}</div>
       </div>
       <day
-        v-for="day in month.days"
+        v-for="(day, i) in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
         :day="day"
         :key="day?.timestamp"
+        :index="i"
       />
     </div>
   </div>
@@ -32,6 +33,7 @@ import Day from '@/components/mini-month/Day.vue'
 import compose from 'lodash.flowright'
 import { computed, onMounted } from 'vue'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
+import { MonthKeyboardNav } from '@/directives'
 import {
   useState,
   useCalendarApi,
@@ -41,8 +43,9 @@ import {
 import { convertToDate } from '@/date-utils'
 
 export default {
-  name: 'Month',
   components: { Day },
+  directives: { MonthKeyboardNav },
+  name: 'Mini-Month',
   async setup() {
     const { findMonth } = useCalendarApi()
     const [month, setMonth] = useState({})

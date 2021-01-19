@@ -1,3 +1,4 @@
-import { Focus } from './focus'
+import { FocusOnMount } from './focusOnMount'
+import { MonthKeyboardNav } from './monthKeyboardNav'
 
-export { Focus }
+export { FocusOnMount, MonthKeyboardNav }
