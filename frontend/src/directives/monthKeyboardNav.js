@@ -21,9 +21,11 @@ export const MonthKeyboardNav = {
 
 function manageKeyDown(siblings, { prevMonth, nextMonth }) {
   return function (e) {
-    e.preventDefault()
-
     const { code, target } = e
+
+    if (!keysToWatch.includes(code)) return
+
+    e.preventDefault()
 
     let inFocus
 
@@ -38,6 +40,7 @@ function manageKeyDown(siblings, { prevMonth, nextMonth }) {
     }
 
     if (code === RIGHT) inFocus = target.nextElementSibling
+
     if (code === LEFT) inFocus = target.previousElementSibling
 
     if (!inFocus) return
@@ -49,6 +52,8 @@ function manageKeyDown(siblings, { prevMonth, nextMonth }) {
     target.setAttribute('tabindex', -1)
   }
 }
+
+const keysToWatch = [UP, RIGHT, DOWN, LEFT]
 
 function hasIndexAttribute(el) {
   return el.hasAttribute('index')

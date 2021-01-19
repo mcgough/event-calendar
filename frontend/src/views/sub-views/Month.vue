@@ -33,8 +33,8 @@ import {
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
 
 export default {
-  name: 'Sub-Month',
   components: { Day },
+  name: 'Sub-Month',
   setup() {
     const { findMonth, findDay, fetchSetEvents } = useCalendarApi()
     const [month, _m, findSetMonth] = useMonthInView()
