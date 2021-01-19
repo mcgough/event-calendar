@@ -9,7 +9,13 @@
         <button @click="getNextMonth">Next</button>
       </div>
     </div>
-    <div class="grid grid-cols-7" v-month-keyboard-nav>
+    <div
+      class="grid grid-cols-7"
+      v-month-keyboard-nav="{
+        prevMonth: getPrevMonth,
+        nextMonth: getNextMonth,
+      }"
+    >
       <div
         class="flex justify-center items-center h-7 w-7 text-xs text-gray-400 select-none"
         v-for="(DAY, i) in DAYS_OF_WEEK_SHORT"
