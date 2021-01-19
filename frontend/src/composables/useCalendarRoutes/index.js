@@ -2,16 +2,21 @@ import compose from 'lodash.flowright'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
-  checkDay,
-  checkMonth,
+  setDay,
+  setMonth,
   formatParams,
   constructPath,
   setBasePath,
+  setDayExplicit,
   setKeyValue,
   setNextDay,
+  setNextDayMonth,
+  setNextDayYear,
   setPrevDay,
-  setNextMonthYearDay,
-  setPrevMonthYearDay,
+  setPrevDayMonth,
+  setPrevDayYear,
+  setNextMonthYear,
+  setPrevMonthYear,
 } from './helpers'
 import { MONTH_SLUG, DAY_SLUG } from '@/constants'
 
@@ -63,17 +68,25 @@ const constructMonthPathBase = (...hooks) => [
 ]
 
 const constructDayViewPath = compose(
-  ...constructDayPathBase(checkDay, checkMonth)
+  ...constructDayPathBase(setDay, setMonth)
 )()
 
-const constructMonthViewPath = compose(...constructMonthPathBase(checkMonth))()
+const constructMonthViewPath = compose(...constructMonthPathBase(setMonth))()
 
 const constructPrevNextMonthViewPaths = (data) => ({
-  prev: compose(...constructMonthPathBase(setPrevMonthYearDay))()(data),
-  next: compose(...constructMonthPathBase(setNextMonthYearDay))()(data),
+  prev: compose(
+    ...constructMonthPathBase(setDayExplicit(1), setPrevMonthYear)
+  )()(data),
+  next: compose(
+    ...constructMonthPathBase(setDayExplicit(1), setNextMonthYear)
+  )()(data),
 })
 
 const constructPrevNextDayViewPaths = (data) => ({
-  prev: compose(...constructDayPathBase(setPrevDay))()(data),
-  next: compose(...constructDayPathBase(setNextDay))()(data),
+  prev: compose(
+    ...constructDayPathBase(setPrevDay, setPrevDayMonth, setPrevDayYear)
+  )()(data),
+  next: compose(
+    ...constructDayPathBase(setNextDay, setNextDayMonth, setNextDayYear)
+  )()(data),
 })
