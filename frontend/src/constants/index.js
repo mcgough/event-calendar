@@ -40,11 +40,13 @@ export const ROUTE_NAME_CALENDAR = 'Calendar'
 export const LOADING = 'loading'
 
 export const DAY = 'Day'
-
 export const MONTH = 'Month'
+export const TODAY = 'Today'
 
 export const MONTH_SLUG = 'm'
-
 export const DAY_SLUG = 'd'
 
-export const TODAY = 'Today'
+export const UP = 'ArrowUp'
+export const DOWN = 'ArrowDown'
+export const LEFT = 'ArrowLeft'
+export const RIGHT = 'ArrowRight'

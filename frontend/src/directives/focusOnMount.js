@@ -1,4 +1,4 @@
-export const Focus = {
+export const FocusOnMount = {
   mounted(el) {
     el.focus()
   },
