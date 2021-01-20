@@ -35,7 +35,6 @@ import {
   useMouseWheel,
 } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
-import { MonthWheelNav } from '@/directives'
 
 export default {
   components: { Day },
