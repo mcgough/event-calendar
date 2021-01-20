@@ -16,7 +16,9 @@
         </side-panel>
         <div class="w-full">
           <div class="mt-4">
-            <router-view></router-view>
+            <router-view v-slot="{ Component }">
+              <component :is="Component" />
+            </router-view>
           </div>
         </div>
       </div>

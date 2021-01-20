@@ -1,5 +1,6 @@
 import compose from 'lodash.flowright'
 import { isLastDayOfMonth, isFirstDayOfMonth, getDaysInMonth } from 'date-fns'
+import { MONTH_SLUG, DAY_SLUG } from '@/constants'
 
 export function formatParams({ year, month, day }) {
   const parsedYear = parseInt(year)
@@ -155,5 +156,53 @@ export function setDayExplicit(day = 1) {
       day,
       ...data,
     }
+  }
+}
+
+function constructDayPathBase(...hooks) {
+  return [
+    constructPath,
+    setKeyValue('hooks')(...hooks),
+    setKeyValue('keys')('year', 'month', 'day'),
+    setBasePath(DAY_SLUG),
+  ]
+}
+
+function constructMonthPathBase(...hooks) {
+  return [
+    constructPath,
+    setKeyValue('hooks')(...hooks),
+    setKeyValue('keys')('year', 'month', 'day'),
+    setBasePath(MONTH_SLUG),
+  ]
+}
+
+export function constructDayViewPath() {
+  return compose(...constructDayPathBase(setDay, setMonth))()
+}
+
+export function constructMonthViewPath() {
+  return compose(...constructMonthPathBase(setMonth))()
+}
+
+export function constructPrevNextMonthViewPaths(data) {
+  return {
+    prev: compose(
+      ...constructMonthPathBase(setDayExplicit(1), setPrevMonthYear)
+    )()(data),
+    next: compose(
+      ...constructMonthPathBase(setDayExplicit(1), setNextMonthYear)
+    )()(data),
+  }
+}
+
+export function constructPrevNextDayViewPaths(data) {
+  return {
+    prev: compose(
+      ...constructDayPathBase(setPrevDay, setPrevDayMonth, setPrevDayYear)
+    )()(data),
+    next: compose(
+      ...constructDayPathBase(setNextDay, setNextDayMonth, setNextDayYear)
+    )()(data),
   }
 }
