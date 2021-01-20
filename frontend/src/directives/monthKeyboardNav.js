@@ -19,7 +19,7 @@ export const MonthKeyboardNav = {
   },
 }
 
-function manageKeyDown(siblings, { prevMonth, nextMonth }) {
+function manageKeyDown(siblings, { prev, next }) {
   return function (e) {
     const { code, target } = e
 
@@ -31,12 +31,12 @@ function manageKeyDown(siblings, { prevMonth, nextMonth }) {
 
     if (code === UP) {
       inFocus = findSiblingAheadOrBehind(-7)(target, siblings)
-      if (!inFocus) return prevMonth()
+      if (!inFocus) return prev()
     }
 
     if (code === DOWN) {
       inFocus = findSiblingAheadOrBehind(7)(target, siblings)
-      if (!inFocus) return nextMonth()
+      if (!inFocus) return next()
     }
 
     if (code === RIGHT) inFocus = target.nextElementSibling

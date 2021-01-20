@@ -12,8 +12,8 @@
     <div
       class="grid grid-cols-7"
       v-month-keyboard-nav="{
-        prevMonth: getPrevMonth,
-        nextMonth: getNextMonth,
+        prev: getPrevMonth,
+        next: getNextMonth,
       }"
     >
       <div
@@ -52,7 +52,7 @@ export default {
   components: { Day },
   directives: { MonthKeyboardNav },
   name: 'Mini-Month',
-  async setup() {
+  setup() {
     const { findMonth } = useCalendarApi()
     const [month, setMonth] = useState({})
     const [dayInView] = useDayInView()

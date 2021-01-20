@@ -4,6 +4,7 @@ import { useCalendarApi } from './useCalendarApi'
 import { useDayInView } from './useDayInView'
 import { useDayStyles } from './useDayStyles'
 import { useMonthInView } from './useMonthInView'
+import { useMouseWheel } from './useMouseWheel'
 
 function loop(cb) {
   return function (list) {
@@ -23,5 +24,6 @@ export {
   useDayInView,
   useDayStyles,
   useMonthInView,
+  useMouseWheel,
   useState,
 }
