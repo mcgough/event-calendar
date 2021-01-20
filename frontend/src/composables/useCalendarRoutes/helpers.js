@@ -177,14 +177,6 @@ function constructMonthPathBase(...hooks) {
   ]
 }
 
-export function constructDayViewPath() {
-  return compose(...constructDayPathBase(setDay, setMonth))()
-}
-
-export function constructMonthViewPath() {
-  return compose(...constructMonthPathBase(setMonth))()
-}
-
 export function constructPrevNextMonthViewPaths(data) {
   return {
     prev: compose(
@@ -206,3 +198,11 @@ export function constructPrevNextDayViewPaths(data) {
     )()(data),
   }
 }
+
+export const constructDayViewPath = compose(
+  ...constructDayPathBase(setDay, setMonth)
+)()
+
+export const constructMonthViewPath = compose(
+  ...constructMonthPathBase(setMonth)
+)()
