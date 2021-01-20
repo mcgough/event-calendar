@@ -9,7 +9,10 @@
         <span class="text-xl font-medium">{{ month.label }}</span>
       </div>
     </div>
-    <div class="grid grid-cols-7 h-screen border-r border-t">
+    <div
+      class="grid grid-cols-7 h-screen border-r border-t"
+      ref="calendarMonth"
+    >
       <day
         v-for="(day, i) in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
@@ -23,28 +26,35 @@
 
 <script>
 import Day from '@/components/Day.vue'
-import { computed, onMounted, toRef } from 'vue'
+import { computed, onMounted, toRef, ref } from 'vue'
 import {
   useCalendarApi,
   useMonthInView,
   useCalendarRoutes,
   useDayInView,
+  useMouseWheel,
 } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
+import { MonthWheelNav } from '@/directives'
 
 export default {
   components: { Day },
   name: 'Sub-Month',
   setup() {
+    const calendarMonth = ref(null)
+
     const { findMonth, findDay, fetchSetEvents } = useCalendarApi()
     const [month, _m, findSetMonth] = useMonthInView()
     const [dayInView, _d, findSetDay] = useDayInView()
     const {
       constructPrevNextMonthViewPaths,
       params,
+      router,
       watchRouteParams,
       yearMonthDay,
     } = useCalendarRoutes()
+
+    const { onWheelDown, onWheelUp } = useMouseWheel(calendarMonth)
 
     const setDayMonthInView = () => (
       findSetMonth(findMonth)(...yearMonthDay.value),
@@ -55,11 +65,26 @@ export default {
       constructPrevNextMonthViewPaths(params.value)
     )
 
+    onWheelDown(
+      function () {
+        if (router) router.push(prevNextMonthPaths.value.prev)
+      },
+      { wait: 100 }
+    )
+
+    onWheelUp(
+      function () {
+        if (router) router.push(prevNextMonthPaths.value.next)
+      },
+      { wait: 100 }
+    )
+
     watchRouteParams(setDayMonthInView)
 
     onMounted(setDayMonthInView)
 
     return {
+      calendarMonth,
       dayInView,
       DAYS_OF_WEEK_MEDIUM,
       month,
