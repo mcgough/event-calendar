@@ -45,7 +45,7 @@ export default {
     const {
       constructPrevNextMonthViewPaths,
       params,
-      router,
+      pushToRouter,
       watchRouteParams,
       yearMonthDay,
     } = useCalendarRoutes()
@@ -61,19 +61,8 @@ export default {
       constructPrevNextMonthViewPaths(params.value)
     )
 
-    onWheelDown(
-      function () {
-        if (router) router.push(prevNextMonthPaths.value.prev)
-      },
-      { wait: 100 }
-    )
-
-    onWheelUp(
-      function () {
-        if (router) router.push(prevNextMonthPaths.value.next)
-      },
-      { wait: 100 }
-    )
+    onWheelDown(pushToRouter.bind(undefined, prevNextMonthPaths, 'prev'), 100)
+    onWheelUp(pushToRouter.bind(undefined, prevNextMonthPaths, 'next'), 100)
 
     watchRouteParams(setDayMonthInView)
 

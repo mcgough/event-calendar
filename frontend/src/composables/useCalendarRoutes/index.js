@@ -28,12 +28,17 @@ export function useCalendarRoutes() {
     return watch(params, cb)
   }
 
+  function pushToRouter(route, key) {
+    if (router) router.push(route.value[key])
+  }
+
   return {
     constructDayViewPath,
     constructMonthViewPath,
     constructPrevNextMonthViewPaths,
     constructPrevNextDayViewPaths,
     params,
+    pushToRouter,
     route,
     router,
     watchRouteParams,

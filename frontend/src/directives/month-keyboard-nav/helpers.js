@@ -1,27 +1,10 @@
 import { UP, DOWN, LEFT, RIGHT } from '@/constants'
 
-export const MonthKeyboardNav = {
-  updated(el, binding) {
-    let focusables = [...el.children].filter(hasIndexAttribute)
-
-    focusables.forEach((el) =>
-      el.addEventListener('keydown', manageKeyDown(focusables, binding.value))
-    )
-
-    focusables = undefined
-  },
-  beforeUnmount(el) {
-    let focusables = [...el.children].filter(hasIndexAttribute)
-
-    focusables.forEach((el) => el.removeEventListener('keydown', manageKeyDown))
-
-    focusables = undefined
-  },
-}
-
-function manageKeyDown(siblings, { prev, next }) {
+export function manageKeyDown(siblings, binding) {
   return function (e) {
     const { code, target } = e
+
+    const keysToWatch = [UP, RIGHT, DOWN, LEFT]
 
     if (!keysToWatch.includes(code)) return
 
@@ -31,12 +14,12 @@ function manageKeyDown(siblings, { prev, next }) {
 
     if (code === UP) {
       inFocus = findSiblingAheadOrBehind(-7)(target, siblings)
-      if (!inFocus) return prev()
+      if (!inFocus) return binding.value.prev()
     }
 
     if (code === DOWN) {
       inFocus = findSiblingAheadOrBehind(7)(target, siblings)
-      if (!inFocus) return next()
+      if (!inFocus) return binding.value.next()
     }
 
     if (code === RIGHT) inFocus = target.nextElementSibling
@@ -53,10 +36,35 @@ function manageKeyDown(siblings, { prev, next }) {
   }
 }
 
-const keysToWatch = [UP, RIGHT, DOWN, LEFT]
+export function attachListener(binding) {
+  return function (cb) {
+    return function (el, _, arr) {
+      const handler = cb(arr, binding)
 
-function hasIndexAttribute(el) {
+      el.addEventListener('keydown', handler)
+
+      return { el, handler }
+    }
+  }
+}
+
+export function registerHandler(map) {
+  return function ({ el, handler }) {
+    map.set(el, handler)
+  }
+}
+
+export function removeListener(handler, el) {
+  el.removeEventListener('keydown', handler)
+}
+
+export function hasIndexAttribute(el) {
   return el.hasAttribute('index')
+}
+
+export function clearMap(map) {
+  if (map) map.clear()
+  return map
 }
 
 function parseIndex(el) {
