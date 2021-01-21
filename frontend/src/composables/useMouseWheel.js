@@ -5,9 +5,11 @@ export function useMouseWheel(ref) {
   const onWheelUp = callback()
   const onWheelDown = callback()
 
-  onMounted(attachWheelListener(ref, onWheelUp, onWheelDown))
+  const activeListener = new Map()
 
-  onBeforeUnmount(detachWheelListener(ref))
+  onMounted(attachWheelListener(ref, onWheelUp, onWheelDown, activeListener))
+
+  onBeforeUnmount(detachWheelListener(ref, activeListener))
 
   return {
     onWheelDown,
@@ -15,23 +17,27 @@ export function useMouseWheel(ref) {
   }
 }
 
-function handleWheelUpDown(up, down) {
-  return function (e) {
-    const { wheelDeltaY } = e
-    if (wheelDeltaY < 0) up()
-    if (wheelDeltaY > 0) down()
+function attachWheelListener(ref, up, down, map) {
+  return function () {
+    const handler = function (e) {
+      const { wheelDeltaY } = e
+      if (wheelDeltaY < 0) up()
+      if (wheelDeltaY > 0) down()
+    }
+
+    map.set('wheel', handler)
+
+    ref.value.addEventListener('wheel', handler, { passive: true })
   }
 }
 
-function attachWheelListener(ref, up, down) {
+function detachWheelListener(ref, map) {
   return function () {
-    ref.value.addEventListener(...listenerArgs(up, down))
-  }
-}
+    const handler = map.get('wheel')
 
-function detachWheelListener(ref) {
-  return function () {
-    ref.value.removeEventListener('wheel', handleWheelUpDown)
+    ref.value.removeEventListener('wheel', handler, { passive: true })
+
+    map.clear()
   }
 }
 
@@ -47,9 +53,3 @@ function callback() {
 }
 
 const defaultOptions = { wait: 0 }
-
-const listenerArgs = (up, down) => [
-  'wheel',
-  handleWheelUpDown(up, down),
-  { passive: true },
-]
