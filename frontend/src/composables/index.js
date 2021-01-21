@@ -6,9 +6,18 @@ import { useDayStyles } from './useDayStyles'
 import { useMonthInView } from './useMonthInView'
 import { useMouseWheel } from './useMouseWheel'
 
+function filter(condition) {
+  return function (list) {
+    return function () {
+      return [...list].filter(condition)
+    }
+  }
+}
+
 function loop(cb) {
   return function (list) {
-    return list.forEach(cb)
+    list.forEach(cb)
+    return list
   }
 }
 
@@ -17,6 +26,7 @@ function pluckValue({ value }) {
 }
 
 export {
+  filter,
   loop,
   pluckValue,
   useCalendarApi,

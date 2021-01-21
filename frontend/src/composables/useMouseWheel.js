@@ -1,6 +1,10 @@
 import debounce from 'lodash.debounce'
 import { onBeforeUnmount, onMounted } from 'vue'
 
+const WHEEL = 'wheel'
+
+const eventOptions = { passive: true }
+
 export function useMouseWheel(ref) {
   const onWheelUp = callback()
   const onWheelDown = callback()
@@ -25,17 +29,17 @@ function attachWheelListener(ref, up, down, map) {
       if (wheelDeltaY > 0) down()
     }
 
-    map.set('wheel', handler)
+    map.set(WHEEL, handler)
 
-    ref.value.addEventListener('wheel', handler, { passive: true })
+    ref.value.addEventListener(WHEEL, handler, eventOptions)
   }
 }
 
 function detachWheelListener(ref, map) {
   return function () {
-    const handler = map.get('wheel')
+    const handler = map.get(WHEEL)
 
-    ref.value.removeEventListener('wheel', handler, { passive: true })
+    ref.value.removeEventListener(WHEEL, handler, eventOptions)
 
     map.clear()
   }
@@ -43,7 +47,7 @@ function detachWheelListener(ref, map) {
 
 function callback() {
   let cb
-  return function (handler, { wait } = defaultOptions) {
+  return function (handler, wait = 0) {
     if (!cb) {
       cb = debounce(handler, wait, { leading: true, trailing: false })
       return
@@ -51,5 +55,3 @@ function callback() {
     if (cb) cb()
   }
 }
-
-const defaultOptions = { wait: 0 }
