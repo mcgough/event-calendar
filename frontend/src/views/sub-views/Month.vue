@@ -9,10 +9,7 @@
         <span class="text-xl font-medium">{{ month.label }}</span>
       </div>
     </div>
-    <div
-      class="grid grid-cols-7 h-screen border-r border-t"
-      ref="calendarMonth"
-    >
+    <div class="grid grid-cols-7 h-screen border-r border-t" ref="monthRef">
       <day
         v-for="(day, i) in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
@@ -26,7 +23,7 @@
 
 <script>
 import Day from '@/components/Day.vue'
-import { computed, onMounted, toRef, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import {
   useCalendarApi,
   useMonthInView,
@@ -40,7 +37,7 @@ export default {
   components: { Day },
   name: 'Sub-Month',
   setup() {
-    const calendarMonth = ref(null)
+    const monthRef = ref(null)
 
     const { findMonth, findDay, fetchSetEvents } = useCalendarApi()
     const [month, _m, findSetMonth] = useMonthInView()
@@ -53,7 +50,7 @@ export default {
       yearMonthDay,
     } = useCalendarRoutes()
 
-    const { onWheelDown, onWheelUp } = useMouseWheel(calendarMonth)
+    const { onWheelDown, onWheelUp } = useMouseWheel(monthRef)
 
     const setDayMonthInView = () => (
       findSetMonth(findMonth)(...yearMonthDay.value),
@@ -83,10 +80,10 @@ export default {
     onMounted(setDayMonthInView)
 
     return {
-      calendarMonth,
       dayInView,
       DAYS_OF_WEEK_MEDIUM,
       month,
+      monthRef,
       prevNextMonthPaths,
     }
   },

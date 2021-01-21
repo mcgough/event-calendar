@@ -73,7 +73,7 @@ export function setPrevMonthYear(data) {
 }
 
 export function setNextMonthYear(data) {
-  const isDecember = data.month > 12
+  const isDecember = data.month === 11
 
   let month = data.month + 2
 
