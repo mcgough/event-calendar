@@ -2,9 +2,15 @@ import compose from 'lodash.flowright'
 import { Day } from '../day'
 import { getDaysInMonth } from 'date-fns'
 
+export const setCalendarDays = compose(
+  setNextMonthDays,
+  setCurrentMonthDays,
+  setPrevMonthDays
+)
+
 const NUMBER_OF_DAYS_IN_WEEK = 7
 
-export function setPrevMonthDays({ startOfMonth, daysInMonth, y, m, ...data }) {
+function setPrevMonthDays({ startOfMonth, daysInMonth, y, m, ...data }) {
   const days = []
 
   const isInCurrentMonth = false
@@ -21,7 +27,7 @@ export function setPrevMonthDays({ startOfMonth, daysInMonth, y, m, ...data }) {
   return { ...data, days, startOfMonth, y, m, daysInMonth }
 }
 
-export function setCurrentMonthDays({ daysInMonth, days, ...data }) {
+function setCurrentMonthDays({ daysInMonth, days, ...data }) {
   const isInCurrentMonth = true
 
   let dayOfMonth = 0
@@ -33,7 +39,7 @@ export function setCurrentMonthDays({ daysInMonth, days, ...data }) {
   return { days, ...data }
 }
 
-export function setNextMonthDays({ days, y, m }) {
+function setNextMonthDays({ days, y, m }) {
   if (days.length % NUMBER_OF_DAYS_IN_WEEK === 0) return days
 
   const isInCurrentMonth = false
@@ -49,9 +55,3 @@ export function setNextMonthDays({ days, y, m }) {
 
   return days
 }
-
-export const setCalendarDays = compose(
-  setNextMonthDays,
-  setCurrentMonthDays,
-  setPrevMonthDays
-)

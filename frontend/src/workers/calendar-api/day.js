@@ -16,6 +16,7 @@ export function Day({ y, m, dayOfMonth, dayOfWeek, isInCurrentMonth }) {
   const isLastDay = isLastDayOfMonth(timestamp)
 
   let events = []
+
   const eventCount = () => events.length
   const getEvents = () => [...events]
   const setEvent = (e) => (events = setEvents(e, events))
