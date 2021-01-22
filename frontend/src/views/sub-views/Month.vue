@@ -39,7 +39,7 @@ export default {
   setup() {
     const monthRef = ref(null)
 
-    const { findMonth, findDay, fetchSetEvents } = useCalendarApi()
+    const { findMonth, findDay } = useCalendarApi()
     const [month, _m, findSetMonth] = useMonthInView()
     const [dayInView, _d, findSetDay] = useDayInView()
     const {
