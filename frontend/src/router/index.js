@@ -1,5 +1,6 @@
 import Calendar from '@/views/Calendar.vue'
 
+import Year from '@/views/sub-views/Year.vue'
 import Month from '@/views/sub-views/Month.vue'
 import Day from '@/views/sub-views/Day.vue'
 
@@ -15,6 +16,7 @@ const routes = [
     children: [
       { path: '/d/:year/:month/:day', name: 'Sub-Day', component: Day },
       { path: '/m/:year/:month/:day?', name: 'Sub-Month', component: Month },
+      { path: '/y/:year/:month/:day', name: 'Sub-Year', component: Year },
     ],
   },
 ]

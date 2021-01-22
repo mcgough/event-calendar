@@ -1,5 +1,5 @@
 import compose from 'lodash.flowright'
-import { Month } from './month'
+import { Month, findAll } from './month'
 import { useCalendarMap } from './composables/useCalendarMap'
 
 export function Year({ y, ...data }) {
@@ -9,10 +9,13 @@ export function Year({ y, ...data }) {
 
   const findMonth = compose(getMonth, setMonth)
 
+  const findAllMonths = findAll(year, findMonth)
+
   setMonth({ y, ...data })
 
   return {
     year,
     findMonth,
+    findAllMonths,
   }
 }

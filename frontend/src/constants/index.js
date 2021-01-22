@@ -41,10 +41,12 @@ export const LOADING = 'loading'
 
 export const DAY = 'Day'
 export const MONTH = 'Month'
+export const YEAR = 'Year'
 export const TODAY = 'Today'
 
 export const MONTH_SLUG = 'm'
 export const DAY_SLUG = 'd'
+export const YEAR_SLUG = 'y'
 
 export const UP = 'ArrowUp'
 export const DOWN = 'ArrowDown'

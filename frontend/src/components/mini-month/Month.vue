@@ -16,13 +16,7 @@
         next: getNextMonth,
       }"
     >
-      <div
-        class="flex justify-center items-center h-7 w-7 text-xs text-gray-400 select-none"
-        v-for="(DAY, i) in DAYS_OF_WEEK_SHORT"
-        :key="i"
-      >
-        <div>{{ DAY }}</div>
-      </div>
+      <days-of-week length="short" />
       <day
         v-for="(day, i) in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
@@ -36,9 +30,9 @@
 
 <script>
 import Day from '@/components/mini-month/Day.vue'
+import DaysOfWeek from '@/components/DaysOfWeek.vue'
 import compose from 'lodash.flowright'
 import { computed, onMounted } from 'vue'
-import { DAYS_OF_WEEK_SHORT } from '@/constants'
 import { MonthKeyboardNav } from '@/directives'
 import {
   useState,
@@ -49,7 +43,7 @@ import {
 import { convertToDate } from '@/date-utils'
 
 export default {
-  components: { Day },
+  components: { Day, DaysOfWeek },
   directives: { MonthKeyboardNav },
   name: 'Mini-Month',
   setup() {
@@ -73,7 +67,6 @@ export default {
     onMounted(findSetMonth)
 
     return {
-      DAYS_OF_WEEK_SHORT,
       dayInView,
       month,
       getNextMonth,
