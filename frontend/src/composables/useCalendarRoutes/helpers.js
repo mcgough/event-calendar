@@ -1,6 +1,6 @@
 import compose from 'lodash.flowright'
 import { isLastDayOfMonth, isFirstDayOfMonth, getDaysInMonth } from 'date-fns'
-import { MONTH_SLUG, DAY_SLUG } from '@/constants'
+import { MONTH_SLUG, DAY_SLUG, YEAR_SLUG } from '@/constants'
 
 export function formatParams({ year, month, day }) {
   const parsedYear = parseInt(year)
@@ -159,31 +159,24 @@ export function setDayExplicit(day = 1) {
   }
 }
 
-function constructDayPathBase(...hooks) {
-  return [
-    constructPath,
-    setKeyValue('hooks')(...hooks),
-    setKeyValue('keys')('year', 'month', 'day'),
-    setBasePath(DAY_SLUG),
-  ]
-}
-
-function constructMonthPathBase(...hooks) {
-  return [
-    constructPath,
-    setKeyValue('hooks')(...hooks),
-    setKeyValue('keys')('year', 'month', 'day'),
-    setBasePath(MONTH_SLUG),
-  ]
+function constructPathBase(slug) {
+  return function (...hooks) {
+    return [
+      constructPath,
+      setKeyValue('hooks')(...hooks),
+      setKeyValue('keys')('year', 'month', 'day'),
+      setBasePath(slug),
+    ]
+  }
 }
 
 export function constructPrevNextMonthViewPaths(data) {
   return {
     prev: compose(
-      ...constructMonthPathBase(setDayExplicit(1), setPrevMonthYear)
+      ...constructPathBase(MONTH_SLUG)(setDayExplicit(1), setPrevMonthYear)
     )()(data),
     next: compose(
-      ...constructMonthPathBase(setDayExplicit(1), setNextMonthYear)
+      ...constructPathBase(MONTH_SLUG)(setDayExplicit(1), setNextMonthYear)
     )()(data),
   }
 }
@@ -191,18 +184,34 @@ export function constructPrevNextMonthViewPaths(data) {
 export function constructPrevNextDayViewPaths(data) {
   return {
     prev: compose(
-      ...constructDayPathBase(setPrevDay, setPrevDayMonth, setPrevDayYear)
+      ...constructPathBase(DAY_SLUG)(
+        setPrevDay,
+        setPrevDayMonth,
+        setPrevDayYear
+      )
     )()(data),
     next: compose(
-      ...constructDayPathBase(setNextDay, setNextDayMonth, setNextDayYear)
+      ...constructPathBase(DAY_SLUG)(
+        setNextDay,
+        setNextDayMonth,
+        setNextDayYear
+      )
     )()(data),
   }
 }
 
 export const constructDayViewPath = compose(
-  ...constructDayPathBase(setDay, setMonth)
+  ...constructPathBase(DAY_SLUG)(setDay, setMonth)
 )()
 
 export const constructMonthViewPath = compose(
-  ...constructMonthPathBase(setMonth)
+  ...constructPathBase(MONTH_SLUG)(setMonth)
 )()
+
+export const constructYearViewPath = compose(
+  ...constructPathBase(YEAR_SLUG)(setDay, setMonth)
+)()
+
+export function buildPathWithBase(base, params) {
+  return compose(...constructPathBase(base)(setDay, setMonth))()(params)
+}
