@@ -6,8 +6,9 @@ import {
   constructDayViewPath,
   constructMonthViewPath,
   constructYearViewPath,
-  constructPrevNextMonthViewPaths,
   constructPrevNextDayViewPaths,
+  constructPrevNextMonthViewPaths,
+  constructPrevNextYearViewPaths,
 } from './helpers'
 
 let route, router
@@ -39,8 +40,9 @@ export function useCalendarRoutes() {
     constructDayViewPath,
     constructMonthViewPath,
     constructYearViewPath,
-    constructPrevNextMonthViewPaths,
     constructPrevNextDayViewPaths,
+    constructPrevNextMonthViewPaths,
+    constructPrevNextYearViewPaths,
     params,
     pushToRouter,
     route,

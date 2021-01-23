@@ -1,7 +1,7 @@
 <template>
   <div class="ml-4">
     <teleport to=".top-level-nav .sub-view-header">
-      <div class="flex">
+      <div class="flex items-center">
         <div class="flex mr-4">
           <router-link :to="prevNextDayPaths.prev">Prev</router-link>
           <router-link :to="prevNextDayPaths.next">Next</router-link>

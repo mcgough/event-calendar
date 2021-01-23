@@ -1,16 +1,16 @@
 <template>
   <div>
     <teleport to=".top-level-nav .sub-view-header">
-      <div class="flex">
+      <div class="flex items-center">
         <div class="flex mr-4">
-          <router-link :to="'/'">Prev</router-link>
-          <router-link :to="'/'">Next</router-link>
+          <router-link :to="prevNextPaths.prev">Prev</router-link>
+          <router-link :to="prevNextPaths.next">Next</router-link>
         </div>
         <div class="text-xl font-medium">{{ year.year }}</div>
       </div>
     </teleport>
     <div class="grid grid-cols-4">
-      <div v-for="month in months" :key="month.name" class="mb-16 w-48">
+      <div v-for="month in months" :key="month.name" class="mb-12 w-48">
         <h4>{{ month.name }}</h4>
         <div class="grid grid-cols-7" v-month-keyboard-nav>
           <days-of-week length="short" />
@@ -41,7 +41,11 @@ export default {
   name: 'Sub-Year',
   setup() {
     const { findYear } = useCalendarApi()
-    const { yearMonthDay, params } = useCalendarRoutes()
+    const { constructPrevNextYearViewPaths, params } = useCalendarRoutes()
+
+    const prevNextPaths = computed(() =>
+      constructPrevNextYearViewPaths(params.value)
+    )
 
     const year = computed(() => findYear(params.value.timestamp))
 
@@ -50,6 +54,7 @@ export default {
     return {
       DAYS_OF_WEEK_SHORT,
       months,
+      prevNextPaths,
       year,
     }
   },
