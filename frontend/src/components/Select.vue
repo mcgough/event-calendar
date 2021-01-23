@@ -2,19 +2,21 @@
   <div class="flex-auto flex flex-col items-center">
     <div class="flex flex-col items-center relative" v-if="options">
       <div class="w-full">
-        <div class="my-2 bg-white p-1 flex border border-gray-200 rounded">
+        <div
+          class="my-2 bg-white p-1 flex border border-gray-200 rounded cursor-pointer"
+          @click="onOpenClick"
+        >
           <div class="flex flex-auto flex-wrap"></div>
           <input
-            :value="modelValue.label"
+            :value="modelValue?.label"
             disabled
-            class="p-1 px-2 appearance-none outline-none w-full text-gray-800 select-none"
+            class="cursor-pointer p-1 px-2 appearance-none outline-none w-full text-gray-800 select-none"
           />
           <div
             class="text-gray-300 w-8 py-1 pl-2 pr-1 border-l flex items-center border-gray-200"
           >
             <button
-              @click="onOpenClick"
-              class="cursor-pointer w-6 h-6 text-gray-600 outline-none focus:outline-none"
+              class="w-6 h-6 text-gray-600 outline-none focus:outline-none"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

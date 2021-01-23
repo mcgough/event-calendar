@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="overflow-y-auto">
     <teleport to=".top-level-nav .sub-view-header">
       <div class="flex items-center">
         <div class="flex mr-4">
