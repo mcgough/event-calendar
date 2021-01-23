@@ -1,6 +1,14 @@
 <template>
   <div>
-    <div>{{ year.year }}</div>
+    <teleport to=".top-level-nav .sub-view-header">
+      <div class="flex">
+        <div class="flex mr-4">
+          <router-link :to="'/'">Prev</router-link>
+          <router-link :to="'/'">Next</router-link>
+        </div>
+        <div class="text-xl font-medium">{{ year.year }}</div>
+      </div>
+    </teleport>
     <div class="grid grid-cols-4">
       <div v-for="month in months" :key="month.name" class="mb-16 w-48">
         <h4>{{ month.name }}</h4>

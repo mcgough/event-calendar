@@ -1,14 +1,16 @@
 <template>
   <div>
-    <div class="flex">
+    <teleport to=".top-level-nav .sub-view-header">
       <div class="flex">
-        <router-link :to="prevNextMonthPaths.prev">Prev</router-link>
-        <router-link :to="prevNextMonthPaths.next">Next</router-link>
+        <div class="flex mr-4">
+          <router-link :to="prevNextMonthPaths.prev">Prev</router-link>
+          <router-link :to="prevNextMonthPaths.next">Next</router-link>
+        </div>
+        <div class="text-left">
+          <span class="text-xl font-medium">{{ month.label }}</span>
+        </div>
       </div>
-      <div class="text-left">
-        <span class="text-xl font-medium">{{ month.label }}</span>
-      </div>
-    </div>
+    </teleport>
     <div class="grid grid-cols-7 h-screen border-r border-t" ref="monthRef">
       <day
         v-for="(day, i) in month.days"
