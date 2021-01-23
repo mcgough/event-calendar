@@ -86,6 +86,22 @@ export function setNextMonthYear(data) {
   return { ...data, month, year }
 }
 
+export function setPrevYear({ timestamp, ...data }) {
+  return {
+    ...data,
+    month: data.month + 1,
+    year: data.year - 1,
+  }
+}
+
+export function setNextYear({ timestamp, ...data }) {
+  return {
+    ...data,
+    month: data.month + 1,
+    year: data.year + 1,
+  }
+}
+
 export function setPrevDay({ timestamp, ...data }) {
   const isFirstDay = isFirstDayOfMonth(timestamp)
 
@@ -167,6 +183,13 @@ function constructPathBase(slug) {
       setKeyValue('keys')('year', 'month', 'day'),
       setBasePath(slug),
     ]
+  }
+}
+
+export function constructPrevNextYearViewPaths(data) {
+  return {
+    prev: compose(...constructPathBase(YEAR_SLUG)(setPrevYear))()(data),
+    next: compose(...constructPathBase(YEAR_SLUG)(setNextYear))()(data),
   }
 }
 
