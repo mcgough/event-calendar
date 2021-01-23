@@ -22,11 +22,8 @@ export default {
 
     const selected = ref(options[0])
 
-    function updateSubView(val) {
-      const path = buildPathWithBase(val.value, params.value)
-      console.log(path)
-      router.push(path)
-    }
+    const updateSubView = (val) =>
+      router.push(buildPathWithBase(val.value, params.value))
 
     watch(selected, updateSubView)
 

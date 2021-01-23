@@ -1,12 +1,16 @@
 <template>
   <div class="ml-4">
-    <div class="flex">
-      <router-link :to="prevNextDayPaths.prev">Prev</router-link>
-      <router-link :to="prevNextDayPaths.next">Next</router-link>
-    </div>
-    <div class="text-left">
-      <span class="text-xl font-medium">{{ dayInView.label }}</span>
-    </div>
+    <teleport to=".top-level-nav .sub-view-header">
+      <div class="flex">
+        <div class="flex mr-4">
+          <router-link :to="prevNextDayPaths.prev">Prev</router-link>
+          <router-link :to="prevNextDayPaths.next">Next</router-link>
+        </div>
+        <div class="text-left">
+          <span class="text-xl font-medium">{{ dayInView.label }}</span>
+        </div>
+      </div>
+    </teleport>
     <div class="w-14 flex flex-col justify-center items-center">
       <div>
         <span class="text-blue-500 font-medium">{{

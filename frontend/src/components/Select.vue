@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-auto flex flex-col items-center h-64">
+  <div class="flex-auto flex flex-col items-center">
     <div class="flex flex-col items-center relative" v-if="options">
       <div class="w-full">
         <div class="my-2 bg-white p-1 flex border border-gray-200 rounded">
