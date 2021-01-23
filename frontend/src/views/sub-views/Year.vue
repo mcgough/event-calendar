@@ -4,12 +4,13 @@
     <div class="grid grid-cols-4">
       <div v-for="month in months" :key="month.name" class="mb-16 w-48">
         <h4>{{ month.name }}</h4>
-        <div class="grid grid-cols-7">
+        <div class="grid grid-cols-7" v-month-keyboard-nav>
           <days-of-week length="short" />
           <div
-            v-for="day in month.days"
+            v-for="(day, i) in month.days"
             :key="day.timestamp"
             class="text-xs cursor-pointer"
+            :index="i"
           >
             {{ day.dayOfMonth }}
           </div>
@@ -20,13 +21,15 @@
 </template>
 
 <script>
+import DaysOfWeek from '@/components/DaysOfWeek.vue'
 import { onMounted, computed, reactive } from 'vue'
 import { useCalendarApi, useCalendarRoutes } from '@/composables'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
-import DaysOfWeek from '@/components/DaysOfWeek.vue'
+import { MonthKeyboardNav } from '@/directives'
 
 export default {
   components: { DaysOfWeek },
+  directives: { MonthKeyboardNav },
   name: 'Sub-Year',
   setup() {
     const { findYear } = useCalendarApi()

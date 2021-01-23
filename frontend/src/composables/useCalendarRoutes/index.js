@@ -2,8 +2,10 @@ import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   formatParams,
+  buildPathWithBase,
   constructDayViewPath,
   constructMonthViewPath,
+  constructYearViewPath,
   constructPrevNextMonthViewPaths,
   constructPrevNextDayViewPaths,
 } from './helpers'
@@ -33,8 +35,10 @@ export function useCalendarRoutes() {
   }
 
   return {
+    buildPathWithBase,
     constructDayViewPath,
     constructMonthViewPath,
+    constructYearViewPath,
     constructPrevNextMonthViewPaths,
     constructPrevNextDayViewPaths,
     params,

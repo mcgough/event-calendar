@@ -5,10 +5,7 @@
         <side-panel>
           <mini-month />
           <div class="mt-16">
-            <v-button>
-              <sub-view-anchor />
-            </v-button>
-            <div class="mt-4 mb-4"></div>
+            <sub-view-select class="mt-4 mb-4" />
             <v-button>
               <today-anchor />
             </v-button>
@@ -34,9 +31,10 @@ import MiniMonth from '@/components/mini-month/Month.vue'
 import Splash from '@/components/Splash.vue'
 import SidePanel from '@/components/SidePanel.vue'
 import SubViewAnchor from '@/components/SubViewAnchor.vue'
+import SubViewSelect from '@/components/SubViewSelect.vue'
 import TodayAnchor from '@/components/TodayAnchor.vue'
 import VButton from '@/components/Button.vue'
-import { computed } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useCalendarApi } from '@/composables'
 import { ROUTE_NAME_CALENDAR, MONTH_SLUG, DAY, MONTH } from '@/constants'
 
@@ -46,6 +44,7 @@ export default {
     MiniMonth,
     Splash,
     SidePanel,
+    SubViewSelect,
     SubViewAnchor,
     TodayAnchor,
     VButton,

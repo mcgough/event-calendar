@@ -30,6 +30,7 @@ export function pluckMonth({ value, data }) {
 
 export function findAll(year, getter) {
   const findResult = compose(pluckValue, getter, parseDate)
+
   return function () {
     const results = []
 
