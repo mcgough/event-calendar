@@ -23,6 +23,7 @@
 <script>
 import MiniMonth from '@/components/mini-month/Month.vue'
 import SidePanel from '@/components/SidePanel.vue'
+import Splash from '@/components/Splash.vue'
 import { computed, reactive, ref } from 'vue'
 import { useCalendarApi } from '@/composables'
 import { ROUTE_NAME_CALENDAR, MONTH_SLUG, DAY, MONTH } from '@/constants'
@@ -32,6 +33,7 @@ export default {
   components: {
     MiniMonth,
     SidePanel,
+    Splash,
   },
   setup() {
     const calendar = useCalendarApi()

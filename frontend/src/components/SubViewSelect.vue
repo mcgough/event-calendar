@@ -4,7 +4,7 @@
 
 <script>
 import VSelect from '@/components/Select.vue'
-import { ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch, watchEffect } from 'vue'
 import { DAY, MONTH, YEAR, DAY_SLUG, MONTH_SLUG, YEAR_SLUG } from '@/constants'
 import { useCalendarRoutes } from '@/composables'
 
@@ -12,7 +12,9 @@ export default {
   name: 'Select',
   components: { VSelect },
   setup() {
-    const { buildPathWithBase, router, params } = useCalendarRoutes()
+    const { buildPathWithBase, router, route, params } = useCalendarRoutes()
+
+    const selected = ref(undefined)
 
     const options = [
       { label: DAY, value: DAY_SLUG },
@@ -20,12 +22,20 @@ export default {
       { label: YEAR, value: YEAR_SLUG },
     ]
 
-    const selected = ref(options[0])
+    function setSelected() {
+      selected.value = options[options.findIndex(findOptionInPath) ?? 0]
+    }
 
-    const updateSubView = (val) =>
-      router.push(buildPathWithBase(val.value, params.value))
+    function findOptionInPath(option) {
+      return route.path.includes(option.value)
+    }
 
-    watch(selected, updateSubView)
+    function updateSubView() {
+      if (!selected.value) return setSelected()
+      router.push(buildPathWithBase(selected.value.value, params.value))
+    }
+
+    watchEffect(updateSubView)
 
     return {
       options,

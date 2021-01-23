@@ -11,7 +11,7 @@
         </div>
       </div>
     </teleport>
-    <div class="grid grid-cols-7 h-screen border-r border-t" ref="monthRef">
+    <div class="month grid grid-cols-7 border-r border-t" ref="monthRef">
       <day
         v-for="(day, i) in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
@@ -81,4 +81,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.month {
+  height: calc(100vh - 7rem);
+}
+</style>
