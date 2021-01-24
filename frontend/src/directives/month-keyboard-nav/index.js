@@ -13,13 +13,13 @@ const activeListeners = new Map()
 
 export const MonthKeyboardNav = {
   updated(el, binding) {
+    const attachAndRegisterHandler = compose(
+      registerHandler(activeListeners),
+      attachListener(binding)(manageKeyDown)
+    )
+
     compose(
-      loop(
-        compose(
-          registerHandler(activeListeners),
-          attachListener(binding)(manageKeyDown)
-        )
-      ),
+      loop(attachAndRegisterHandler),
       filter(hasIndexAttribute)(el.children),
       clearMap,
       loop(removeListener)
