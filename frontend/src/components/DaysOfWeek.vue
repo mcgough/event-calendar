@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="[...baseStyles, ...styles]"
+    :class="[...baseStyles, height, width]"
     v-for="(day, i) in daysOfWeek"
     :key="i"
   >
@@ -26,9 +26,13 @@ export default {
       type: String,
       default: SHORT,
     },
-    styles: {
-      type: Array,
-      default: [],
+    height: {
+      type: String,
+      default: 'h-7',
+    },
+    width: {
+      type: String,
+      default: 'w-7',
     },
   },
   setup(props) {
@@ -48,8 +52,6 @@ const baseStyles = [
   'flex',
   'justify-center',
   'items-center',
-  'h-7',
-  'w-7',
   'text-xs',
   'text-gray-400',
   'select-none',
