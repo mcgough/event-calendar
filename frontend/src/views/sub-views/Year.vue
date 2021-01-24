@@ -31,7 +31,12 @@
 <script>
 import DaysOfWeek from '@/components/DaysOfWeek.vue'
 import { onMounted, computed, reactive } from 'vue'
-import { useCalendarApi, useCalendarRoutes } from '@/composables'
+import {
+  useCalendarApi,
+  useCalendarRoutes,
+  useDayInView,
+  useMonthInView,
+} from '@/composables'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
 import { MonthKeyboardNav } from '@/directives'
 

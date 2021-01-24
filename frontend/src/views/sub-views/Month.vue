@@ -41,23 +41,15 @@ export default {
   setup() {
     const monthRef = ref(null)
 
-    const { findMonth, findDay } = useCalendarApi()
     const [month, _m, findSetMonth] = useMonthInView()
     const [dayInView, _d, findSetDay] = useDayInView()
     const {
       constructPrevNextMonthViewPaths,
       params,
       pushToRouter,
-      watchRouteParams,
-      yearMonthDay,
     } = useCalendarRoutes()
 
     const { onWheelDown, onWheelUp } = useMouseWheel(monthRef)
-
-    const setDayMonthInView = () => (
-      findSetMonth(findMonth)(...yearMonthDay.value),
-      findSetDay(findDay)(...yearMonthDay.value)
-    )
 
     const prevNextMonthPaths = computed(() =>
       constructPrevNextMonthViewPaths(params.value)
@@ -65,10 +57,6 @@ export default {
 
     onWheelDown(pushToRouter.bind(undefined, prevNextMonthPaths, 'prev'), 100)
     onWheelUp(pushToRouter.bind(undefined, prevNextMonthPaths, 'next'), 100)
-
-    watchRouteParams(setDayMonthInView)
-
-    onMounted(setDayMonthInView)
 
     return {
       dayInView,
