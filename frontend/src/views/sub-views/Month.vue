@@ -2,10 +2,10 @@
   <div>
     <teleport to=".top-level-nav .sub-view-header">
       <div class="flex items-center">
-        <div class="flex mr-4">
-          <router-link :to="prevNextMonthPaths.prev">Prev</router-link>
-          <router-link :to="prevNextMonthPaths.next">Next</router-link>
-        </div>
+        <previous-next-anchors
+          :previous="prevNextMonthPaths.prev"
+          :next="prevNextMonthPaths.next"
+        />
         <div class="text-left">
           <span class="text-xl font-medium">{{ month.label }}</span>
         </div>
@@ -25,6 +25,7 @@
 
 <script>
 import Day from '@/components/Day.vue'
+import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
 import { computed, onMounted, ref } from 'vue'
 import {
   useCalendarApi,
@@ -36,7 +37,7 @@ import {
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
 
 export default {
-  components: { Day },
+  components: { Day, PreviousNextAnchors },
   name: 'Sub-Month',
   setup() {
     const monthRef = ref(null)

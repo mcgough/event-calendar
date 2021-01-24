@@ -2,10 +2,10 @@
   <div class="ml-4">
     <teleport to=".top-level-nav .sub-view-header">
       <div class="flex items-center">
-        <div class="flex mr-4">
-          <router-link :to="prevNextDayPaths.prev">Prev</router-link>
-          <router-link :to="prevNextDayPaths.next">Next</router-link>
-        </div>
+        <previous-next-anchors
+          :previous="prevNextDayPaths.prev"
+          :next="prevNextDayPaths.next"
+        />
         <div class="text-left">
           <span class="text-xl font-medium">{{ dayInView.label }}</span>
         </div>
@@ -31,38 +31,26 @@
 </template>
 
 <script>
+import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useDayInView, useCalendarApi, useCalendarRoutes } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
 import { FocusOnMount } from '@/directives'
 
 export default {
+  components: { PreviousNextAnchors },
   directives: { FocusOnMount },
   name: 'Sub-Day',
   setup() {
     const [dayInView, _, fetchSetDay] = useDayInView()
     const { findDay, fetchEvents } = useCalendarApi()
-    const {
-      constructPrevNextDayViewPaths,
-      params,
-      watchRouteParams,
-      yearMonthDay,
-    } = useCalendarRoutes()
+    const { constructPrevNextDayViewPaths, params } = useCalendarRoutes()
 
     const events = ref([])
-
-    const setDayAndEvents = () => (
-      fetchSetDay(findDay)(...yearMonthDay.value),
-      (events.value = dayInView.getEvents())
-    )
 
     const prevNextDayPaths = computed(() =>
       constructPrevNextDayViewPaths(params.value)
     )
-
-    watchRouteParams(setDayAndEvents)
-
-    onMounted(setDayAndEvents)
 
     return {
       dayInView,
