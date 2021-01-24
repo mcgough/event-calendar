@@ -11,7 +11,7 @@
         </div>
       </div>
     </teleport>
-    <div class="month grid grid-cols-7 border-r border-t" ref="monthRef">
+    <div class="month grid grid-cols-7 border-r" ref="monthRef">
       <day
         v-for="(day, i) in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
@@ -44,6 +44,7 @@ export default {
 
     const [month, _m, findSetMonth] = useMonthInView()
     const [dayInView, _d, findSetDay] = useDayInView()
+
     const {
       constructPrevNextMonthViewPaths,
       params,
@@ -57,6 +58,7 @@ export default {
     )
 
     onWheelDown(pushToRouter.bind(undefined, prevNextMonthPaths, 'prev'), 100)
+
     onWheelUp(pushToRouter.bind(undefined, prevNextMonthPaths, 'next'), 100)
 
     return {

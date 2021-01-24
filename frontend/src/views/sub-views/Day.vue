@@ -11,7 +11,7 @@
         </div>
       </div>
     </teleport>
-    <div class="w-14 flex flex-col justify-center items-center">
+    <div class="w-14 flex flex-col justify-center items-center mt-4">
       <div>
         <span class="text-blue-500 font-medium">{{
           DAYS_OF_WEEK_MEDIUM[dayInView.dayOfWeek]

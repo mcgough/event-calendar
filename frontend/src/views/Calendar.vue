@@ -6,11 +6,9 @@
           <mini-month />
         </side-panel>
         <div class="w-full">
-          <div class="mt-4">
-            <router-view v-slot="{ Component }">
-              <component :is="Component" />
-            </router-view>
-          </div>
+          <router-view v-slot="{ Component }">
+            <component :is="Component" />
+          </router-view>
         </div>
       </div>
     </template>
