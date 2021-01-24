@@ -8,7 +8,7 @@
 import compose from 'lodash.flowright'
 import { computed } from 'vue'
 import { useCalendarRoutes } from '@/composables'
-import { MONTH_SLUG, TODAY } from '@/constants'
+import { MONTH_SLUG, TODAY, DAY_SLUG, YEAR_SLUG } from '@/constants'
 import { parseDate } from '@/date-utils'
 
 function getTodayRouteParams() {
@@ -16,20 +16,34 @@ function getTodayRouteParams() {
   return { year: y, month: m, day: d }
 }
 
+function buildTodayPath(day, month, year) {
+  return function (path) {
+    const params = getTodayRouteParams()
+    if (path.includes(DAY_SLUG)) return day(params)
+    if (path.includes(MONTH_SLUG)) return month(params)
+    if (path.includes(YEAR_SLUG)) return year(params)
+    return path
+  }
+}
+
 export default {
   setup() {
     const {
       constructDayViewPath,
       constructMonthViewPath,
+      constructYearViewPath,
       route,
     } = useCalendarRoutes()
 
+    const buildPath = buildTodayPath(
+      constructDayViewPath,
+      constructMonthViewPath,
+      constructYearViewPath
+    )
+
     const today = computed(() => ({
       label: TODAY,
-      path:
-        route.path.indexOf(MONTH_SLUG) < 0
-          ? compose(constructDayViewPath, getTodayRouteParams)()
-          : compose(constructMonthViewPath, getTodayRouteParams)(),
+      path: buildPath(route.path),
     }))
 
     return { today }
