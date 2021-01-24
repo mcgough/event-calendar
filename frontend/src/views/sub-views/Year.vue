@@ -2,10 +2,10 @@
   <div class="overflow-y-auto">
     <teleport to=".top-level-nav .sub-view-header">
       <div class="flex items-center">
-        <div class="flex mr-4">
-          <router-link :to="prevNextPaths.prev">Prev</router-link>
-          <router-link :to="prevNextPaths.next">Next</router-link>
-        </div>
+        <previous-next-anchors
+          :previous="prevNextPaths.prev"
+          :next="prevNextPaths.next"
+        />
         <div class="text-xl font-medium">{{ year.year }}</div>
       </div>
     </teleport>
@@ -30,6 +30,7 @@
 
 <script>
 import DaysOfWeek from '@/components/DaysOfWeek.vue'
+import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
 import { onMounted, computed, reactive } from 'vue'
 import {
   useCalendarApi,
@@ -41,7 +42,7 @@ import { DAYS_OF_WEEK_SHORT } from '@/constants'
 import { MonthKeyboardNav } from '@/directives'
 
 export default {
-  components: { DaysOfWeek },
+  components: { DaysOfWeek, PreviousNextAnchors },
   directives: { MonthKeyboardNav },
   name: 'Sub-Year',
   setup() {

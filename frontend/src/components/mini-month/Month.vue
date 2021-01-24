@@ -5,8 +5,44 @@
         <span>{{ month.name }} {{ month.year }}</span>
       </div>
       <div class="flex">
-        <button @click="getPrevMonth">Prev</button>
-        <button @click="getNextMonth">Next</button>
+        <button
+          @click="getPrevMonth"
+          class="w-6 h-6 hover:bg-gray-100 rounded-full flex items-center justify-center focus:outline-none focus:ring-1"
+        >
+          <svg
+            class="w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <button
+          @click="getNextMonth"
+          class="w-6 h-6 hover:bg-gray-100 rounded-full flex items-center justify-center focus:outline-none focus:ring-1"
+        >
+          <svg
+            class="w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
       </div>
     </div>
     <div
