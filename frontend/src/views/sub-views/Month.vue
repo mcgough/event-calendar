@@ -57,9 +57,9 @@ export default {
       constructPrevNextMonthViewPaths(params.value)
     )
 
-    onWheelDown(pushToRouter.bind(undefined, prevNextMonthPaths, 'prev'), 100)
+    onWheelDown(pushToRouter.bind(undefined, prevNextMonthPaths, 'prev'), 75)
 
-    onWheelUp(pushToRouter.bind(undefined, prevNextMonthPaths, 'next'), 100)
+    onWheelUp(pushToRouter.bind(undefined, prevNextMonthPaths, 'next'), 75)
 
     return {
       dayInView,
