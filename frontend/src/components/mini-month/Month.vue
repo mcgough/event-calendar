@@ -1,10 +1,10 @@
 <template>
   <div class="w-full max-w-sm m-auto" v-if="month.days?.length">
     <div class="flex justify-between items-center my-3">
-      <div class="font-semibold">
+      <div class="font-semibold ml-2">
         <span>{{ month.name }} {{ month.year }}</span>
       </div>
-      <div class="flex">
+      <div class="flex mr-2">
         <button
           @click="getPrevMonth"
           class="w-6 h-6 hover:bg-gray-100 rounded-full flex items-center justify-center focus:outline-none focus:ring-1"

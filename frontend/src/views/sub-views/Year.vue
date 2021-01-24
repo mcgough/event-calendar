@@ -11,7 +11,7 @@
     </teleport>
     <div class="grid grid-cols-4 mt-4">
       <div v-for="month in months" :key="month.name" class="mb-12 w-48">
-        <h4 class="text-left font-semibold">{{ month.name }}</h4>
+        <h4 class="text-left font-semibold ml-2">{{ month.name }}</h4>
         <div class="grid grid-cols-7" v-month-keyboard-nav>
           <days-of-week length="short" />
           <div
