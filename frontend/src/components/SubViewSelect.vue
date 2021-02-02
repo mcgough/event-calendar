@@ -30,12 +30,14 @@ export default {
       return route.path.includes(option.value)
     }
 
-    function updateSubView() {
-      if (!selected.value) return setSelected()
+    function updateSubView(newVal, oldVal) {
+      console.log(newVal, oldVal)
       router.push(buildPathWithBase(selected.value.value, params.value))
     }
 
-    watchEffect(updateSubView)
+    watchEffect(setSelected)
+
+    watch(selected, updateSubView)
 
     return {
       options,
