@@ -1,5 +1,10 @@
 <template>
-  <router-link :to="subViewPath" :class="styles" :tabindex="focusable">
+  <router-link
+    @dblclick.native.prevent="onDblClick"
+    :to="subViewPath"
+    :class="styles"
+    :tabindex="focusable"
+  >
     <span>{{ day.dayOfMonth }}</span>
   </router-link>
 </template>
@@ -22,6 +27,7 @@ export default {
       constructMonthViewPath,
       constructYearViewPath,
       route,
+      router,
     } = useCalendarRoutes()
 
     const focusable = computed(() => (props.dayIsInView ? 0 : -1))
@@ -42,16 +48,35 @@ export default {
     const subViewPath = computed(() => {
       if (route.path.includes(MONTH_SLUG))
         return constructMonthViewPath(pathParams.value)
+
       if (route.path.includes(DAY_SLUG))
         return constructDayViewPath(pathParams.value)
+
       if (route.path.includes(YEAR_SLUG))
         return constructYearViewPath(pathParams.value)
     })
+
+    function onDblClick() {
+      let prevPath
+      return function () {
+        if (!prevPath) {
+          const { year, month, day } = pathParams.value
+          prevPath = subViewPath.value
+          return router.push(`/d/${year}/${month + 1}/${day}`)
+        }
+
+        if (prevPath) {
+          router.push(prevPath)
+          prevPath = undefined
+        }
+      }
+    }
 
     return {
       focusable,
       styles,
       subViewPath,
+      onDblClick: onDblClick(),
     }
   },
 }

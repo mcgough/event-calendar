@@ -104,9 +104,9 @@ export default {
 
     return {
       dayInView,
-      month,
       getNextMonth,
       getPrevMonth,
+      month,
     }
   },
 }

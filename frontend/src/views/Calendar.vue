@@ -40,8 +40,11 @@ export default {
   },
   setup() {
     const calendar = useCalendarApi()
+
     const { watchRouteParams, yearMonthDay } = useCalendarRoutes()
+
     const [month, _m, findSetMonth] = useMonthInView()
+
     const [dayInView, _d, findSetDay] = useDayInView()
 
     const setDayMonthInView = () => (
