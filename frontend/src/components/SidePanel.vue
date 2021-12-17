@@ -1,5 +1,5 @@
 <template>
-  <div class="w-96 p-4 h-screen">
+  <div class="w-80 p-4 h-screen">
     <slot></slot>
   </div>
 </template>
