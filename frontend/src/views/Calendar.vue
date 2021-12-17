@@ -22,14 +22,15 @@
 import MiniMonth from '@/components/mini-month/Month.vue'
 import SidePanel from '@/components/SidePanel.vue'
 import Splash from '@/components/Splash.vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { onMounted, watch } from 'vue'
 import {
   useCalendarApi,
   useCalendarRoutes,
   useMonthInView,
   useDayInView,
 } from '@/composables'
-import { ROUTE_NAME_CALENDAR, MONTH_SLUG, DAY, MONTH } from '@/constants'
+import { ROUTE_NAME_CALENDAR } from '@/constants'
+import { useTotal, useHistory } from '@/store/count-store'
 
 export default {
   name: ROUTE_NAME_CALENDAR,
@@ -39,6 +40,22 @@ export default {
     Splash,
   },
   setup() {
+    const totalStore = useTotal()
+
+    const historyStore = useHistory()
+
+    watch(() => totalStore.total, console.log)
+
+    watch(() => totalStore.changeCount, console.log)
+
+    watch(() => historyStore.changeCount, console.log)
+
+    totalStore.add(10)
+
+    totalStore.minus(5)
+
+    setTimeout(historyStore.reset, 5000)
+
     const calendar = useCalendarApi()
 
     const { watchRouteParams, yearMonthDay } = useCalendarRoutes()
