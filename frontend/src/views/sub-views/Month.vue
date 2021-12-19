@@ -26,15 +26,10 @@
 <script>
 import Day from '@/components/Day.vue'
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
-import { computed, onMounted, ref } from 'vue'
-import {
-  useCalendarApi,
-  useMonthInView,
-  useCalendarRoutes,
-  useDayInView,
-  useMouseWheel,
-} from '@/composables'
+import { computed, ref } from 'vue'
+import { useCalendarRoutes, useMouseWheel } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
+import useSelectedDate from '@/store/useSelectedDate'
 
 export default {
   components: { Day, PreviousNextAnchors },
@@ -42,14 +37,14 @@ export default {
   setup() {
     const monthRef = ref(null)
 
-    const [month, _m, findSetMonth] = useMonthInView()
-    const [dayInView, _d, findSetDay] = useDayInView()
+    const selectedDate = useSelectedDate()
 
-    const {
-      constructPrevNextMonthViewPaths,
-      params,
-      pushToRouter,
-    } = useCalendarRoutes()
+    const { constructPrevNextMonthViewPaths, params, pushToRouter } =
+      useCalendarRoutes()
+
+    const month = computed(() => selectedDate.month)
+
+    const dayInView = computed(() => selectedDate.day)
 
     const { onWheelDown, onWheelUp } = useMouseWheel(monthRef)
 

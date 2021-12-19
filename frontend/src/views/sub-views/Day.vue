@@ -19,7 +19,17 @@
       </div>
       <button
         v-focus-on-mount
-        class="w-12 h-12 rounded-full bg-blue-500 text-white flex justify-center items-center font-medium"
+        class="
+          w-12
+          h-12
+          rounded-full
+          bg-blue-500
+          text-white
+          flex
+          justify-center
+          items-center
+          font-medium
+        "
       >
         <span class="text-lg">{{ dayInView.dayOfMonth }}</span>
       </button>
@@ -32,19 +42,22 @@
 
 <script>
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
-import { computed, onMounted, ref, watch } from 'vue'
-import { useDayInView, useCalendarApi, useCalendarRoutes } from '@/composables'
+import { computed, ref } from 'vue'
+import { useCalendarRoutes } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
 import { FocusOnMount } from '@/directives'
+import useSelectedDate from '@/store/useSelectedDate'
 
 export default {
   components: { PreviousNextAnchors },
   directives: { FocusOnMount },
   name: 'Sub-Day',
   setup() {
-    const [dayInView, _, fetchSetDay] = useDayInView()
-    const { findDay, fetchEvents } = useCalendarApi()
+    const selectedDate = useSelectedDate()
+
     const { constructPrevNextDayViewPaths, params } = useCalendarRoutes()
+
+    const dayInView = computed(() => selectedDate.day)
 
     const events = ref([])
 

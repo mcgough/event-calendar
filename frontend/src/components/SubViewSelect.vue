@@ -31,7 +31,6 @@ export default {
     }
 
     function updateSubView(newVal, oldVal) {
-      console.log(newVal, oldVal)
       router.push(buildPathWithBase(selected.value.value, params.value))
     }
 

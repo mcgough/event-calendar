@@ -1,9 +1,5 @@
-import { useState } from './useState'
 import { useCalendarRoutes } from './useCalendarRoutes/index'
-import { useCalendarApi } from './useCalendarApi'
-import { useDayInView } from './useDayInView'
 import { useDayStyles } from './useDayStyles'
-import { useMonthInView } from './useMonthInView'
 import { useMouseWheel } from './useMouseWheel'
 
 function filter(condition) {
@@ -29,11 +25,7 @@ export {
   filter,
   loop,
   pluckValue,
-  useCalendarApi,
   useCalendarRoutes,
-  useDayInView,
   useDayStyles,
-  useMonthInView,
   useMouseWheel,
-  useState,
 }

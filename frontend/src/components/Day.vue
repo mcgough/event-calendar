@@ -12,7 +12,17 @@
           v-for="event in events"
           :key="event.id"
           @click="showEventDetails.call(null, event)"
-          class="rounded bg-green-300 mb-1 pl-1 pr-1 text-left pointer h-4 overflow-hidden"
+          class="
+            rounded
+            bg-green-300
+            mb-1
+            pl-1
+            pr-1
+            text-left
+            pointer
+            h-4
+            overflow-hidden
+          "
         >
           <span class="text-xs w-full block">{{ event.name }}</span>
         </button>
@@ -48,6 +58,7 @@ export default {
     const styles = computed(() =>
       useDayStyles({
         ...props.day,
+        dayIsInView: props.dayIsInView,
       })
     )
 

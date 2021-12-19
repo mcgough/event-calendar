@@ -1,3 +1,5 @@
+import { reactive } from 'vue'
+import { defineStore } from 'pinia'
 import compose from 'lodash.flowright'
 import { loop, pluckValue } from '@/composables'
 import { parseDate } from '@/date-utils'
@@ -8,8 +10,10 @@ import { pluckDay, addEvent } from './day'
 
 const BASE_URL = 'http://localhost:3030/events'
 
-export function calendarApi() {
-  const [getYear, setYear] = useCalendarMap(new Map(), 'y', Year)
+export default defineStore('calendar', () => {
+  const calendar = reactive(new Map())
+
+  const [getYear, setYear] = useCalendarMap(calendar, 'y', Year)
 
   const pluckYear = [getYear, setYear, parseDate]
 
@@ -22,13 +26,14 @@ export function calendarApi() {
   const fetchSetEvents = () => fetchEvents().then(loop(addEvent(findDay)))
 
   return {
+    calendar,
     fetchSetEvents,
     findDay,
     findMonth,
     findYear,
     setYear,
   }
-}
+})
 
 async function fetchEvents() {
   const response = await fetch(BASE_URL)

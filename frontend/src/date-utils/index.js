@@ -15,7 +15,6 @@ export function parseDate(date) {
     m: getMonth(date),
     d: getDate(date),
     daysInMonth: getDaysInMonth(date),
-    dayOfWeek: getDay(date),
     startOfMonth: getDay(startOfMonth(date)),
     weeksInMonth: getWeeksInMonth(date),
     weekOfMonth: getWeekOfMonth(date),
