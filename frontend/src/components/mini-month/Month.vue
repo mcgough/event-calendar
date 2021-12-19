@@ -7,7 +7,16 @@
       <div class="flex mr-2">
         <button
           @click="getPrevMonth"
-          class="w-6 h-6 hover:bg-gray-100 rounded-full flex items-center justify-center focus:outline-none focus:ring-1"
+          class="
+            w-6
+            h-6
+            hover:bg-gray-100
+            rounded-full
+            flex
+            items-center
+            justify-center
+            focus:outline-none focus:ring-1
+          "
         >
           <svg
             class="w-4 h-4"
@@ -26,7 +35,16 @@
         </button>
         <button
           @click="getNextMonth"
-          class="w-6 h-6 hover:bg-gray-100 rounded-full flex items-center justify-center focus:outline-none focus:ring-1"
+          class="
+            w-6
+            h-6
+            hover:bg-gray-100
+            rounded-full
+            flex
+            items-center
+            justify-center
+            focus:outline-none focus:ring-1
+          "
         >
           <svg
             class="w-4 h-4"
@@ -65,48 +83,48 @@
 </template>
 
 <script>
+import { computed, ref, watch } from 'vue'
 import Day from '@/components/mini-month/Day.vue'
 import DaysOfWeek from '@/components/DaysOfWeek.vue'
-import compose from 'lodash.flowright'
-import { computed, onMounted } from 'vue'
 import { MonthKeyboardNav } from '@/directives'
-import {
-  useState,
-  useCalendarApi,
-  useDayInView,
-  useCalendarRoutes,
-} from '@/composables'
-import { convertToDate } from '@/date-utils'
+import useSelectedDate from '@/store/useSelectedDate'
+import useCalendar from '@/store/useCalendar'
 
 export default {
   components: { Day, DaysOfWeek },
   directives: { MonthKeyboardNav },
   name: 'Mini-Month',
   setup() {
-    const { findMonth } = useCalendarApi()
-    const [month, setMonth] = useState({})
-    const [dayInView] = useDayInView()
-    const { watchRouteParams, params } = useCalendarRoutes()
+    const calendar = useCalendar()
 
-    const findSetMonth = compose(setMonth, findMonth, convertToDate)
+    const selectedDate = useSelectedDate()
 
-    const getNextMonth = computed(() => () =>
-      findSetMonth(month.year, month.month + 1)
+    const month = ref()
+
+    const dayInView = computed(() => selectedDate.day)
+
+    const getNextMonth = () =>
+      (month.value = calendar.findMonth(
+        new Date(month.value.year, month.value.month + 1)
+      ))
+
+    const getPrevMonth = () =>
+      (month.value = calendar.findMonth(
+        new Date(month.value.year, month.value.month - 1)
+      ))
+
+    watch(
+      () => selectedDate.month,
+      (val) => (month.value = val)
     )
 
-    const getPrevMonth = computed(() => () =>
-      findSetMonth(month.year, month.month - 1)
-    )
-
-    watchRouteParams(() => findSetMonth(params.value.year, params.value.month))
-
-    onMounted(findSetMonth)
+    month.value = selectedDate.month
 
     return {
       dayInView,
+      month,
       getNextMonth,
       getPrevMonth,
-      month,
     }
   },
 }

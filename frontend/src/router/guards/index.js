@@ -34,6 +34,5 @@ export const validateParams = (to, from, next) => {
     to.params.month = 1
   }
 
-  console.log(to)
   next()
 }

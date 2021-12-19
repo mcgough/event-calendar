@@ -27,8 +27,8 @@ export function useCalendarRoutes() {
     params.value.day,
   ])
 
-  function watchRouteParams(cb) {
-    return watch(params, cb)
+  function watchRouteParams(cb, options = {}) {
+    return watch(params, cb, options)
   }
 
   function pushToRouter(route, key) {

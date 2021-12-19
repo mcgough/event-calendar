@@ -1,6 +1,6 @@
-import { calendarApi } from '../../../../src/workers/calendar-api'
+import useCalendar from '../../../../src/store/useCalendar'
 
-const calendar = calendarApi()
+const calendar = useCalendar()
 
 it('should exist', () => {
   expect(calendar).toBeTruthy()

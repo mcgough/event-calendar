@@ -31,31 +31,28 @@
 <script>
 import DaysOfWeek from '@/components/DaysOfWeek.vue'
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
-import { onMounted, computed, reactive } from 'vue'
-import {
-  useCalendarApi,
-  useCalendarRoutes,
-  useDayInView,
-  useMonthInView,
-} from '@/composables'
+import { computed } from 'vue'
+import { useCalendarRoutes } from '@/composables'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
 import { MonthKeyboardNav } from '@/directives'
+import useSelectedDate from '@/store/useSelectedDate'
 
 export default {
   components: { DaysOfWeek, PreviousNextAnchors },
   directives: { MonthKeyboardNav },
   name: 'Sub-Year',
   setup() {
-    const { findYear } = useCalendarApi()
+    const selectedDate = useSelectedDate()
+
     const { constructPrevNextYearViewPaths, params } = useCalendarRoutes()
+
+    const year = computed(() => selectedDate.year)
+
+    const months = computed(() => selectedDate.year.findAllMonths())
 
     const prevNextPaths = computed(() =>
       constructPrevNextYearViewPaths(params.value)
     )
-
-    const year = computed(() => findYear(params.value.timestamp))
-
-    const months = computed(() => year.value.findAllMonths())
 
     return {
       DAYS_OF_WEEK_SHORT,

@@ -3,7 +3,9 @@ import { Month, findAll } from './month'
 import { useCalendarMap } from './composables/useCalendarMap'
 
 export function Year({ y, ...data }) {
-  const [getMonth, setMonth] = useCalendarMap(new Map(), 'm', Month)
+  const month = new Map()
+
+  const [getMonth, setMonth] = useCalendarMap(month, 'm', Month)
 
   const year = y
 
@@ -14,6 +16,7 @@ export function Year({ y, ...data }) {
   setMonth({ y, ...data })
 
   return {
+    month,
     year,
     findMonth,
     findAllMonths,
