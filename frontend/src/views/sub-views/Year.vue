@@ -11,17 +11,20 @@
     </teleport>
     <div class="container grid grid-cols-4 overflow-y-auto">
       <div v-for="month in months" :key="month.name" class="mb-4 w-52 h-52">
-        <h4 class="text-left font-semibold ml-2">{{ month.name }}</h4>
+        <router-link :to="buildMonthPath(month.month)">
+          <h4 class="text-left font-semibold ml-2">{{ month.name }}</h4>
+        </router-link>
         <div class="grid grid-cols-7" v-month-keyboard-nav>
           <days-of-week length="short" height="h-6" width="w-6" />
-          <div
+          <router-link
             v-for="(day, i) in month.days"
+            :to="buildDayPath(month.month, day.dayOfMonth)"
             :key="day.timestamp"
             class="text-xs h-6 w-6 cursor-pointer"
             :index="i"
           >
             {{ day.dayOfMonth }}
-          </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -44,7 +47,12 @@ export default {
   setup() {
     const selectedDate = useSelectedDate()
 
-    const { constructPrevNextYearViewPaths, params } = useCalendarRoutes()
+    const {
+      constructPrevNextYearViewPaths,
+      constructDayViewPath,
+      constructMonthViewPath,
+      params,
+    } = useCalendarRoutes()
 
     const year = computed(() => selectedDate.year)
 
@@ -54,7 +62,15 @@ export default {
       constructPrevNextYearViewPaths(params.value)
     )
 
+    const buildDayPath = (month, day) =>
+      constructDayViewPath({ day, month, year: year.value.year })
+
+    const buildMonthPath = (month) =>
+      constructMonthViewPath({ month, day: 1, year: year.value.year })
+
     return {
+      buildDayPath,
+      buildMonthPath,
       DAYS_OF_WEEK_SHORT,
       months,
       prevNextPaths,

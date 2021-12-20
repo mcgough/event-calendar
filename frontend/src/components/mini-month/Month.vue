@@ -99,26 +99,25 @@ export default {
 
     const selectedDate = useSelectedDate()
 
-    const month = ref()
-
     const dayInView = computed(() => selectedDate.day)
 
+    const month = ref()
+
+    const setMonth = (val) => (month.value = val)
+
     const getNextMonth = () =>
-      (month.value = calendar.findMonth(
-        new Date(month.value.year, month.value.month + 1)
-      ))
+      setMonth(
+        calendar.findMonth(new Date(month.value.year, month.value.month + 1))
+      )
 
     const getPrevMonth = () =>
-      (month.value = calendar.findMonth(
-        new Date(month.value.year, month.value.month - 1)
-      ))
+      setMonth(
+        calendar.findMonth(new Date(month.value.year, month.value.month - 1))
+      )
 
-    watch(
-      () => selectedDate.month,
-      (val) => (month.value = val)
-    )
+    watch(() => selectedDate.month, setMonth)
 
-    month.value = selectedDate.month
+    setMonth(selectedDate.month)
 
     return {
       dayInView,

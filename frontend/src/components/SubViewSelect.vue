@@ -30,7 +30,7 @@ export default {
       return route.path.includes(option.value)
     }
 
-    function updateSubView(newVal, oldVal) {
+    function updateSubView() {
       router.push(buildPathWithBase(selected.value.value, params.value))
     }
 
