@@ -46,7 +46,14 @@ function setDayInSubViewStyles({ day, ...data }) {
 }
 
 function setIsTodayStyles({ day, ...data }) {
-  const styles = [...data.styles, ...(day.isToday ? todayStyles : [])]
+  let styles = [...data.styles]
+
+  if (day.isToday)
+    styles = [
+      ...styles.filter((className) => className !== 'text-blue-700'),
+      ...todayStyles,
+    ]
+
   return {
     day,
     styles,
