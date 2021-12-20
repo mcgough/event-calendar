@@ -11,14 +11,14 @@
     </teleport>
     <div class="container grid grid-cols-4 overflow-y-auto">
       <div v-for="month in months" :key="month.name" class="mb-4 w-52 h-52">
-        <router-link :to="buildMonthPath(month.month)">
+        <router-link :to="buildMonthPath(month)">
           <h4 class="text-left font-semibold ml-2">{{ month.name }}</h4>
         </router-link>
         <div class="grid grid-cols-7" v-month-keyboard-nav>
           <days-of-week length="short" height="h-6" width="w-6" />
           <router-link
             v-for="(day, i) in month.days"
-            :to="buildDayPath(month.month, day.dayOfMonth)"
+            :to="buildDayPath(day)"
             :key="day.timestamp"
             class="text-xs h-6 w-6 cursor-pointer"
             :index="i"
@@ -62,11 +62,15 @@ export default {
       constructPrevNextYearViewPaths(params.value)
     )
 
-    const buildDayPath = (month, day) =>
-      constructDayViewPath({ day, month, year: year.value.year })
+    const buildDayPath = (day) =>
+      constructDayViewPath({
+        day: day.dayOfMonth,
+        month: day.month,
+        year: day.year,
+      })
 
-    const buildMonthPath = (month) =>
-      constructMonthViewPath({ month, day: 1, year: year.value.year })
+    const buildMonthPath = ({ month, year }) =>
+      constructMonthViewPath({ month, year, day: 1 })
 
     return {
       buildDayPath,
