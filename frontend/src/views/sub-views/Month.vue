@@ -26,7 +26,7 @@
 <script>
 import Day from '@/components/Day.vue'
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useCalendarRoutes, useMouseWheel } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
 import useSelectedDate from '@/store/useSelectedDate'

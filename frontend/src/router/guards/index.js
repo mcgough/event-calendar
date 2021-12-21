@@ -1,5 +1,21 @@
 import { getDay, getMonth, getYear } from 'date-fns'
 
+export const attachTransition = (to, from) => {
+  if (to.path.includes('d') && from.path.includes('d')) {
+    const toDay = to.params.day
+
+    const fromDay = from.params.day
+
+    let transition = 'day-slide-left'
+
+    if (Number(toDay) < Number(fromDay)) {
+      transition = 'day-slide-right'
+    }
+
+    to.meta.transition = transition
+  }
+}
+
 export const isInvalidYear = (year) =>
   !year ||
   isNaN(parseInt(year)) ||
