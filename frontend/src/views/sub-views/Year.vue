@@ -19,8 +19,9 @@
           <router-link
             v-for="(day, i) in month.days"
             :to="buildDayPath(day)"
+            class="year-day"
+            :class="useDayStyles(day)"
             :key="day.timestamp"
-            class="text-xs h-6 w-6 cursor-pointer"
             :index="i"
           >
             {{ day.dayOfMonth }}
@@ -35,7 +36,7 @@
 import DaysOfWeek from '@/components/DaysOfWeek.vue'
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
 import { computed } from 'vue'
-import { useCalendarRoutes } from '@/composables'
+import { useCalendarRoutes, useDayStyles } from '@/composables'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
 import { MonthKeyboardNav } from '@/directives'
 import useSelectedDate from '@/store/useSelectedDate'
@@ -78,6 +79,7 @@ export default {
       DAYS_OF_WEEK_SHORT,
       months,
       prevNextPaths,
+      useDayStyles,
       year,
     }
   },
@@ -88,5 +90,8 @@ export default {
 .container {
   height: calc(100vh - 75px);
   padding-top: 1rem;
+}
+.year-day {
+  @apply h-6 w-6;
 }
 </style>
