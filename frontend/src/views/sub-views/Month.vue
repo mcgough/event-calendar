@@ -11,7 +11,7 @@
         </div>
       </div>
     </teleport>
-    <div class="month grid grid-cols-7 border-r" ref="monthRef">
+    <div class="month grid grid-cols-7 border-r" :ref="mouseWheelElement">
       <day
         v-for="(day, i) in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
@@ -46,7 +46,8 @@ export default {
 
     const dayInView = computed(() => selectedDate.day)
 
-    const { onWheelDown, onWheelUp } = useMouseWheel(monthRef)
+    const { mouseWheelElement, onWheelDown, onWheelUp } =
+      useMouseWheel(monthRef)
 
     const prevNextMonthPaths = computed(() =>
       constructPrevNextMonthViewPaths(params.value)
@@ -61,6 +62,7 @@ export default {
       DAYS_OF_WEEK_MEDIUM,
       month,
       monthRef,
+      mouseWheelElement,
       prevNextMonthPaths,
     }
   },
