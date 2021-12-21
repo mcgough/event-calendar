@@ -11,7 +11,7 @@
         </div>
       </div>
     </teleport>
-    <div class="month grid grid-cols-7 border-r" ref="monthRef">
+    <div class="month grid grid-cols-7 border-r" :ref="mouseWheelElement">
       <day
         v-for="(day, i) in month.days"
         :dayIsInView="dayInView?.timestamp === day?.timestamp"
@@ -35,8 +35,6 @@ export default {
   components: { Day, PreviousNextAnchors },
   name: 'Sub-Month',
   setup() {
-    const monthRef = ref(null)
-
     const selectedDate = useSelectedDate()
 
     const { constructPrevNextMonthViewPaths, params, pushToRouter } =
@@ -46,21 +44,24 @@ export default {
 
     const dayInView = computed(() => selectedDate.day)
 
-    const { onWheelDown, onWheelUp } = useMouseWheel(monthRef)
+    const { mouseWheelElement, onWheelDown, onWheelUp } = useMouseWheel()
 
     const prevNextMonthPaths = computed(() =>
       constructPrevNextMonthViewPaths(params.value)
     )
 
-    onWheelDown(pushToRouter.bind(undefined, prevNextMonthPaths, 'prev'), 75)
+    const navigateToMonth = (direction) => (data) =>
+      pushToRouter(prevNextMonthPaths, direction, data)
 
-    onWheelUp(pushToRouter.bind(undefined, prevNextMonthPaths, 'next'), 75)
+    onWheelDown(navigateToMonth('prev'), 75)
+
+    onWheelUp(navigateToMonth('next'), 75)
 
     return {
       dayInView,
       DAYS_OF_WEEK_MEDIUM,
       month,
-      monthRef,
+      mouseWheelElement,
       prevNextMonthPaths,
     }
   },

@@ -1,21 +1,29 @@
 import debounce from 'lodash.debounce'
-import { onBeforeUnmount, onMounted } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const WHEEL = 'wheel'
 
 const eventOptions = { passive: true }
 
-export function useMouseWheel(ref) {
+export function useMouseWheel() {
+  const elementRef = ref()
+
   const onWheelUp = callback()
+
   const onWheelDown = callback()
 
   const activeListener = new Map()
 
-  onMounted(attachWheelListener(ref, onWheelUp, onWheelDown, activeListener))
+  const mouseWheelElement = (el) => (elementRef.value = el)
 
-  onBeforeUnmount(detachWheelListener(ref, activeListener))
+  onMounted(
+    attachWheelListener(elementRef, onWheelUp, onWheelDown, activeListener)
+  )
+
+  onBeforeUnmount(detachWheelListener(elementRef, activeListener))
 
   return {
+    mouseWheelElement,
     onWheelDown,
     onWheelUp,
   }
