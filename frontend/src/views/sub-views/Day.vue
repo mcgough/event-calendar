@@ -14,9 +14,9 @@
     <transition :name="route.meta.transition">
       <div
         v-if="slideInDay"
-        class="w-14 flex flex-col justify-center items-center mt-4"
+        class="flex flex-col justify-center items-start mt-4"
       >
-        <div>
+        <div class="mb-4">
           <div>
             <span class="text-blue-500 font-medium">{{
               DAYS_OF_WEEK_MEDIUM[dayInView.dayOfWeek]
@@ -66,7 +66,7 @@ export default {
 
     const dayInView = computed(() => selectedDate.day)
 
-    const events = ref([])
+    const events = computed(() => dayInView.value.getEvents())
 
     const slideInDay = ref(false)
 
