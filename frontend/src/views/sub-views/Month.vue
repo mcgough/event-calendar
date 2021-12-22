@@ -14,9 +14,9 @@
     <div class="month grid grid-cols-7 border-r" :ref="mouseWheelElement">
       <day
         v-for="(day, i) in month.days"
-        :dayIsInView="dayInView?.timestamp === day?.timestamp"
+        :dayIsInView="dayInView && dayInView.timestamp === day.timestamp"
         :day="day"
-        :key="day?.timestamp"
+        :key="(day && day.timestamp) || i"
         :dayOfWeek="i <= 6 ? DAYS_OF_WEEK_MEDIUM[i] : null"
       />
     </div>

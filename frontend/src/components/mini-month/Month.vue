@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full max-w-sm m-auto" v-if="month.days?.length">
+  <div class="w-full max-w-sm m-auto" v-if="month && month.days.length">
     <div class="flex justify-between items-center my-3">
       <div class="font-semibold ml-2">
         <span>{{ month.name }} {{ month.year }}</span>
@@ -73,9 +73,9 @@
       <days-of-week length="short" />
       <day
         v-for="(day, i) in month.days"
-        :dayIsInView="dayInView?.timestamp === day?.timestamp"
+        :dayIsInView="dayInView && dayInView.timestamp === day.timestamp"
         :day="day"
-        :key="day?.timestamp"
+        :key="(day && day.timestamp) || i"
         :index="i"
       />
     </div>

@@ -3,17 +3,44 @@
     <div class="flex flex-col items-center relative" v-if="options">
       <div class="w-full">
         <div
-          class="my-2 bg-white p-1 flex border border-gray-200 rounded cursor-pointer"
+          class="
+            my-2
+            bg-white
+            p-1
+            flex
+            border border-gray-200
+            rounded
+            cursor-pointer
+          "
           @click="onOpenClick"
         >
           <div class="flex flex-auto flex-wrap"></div>
           <input
-            :value="modelValue?.label"
+            :value="modelValue.label"
             disabled
-            class="cursor-pointer p-1 px-2 appearance-none outline-none w-full text-gray-800 select-none"
+            class="
+              cursor-pointer
+              p-1
+              px-2
+              appearance-none
+              outline-none
+              w-full
+              text-gray-800
+              select-none
+            "
           />
           <div
-            class="text-gray-300 w-8 py-1 pl-2 pr-1 border-l flex items-center border-gray-200"
+            class="
+              text-gray-300
+              w-8
+              py-1
+              pl-2
+              pr-1
+              border-l
+              flex
+              items-center
+              border-gray-200
+            "
           >
             <button
               class="w-6 h-6 text-gray-600 outline-none focus:outline-none"
@@ -39,7 +66,17 @@
       <template v-if="active">
         <transition>
           <div
-            class="absolute shadow top-100 z-40 w-full lef-0 rounded max-h-select overflow-y-auto"
+            class="
+              absolute
+              shadow
+              top-100
+              z-40
+              w-full
+              lef-0
+              rounded
+              max-h-select
+              overflow-y-auto
+            "
           >
             <div
               class="flex flex-col w-full"
@@ -48,11 +85,29 @@
               @click="onOptionClick(option)"
             >
               <div
-                class="cursor-pointer w-full border-gray-100 rounded-t border-b hover:bg-teal-100"
+                class="
+                  cursor-pointer
+                  w-full
+                  border-gray-100
+                  rounded-t
+                  border-b
+                  hover:bg-teal-100
+                "
                 style=""
               >
                 <div
-                  class="flex w-full items-center p-2 pl-2 border-transparent bg-white border-l-2 relative hover:bg-teal-600 hover:text-teal-100 hover:border-teal-600"
+                  class="
+                    flex
+                    w-full
+                    items-center
+                    p-2
+                    pl-2
+                    border-transparent
+                    bg-white
+                    border-l-2
+                    relative
+                    hover:bg-teal-600 hover:text-teal-100 hover:border-teal-600
+                  "
                 >
                   <div class="w-full items-center flex">
                     <div class="mx-2 leading-6">{{ option.label }}</div>
@@ -68,15 +123,18 @@
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 
 export default {
   name: 'Select',
   props: {
     options: Array,
-    modelValue: Object,
+    modelValue: {
+      type: Object,
+      default: () => ({}),
+    },
   },
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const active = ref(false)
 
     const onOpenClick = () => (active.value = !active.value)
