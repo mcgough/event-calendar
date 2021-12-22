@@ -22,7 +22,6 @@
 import MiniMonth from '@/components/mini-month/Month.vue'
 import SidePanel from '@/components/SidePanel.vue'
 import Splash from '@/components/Splash.vue'
-import useCalendar from '@/store/useCalendar'
 import { ROUTE_NAME_CALENDAR } from '@/constants'
 
 export default {
@@ -31,9 +30,6 @@ export default {
     MiniMonth,
     SidePanel,
     Splash,
-  },
-  setup() {
-    useCalendar().fetchSetEvents()
   },
 }
 </script>
