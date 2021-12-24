@@ -1,6 +1,13 @@
 import compose from 'lodash.flowright'
-import { isLastDayOfMonth, isFirstDayOfMonth, getDaysInMonth } from 'date-fns'
-import { MONTH_SLUG, DAY_SLUG, YEAR_SLUG } from '@/constants'
+import { parseDate } from '@/date-utils'
+import {
+  addDays,
+  subDays,
+  isLastDayOfMonth,
+  isFirstDayOfMonth,
+  getDaysInMonth,
+} from 'date-fns'
+import { MONTH_SLUG, DAY_SLUG, WEEK_SLUG, YEAR_SLUG } from '@/constants'
 
 export function formatParams({ year, month, day }) {
   const parsedYear = parseInt(year)
@@ -175,6 +182,19 @@ export function setDayExplicit(day = 1) {
   }
 }
 
+export function setWeekAway(method) {
+  return function (data) {
+    const timestamp = method(data.timestamp, 7)
+    const { y, m, d } = parseDate(timestamp)
+    return {
+      year: y,
+      month: m,
+      day: d,
+      timestamp,
+    }
+  }
+}
+
 function constructPathBase(slug) {
   return function (...hooks) {
     return [
@@ -204,6 +224,27 @@ export function constructPrevNextMonthViewPaths(data) {
   }
 }
 
+export function constructPrevNextWeekViewPaths(data) {
+  return {
+    prev: compose(
+      ...constructPathBase(WEEK_SLUG)(
+        setPrevDay,
+        setPrevDayMonth,
+        setPrevDayYear,
+        setWeekAway(subDays)
+      )
+    )()(data),
+    next: compose(
+      ...constructPathBase(WEEK_SLUG)(
+        setNextDay,
+        setNextDayMonth,
+        setNextDayYear,
+        setWeekAway(addDays)
+      )
+    )()(data),
+  }
+}
+
 export function constructPrevNextDayViewPaths(data) {
   return {
     prev: compose(
@@ -225,6 +266,10 @@ export function constructPrevNextDayViewPaths(data) {
 
 export const constructDayViewPath = compose(
   ...constructPathBase(DAY_SLUG)(setDay, setMonth)
+)()
+
+export const constructWeekViewPath = compose(
+  ...constructPathBase(WEEK_SLUG)(setDay, setMonth)
 )()
 
 export const constructMonthViewPath = compose(

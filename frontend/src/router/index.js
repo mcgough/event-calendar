@@ -2,6 +2,7 @@ import Calendar from '@/views/Calendar.vue'
 
 import Year from '@/views/sub-views/Year.vue'
 import Month from '@/views/sub-views/Month.vue'
+import Week from '@/views/sub-views/Week.vue'
 import Day from '@/views/sub-views/Day.vue'
 
 import { createRouter, createWebHistory } from 'vue-router'
@@ -20,6 +21,7 @@ const routes = [
         component: Day,
         meta: { transition: undefined },
       },
+      { path: '/w/:year/:month/:day?', name: 'Sub-Week', component: Week },
       { path: '/m/:year/:month/:day?', name: 'Sub-Month', component: Month },
       { path: '/y/:year/:month/:day', name: 'Sub-Year', component: Year },
     ],

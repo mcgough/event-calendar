@@ -3,6 +3,7 @@ import {
   format,
   getDay,
   getTime,
+  getWeek,
   isToday,
   isFirstDayOfMonth,
   isLastDayOfMonth,
@@ -13,6 +14,7 @@ export function Day({ y, m, dayOfMonth, isInCurrentMonth }) {
   const month = m
   const timestamp = parseInt(format(new Date(y, m, dayOfMonth), 'T'), 10)
   const dayOfWeek = getDay(timestamp)
+  const weekOfYear = getWeek(timestamp)
   const label = format(timestamp, 'PPP')
   const isFirstDay = isFirstDayOfMonth(timestamp)
   const isLastDay = isLastDayOfMonth(timestamp)
@@ -36,6 +38,7 @@ export function Day({ y, m, dayOfMonth, isInCurrentMonth }) {
     label,
     setEvent,
     timestamp,
+    weekOfYear,
     isToday: isToday(timestamp),
   }
 }

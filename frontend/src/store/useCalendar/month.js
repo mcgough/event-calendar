@@ -13,10 +13,13 @@ export function Month({ y, m, daysInMonth, ...data }) {
   const name = MONTHS[m]
   const year = y
 
+  const findWeek = findDaysInWeek(days)
+
   return {
     days,
     daysInMonth,
     findDay,
+    findWeek,
     label,
     month,
     name,
@@ -41,4 +44,20 @@ export function findAll(year, getter) {
 
     return results
   }
+}
+
+function findDaysInWeek(days) {
+  return function ({ weekOfYear }) {
+    const middleIndex = Math.floor(days.length / 2)
+
+    if (days[middleIndex].weekOfYear < weekOfYear)
+      return getWeek(days, weekOfYear, 0)
+
+    return getWeek(days, weekOfYear, middleIndex)
+  }
+}
+
+// TODO: optimize
+function getWeek(days, weekOfYear, startAtIndex) {
+  return days.filter((day) => day.weekOfYear === weekOfYear)
 }
