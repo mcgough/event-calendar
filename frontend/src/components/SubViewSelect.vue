@@ -4,8 +4,17 @@
 
 <script>
 import VSelect from '@/components/Select.vue'
-import { onMounted, reactive, ref, watch, watchEffect } from 'vue'
-import { DAY, MONTH, YEAR, DAY_SLUG, MONTH_SLUG, YEAR_SLUG } from '@/constants'
+import { ref, watch, watchEffect } from 'vue'
+import {
+  DAY,
+  WEEK,
+  MONTH,
+  YEAR,
+  DAY_SLUG,
+  WEEK_SLUG,
+  MONTH_SLUG,
+  YEAR_SLUG,
+} from '@/constants'
 import { useCalendarRoutes } from '@/composables'
 
 export default {
@@ -18,6 +27,7 @@ export default {
 
     const options = [
       { label: DAY, value: DAY_SLUG },
+      { label: WEEK, value: WEEK_SLUG },
       { label: MONTH, value: MONTH_SLUG },
       { label: YEAR, value: YEAR_SLUG },
     ]

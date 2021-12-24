@@ -13,7 +13,7 @@
 import { computed } from 'vue'
 import { useCalendarRoutes } from '@/composables'
 import { useDayStyles } from '@/composables'
-import { MONTH_SLUG, DAY_SLUG, YEAR_SLUG } from '@/constants'
+import { MONTH_SLUG, DAY_SLUG, WEEK_SLUG, YEAR_SLUG } from '@/constants'
 
 export default {
   name: 'Mini-Day',
@@ -24,6 +24,7 @@ export default {
   setup(props) {
     const {
       constructDayViewPath,
+      constructWeekViewPath,
       constructMonthViewPath,
       constructYearViewPath,
       route,
@@ -49,6 +50,9 @@ export default {
       if (route.path.includes(MONTH_SLUG))
         return constructMonthViewPath(pathParams.value)
 
+      if (route.path.includes(WEEK_SLUG))
+        return constructWeekViewPath(pathParams.value)
+
       if (route.path.includes(DAY_SLUG))
         return constructDayViewPath(pathParams.value)
 
@@ -56,6 +60,7 @@ export default {
         return constructYearViewPath(pathParams.value)
     })
 
+    // Why am I doing this?
     function onDblClick() {
       let prevPath
       return function () {

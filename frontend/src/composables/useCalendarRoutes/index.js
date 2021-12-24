@@ -4,9 +4,11 @@ import {
   formatParams,
   buildPathWithBase,
   constructDayViewPath,
+  constructWeekViewPath,
   constructMonthViewPath,
   constructYearViewPath,
   constructPrevNextDayViewPaths,
+  constructPrevNextWeekViewPaths,
   constructPrevNextMonthViewPaths,
   constructPrevNextYearViewPaths,
 } from './helpers'
@@ -38,9 +40,11 @@ export function useCalendarRoutes() {
   return {
     buildPathWithBase,
     constructDayViewPath,
+    constructWeekViewPath,
     constructMonthViewPath,
     constructYearViewPath,
     constructPrevNextDayViewPaths,
+    constructPrevNextWeekViewPaths,
     constructPrevNextMonthViewPaths,
     constructPrevNextYearViewPaths,
     params,
