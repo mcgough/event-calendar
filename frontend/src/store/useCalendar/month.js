@@ -48,16 +48,20 @@ export function findAll(year, getter) {
 
 function findDaysInWeek(days) {
   return function ({ weekOfYear }) {
-    const middleIndex = Math.floor(days.length / 2)
+    const week = []
 
-    if (days[middleIndex].weekOfYear < weekOfYear)
-      return getWeek(days, weekOfYear, 0)
+    let index = 0
 
-    return getWeek(days, weekOfYear, middleIndex)
+    let dayCount = 0
+
+    while (dayCount < 7) {
+      if (days[index].weekOfYear === weekOfYear) {
+        week.push(days[index])
+        dayCount++
+      }
+      index++
+    }
+
+    return week
   }
-}
-
-// TODO: optimize
-function getWeek(days, weekOfYear, startAtIndex) {
-  return days.filter((day) => day.weekOfYear === weekOfYear)
 }
