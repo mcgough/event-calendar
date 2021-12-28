@@ -16,11 +16,8 @@ export function useMouseWheel() {
 
   const mouseWheelElement = (el) => (elementRef.value = el)
 
-  watch(
-    elementRef,
-    (el) =>
-      console.log('attaching week listener') ||
-      attachWheelListener(el, onWheelUp, onWheelDown, activeListener)
+  watch(elementRef, (el) =>
+    attachWheelListener(el, onWheelUp, onWheelDown, activeListener)
   )
 
   onBeforeUnmount(detachWheelListener(elementRef, activeListener))
