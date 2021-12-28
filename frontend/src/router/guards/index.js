@@ -5,11 +5,13 @@ function samePathSlug(slug, to, from) {
 }
 
 function determineSlideDirection(newVal, oldVal) {
-  let transition = 'slide-left'
+  if (Number(newVal) < Number(oldVal)) {
+    return 'slide-right'
+  }
 
-  if (Number(newVal) < Number(oldVal)) transition = 'slide-right'
-
-  return transition
+  if (Number(newVal > Number(oldVal))) {
+    return 'slide-left'
+  }
 }
 
 export const attachTransition = (to, from) => {
