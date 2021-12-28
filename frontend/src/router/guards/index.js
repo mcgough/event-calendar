@@ -1,18 +1,36 @@
 import { getDay, getMonth, getYear } from 'date-fns'
 
+function samePathSlug(slug, to, from) {
+  return to.path.includes(slug) && from.path.includes(slug)
+}
+
+function determineSlideDirection(newVal, oldVal) {
+  let transition = 'slide-left'
+
+  if (Number(newVal) < Number(oldVal)) transition = 'slide-right'
+
+  return transition
+}
+
 export const attachTransition = (to, from) => {
-  if (to.path.includes('d') && from.path.includes('d')) {
-    const toDay = to.params.day
+  if (samePathSlug('d', to, from) || samePathSlug('w', to, from)) {
+    return (to.meta.transition = determineSlideDirection(
+      to.params.day,
+      from.params.day
+    ))
+  }
 
-    const fromDay = from.params.day
+  if (samePathSlug('m', to, from))
+    return (to.meta.transition = determineSlideDirection(
+      to.params.month,
+      from.params.month
+    ))
 
-    let transition = 'day-slide-left'
-
-    if (Number(toDay) < Number(fromDay)) {
-      transition = 'day-slide-right'
-    }
-
-    to.meta.transition = transition
+  if (samePathSlug('y', to, from)) {
+    return (to.meta.transition = determineSlideDirection(
+      to.params.year,
+      from.params.year
+    ))
   }
 }
 

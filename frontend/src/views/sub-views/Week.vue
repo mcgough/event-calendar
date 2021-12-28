@@ -11,31 +11,34 @@
         </div>
       </div>
     </teleport>
-    <div class="week grid grid-cols-7 border-r mt-3">
-      <div
-        class="text-xs mb-2"
-        v-for="dayOfWeek in DAYS_OF_WEEK_MEDIUM"
-        :key="dayOfWeek"
-      >
-        {{ dayOfWeek }}
+    <slide-transition>
+      <div class="week grid grid-cols-7 border-r mt-3">
+        <div
+          class="text-xs mb-2"
+          v-for="dayOfWeek in DAYS_OF_WEEK_MEDIUM"
+          :key="dayOfWeek"
+        >
+          {{ dayOfWeek }}
+        </div>
+        <div class="text-xl" v-for="day in week" :key="day.timestamp">
+          {{ day.dayOfMonth }}
+        </div>
       </div>
-      <div class="text-xl" v-for="day in week" :key="day.timestamp">
-        {{ day.dayOfMonth }}
-      </div>
-    </div>
+    </slide-transition>
   </div>
 </template>
 
 <script>
 import Day from '@/components/Day.vue'
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
+import SlideTransition from '@/components/SlideTransition.vue'
 import { computed } from 'vue'
 import { useCalendarRoutes } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
 import useSelectedDate from '@/store/useSelectedDate'
 
 export default {
-  components: { Day, PreviousNextAnchors },
+  components: { Day, PreviousNextAnchors, SlideTransition },
   name: 'Sub-Week',
   setup() {
     const selectedDate = useSelectedDate()

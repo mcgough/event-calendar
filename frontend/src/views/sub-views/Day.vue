@@ -11,11 +11,8 @@
         </div>
       </div>
     </teleport>
-    <transition :name="route.meta.transition">
-      <div
-        v-if="slideInDay"
-        class="flex flex-col justify-center items-start mt-4"
-      >
+    <slide-transition>
+      <div class="flex flex-col justify-center items-start mt-4">
         <div class="mb-4">
           <div>
             <span class="text-blue-500 font-medium">{{
@@ -43,20 +40,21 @@
           {{ event.name }}
         </div>
       </div>
-    </transition>
+    </slide-transition>
   </div>
 </template>
 
 <script>
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
-import { computed, onMounted, ref } from 'vue'
+import SlideTransition from '@/components/SlideTransition.vue'
+import { computed } from 'vue'
 import { useCalendarRoutes } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
 import { FocusOnMount } from '@/directives'
 import useSelectedDate from '@/store/useSelectedDate'
 
 export default {
-  components: { PreviousNextAnchors },
+  components: { PreviousNextAnchors, SlideTransition },
   directives: { FocusOnMount },
   name: 'Sub-Day',
   setup() {
@@ -68,13 +66,9 @@ export default {
 
     const events = computed(() => dayInView.value.getEvents())
 
-    const slideInDay = ref(false)
-
     const prevNextDayPaths = computed(() =>
       constructPrevNextDayViewPaths(params.value)
     )
-
-    onMounted(() => (slideInDay.value = true))
 
     return {
       dayInView,
@@ -82,41 +76,7 @@ export default {
       events,
       prevNextDayPaths,
       route,
-      slideInDay,
     }
   },
 }
 </script>
-
-<style scoped>
-/* TODO: moved to css file */
-.day-slide-right-enter-active {
-  transition: all 0.5s ease;
-  transform: translateX(0rem);
-}
-.day-slide-right-leave-active {
-  position: absolute;
-}
-
-.day-slide-right-enter-from {
-  transform: translateX(-1rem);
-}
-.day-slide-right-leave-to {
-  opacity: 0;
-}
-
-.day-slide-left-enter-active {
-  transition: all 0.5s ease;
-  transform: translateX(0rem);
-}
-.day-slide-left-leave-active {
-  position: absolute;
-}
-
-.day-slide-left-enter-from {
-  transform: translateX(1rem);
-}
-.day-slide-left-leave-to {
-  opacity: 0;
-}
-</style>

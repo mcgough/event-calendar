@@ -1,5 +1,5 @@
 import debounce from 'lodash.debounce'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onBeforeUnmount, ref, watch } from 'vue'
 
 const WHEEL = 'wheel'
 
@@ -16,8 +16,11 @@ export function useMouseWheel() {
 
   const mouseWheelElement = (el) => (elementRef.value = el)
 
-  onMounted(
-    attachWheelListener(elementRef, onWheelUp, onWheelDown, activeListener)
+  watch(
+    elementRef,
+    (el) =>
+      console.log('attaching week listener') ||
+      attachWheelListener(el, onWheelUp, onWheelDown, activeListener)
   )
 
   onBeforeUnmount(detachWheelListener(elementRef, activeListener))

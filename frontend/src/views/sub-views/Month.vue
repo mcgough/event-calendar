@@ -11,28 +11,31 @@
         </div>
       </div>
     </teleport>
-    <div class="month grid grid-cols-7 border-r" :ref="mouseWheelElement">
-      <day
-        v-for="(day, i) in month.days"
-        :dayIsInView="dayInView && dayInView.timestamp === day.timestamp"
-        :day="day"
-        :key="(day && day.timestamp) || i"
-        :dayOfWeek="i <= 6 ? DAYS_OF_WEEK_MEDIUM[i] : null"
-      />
-    </div>
+    <slide-transition>
+      <div class="month grid grid-cols-7 border-r" :ref="mouseWheelElement">
+        <day
+          v-for="(day, i) in month.days"
+          :dayIsInView="dayInView && dayInView.timestamp === day.timestamp"
+          :day="day"
+          :key="(day && day.timestamp) || i"
+          :dayOfWeek="i <= 6 ? DAYS_OF_WEEK_MEDIUM[i] : null"
+        />
+      </div>
+    </slide-transition>
   </div>
 </template>
 
 <script>
 import Day from '@/components/Day.vue'
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
+import SlideTransition from '@/components/SlideTransition.vue'
 import { computed } from 'vue'
 import { useCalendarRoutes, useMouseWheel } from '@/composables'
 import { DAYS_OF_WEEK_MEDIUM } from '@/constants'
 import useSelectedDate from '@/store/useSelectedDate'
 
 export default {
-  components: { Day, PreviousNextAnchors },
+  components: { Day, PreviousNextAnchors, SlideTransition },
   name: 'Sub-Month',
   setup() {
     const selectedDate = useSelectedDate()
