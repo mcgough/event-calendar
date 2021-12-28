@@ -9,32 +9,35 @@
         <div class="text-xl font-medium">{{ year.year }}</div>
       </div>
     </teleport>
-    <div class="container grid grid-cols-4 overflow-y-auto">
-      <div v-for="month in months" :key="month.name" class="mb-4 w-52 h-52">
-        <router-link :to="buildMonthPath(month)">
-          <h4 class="text-left font-semibold ml-2">{{ month.name }}</h4>
-        </router-link>
-        <div class="grid grid-cols-7" v-month-keyboard-nav>
-          <days-of-week length="short" height="h-6" width="w-6" />
-          <router-link
-            v-for="(day, i) in month.days"
-            :to="buildDayPath(day)"
-            class="year-day"
-            :class="useDayStyles(day)"
-            :key="day.timestamp"
-            :index="i"
-          >
-            {{ day.dayOfMonth }}
+    <slide-transition>
+      <div class="container grid grid-cols-4 overflow-y-auto">
+        <div v-for="month in months" :key="month.name" class="mb-4 w-52 h-52">
+          <router-link :to="buildMonthPath(month)">
+            <h4 class="text-left font-semibold ml-2">{{ month.name }}</h4>
           </router-link>
+          <div class="grid grid-cols-7" v-month-keyboard-nav>
+            <days-of-week length="short" height="h-6" width="w-6" />
+            <router-link
+              v-for="(day, i) in month.days"
+              :to="buildDayPath(day)"
+              class="year-day"
+              :class="useDayStyles(day)"
+              :key="day.timestamp"
+              :index="i"
+            >
+              {{ day.dayOfMonth }}
+            </router-link>
+          </div>
         </div>
       </div>
-    </div>
+    </slide-transition>
   </div>
 </template>
 
 <script>
 import DaysOfWeek from '@/components/DaysOfWeek.vue'
 import PreviousNextAnchors from '@/components/PreviousNextAnchors.vue'
+import SlideTransition from '@/components/SlideTransition.vue'
 import { computed } from 'vue'
 import { useCalendarRoutes, useDayStyles } from '@/composables'
 import { DAYS_OF_WEEK_SHORT } from '@/constants'
@@ -42,7 +45,7 @@ import { MonthKeyboardNav } from '@/directives'
 import useSelectedDate from '@/store/useSelectedDate'
 
 export default {
-  components: { DaysOfWeek, PreviousNextAnchors },
+  components: { DaysOfWeek, PreviousNextAnchors, SlideTransition },
   directives: { MonthKeyboardNav },
   name: 'Sub-Year',
   setup() {
